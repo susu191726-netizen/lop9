@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hoá Học Lớp 9 — Học Thông Minh</title>
+<style>
+  :root {
+    --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
+    --blue: #378ADD; --blue-light: #E6F1FB; --blue-dark: #0C447C;
+    --amber: #BA7517; --amber-light: #FAEEDA; --amber-dark: #633806;
+    --coral: #D85A30; --coral-light: #FAECE7; --coral-dark: #4A1B0C;
+    --purple: #7F77DD; --purple-light: #EEEDFE; --purple-dark: #26215C;
+    --gray: #888780; --gray-light: #F1EFE8; --gray-dark: #2C2C2A;
+    --red: #E24B4A; --red-light: #FCEBEB;
+    --bg: #f8f9fa; --card: #ffffff; --text: #1a1a1a; --text2: #555;
+    --border: rgba(0,0,0,0.1); --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+  /* NAV */
+  nav { background: var(--green-dark); color: #fff; padding: 0 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .nav-logo { font-size: 1.3rem; font-weight: 700; padding: 1rem 0; white-space: nowrap; }
+  .nav-logo span { color: #9FE1CB; }
+  .nav-tabs { display: flex; gap: 0; flex: 1; overflow-x: auto; }
+  .nav-tab { padding: 1rem 1.2rem; cursor: pointer; white-space: nowrap; font-size: 0.88rem; border-bottom: 3px solid transparent; color: rgba(255,255,255,0.75); transition: all 0.2s; }
+  .nav-tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .nav-tab.active { color: #fff; border-bottom-color: #9FE1CB; }
+
+  /* PAGES */
+  .page { display: none; padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, var(--green-dark) 0%, #1D9E75 100%); color: #fff; border-radius: var(--radius); padding: 2.5rem 2rem; margin-bottom: 1.5rem; }
+  .hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .hero p { opacity: 0.85; font-size: 1rem; }
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin: 1.5rem 0; }
+  .stat-card { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 1rem; text-align: center; }
+  .stat-card .num { font-size: 1.8rem; font-weight: 700; }
+  .stat-card .lbl { font-size: 0.78rem; opacity: 0.8; }
+  .tip-box { background: var(--amber-light); border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; }
+  .tip-box strong { color: var(--amber-dark); }
+
+  /* CARDS */
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; cursor: pointer; }
+  .card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .card-title { font-size: 1rem; font-weight: 600; }
+  .card-subtitle { font-size: 0.82rem; color: var(--text2); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem; }
+  .badge-green { background: var(--green-light); color: var(--green-dark); }
+  .badge-blue { background: var(--blue-light); color: var(--blue-dark); }
+  .badge-amber { background: var(--amber-light); color: var(--amber-dark); }
+  .badge-coral { background: var(--coral-light); color: var(--coral-dark); }
+  .badge-purple { background: var(--purple-light); color: var(--purple-dark); }
+
+  /* THEORY CONTENT */
+  .theory-body { display: none; padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+  .theory-body.open { display: block; }
+  .formula-box { background: var(--blue-light); border: 1px solid rgba(55,138,221,0.3); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; font-family: monospace; font-size: 1rem; }
+  .formula-box .label { font-size: 0.78rem; color: var(--blue-dark); font-family: sans-serif; font-weight: 600; margin-bottom: 0.25rem; }
+  .memory-trick { background: var(--purple-light); border-left: 4px solid var(--purple); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; }
+  .memory-trick .trick-title { font-size: 0.78rem; color: var(--purple-dark); font-weight: 700; margin-bottom: 0.25rem; }
+  .reaction-visual { background: var(--gray-light); border-radius: 10px; padding: 1rem; margin: 0.75rem 0; font-size: 0.9rem; overflow-x: auto; }
+  .reaction-eq { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .chem { background: #fff; border: 1.5px solid #ccc; border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.95rem; }
+  .chem.react { border-color: var(--coral); color: var(--coral-dark); background: var(--coral-light); }
+  .chem.prod { border-color: var(--green); color: var(--green-dark); background: var(--green-light); }
+  .arrow { font-size: 1.3rem; color: var(--gray); }
+  .plus { color: var(--gray); font-weight: 700; }
+  .cond { font-size: 0.78rem; color: var(--text2); font-style: italic; padding: 2px 6px; }
+  .prop-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.88rem; }
+  .prop-table th { background: var(--green-light); color: var(--green-dark); padding: 0.5rem 0.75rem; text-align: left; }
+  .prop-table td { padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .prop-table tr:hover td { background: var(--gray-light); }
+  .example-box { background: var(--green-light); border-left: 4px solid var(--green); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; }
+  .example-box .ex-title { font-size: 0.78rem; color: var(--green-dark); font-weight: 700; margin-bottom: 0.25rem; }
+  ul.clean { padding-left: 1.2rem; }
+  ul.clean li { margin-bottom: 0.35rem; }
+  h3 { font-size: 1rem; color: var(--green-dark); margin: 1rem 0 0.5rem; }
+
+  /* FLASHCARD */
+  .fc-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .fc-controls select { padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); font-size: 0.9rem; }
+  .btn { padding: 0.5rem 1.25rem; border-radius: 8px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.15s; }
+  .btn-primary { background: var(--green); color: #fff; }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-outline { background: transparent; border: 1.5px solid var(--green); color: var(--green-dark); }
+  .btn-outline:hover { background: var(--green-light); }
+  .btn-sm { padding: 0.35rem 0.85rem; font-size: 0.82rem; }
+  .fc-scene { perspective: 1000px; margin: 0 auto 1.5rem; width: 100%; max-width: 520px; height: 260px; cursor: pointer; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--green-dark), var(--green)); color: #fff; }
+  .fc-back { background: linear-gradient(135deg, var(--blue-dark), var(--blue)); color: #fff; transform: rotateY(180deg); }
+  .fc-q { font-size: 1.1rem; font-weight: 600; }
+  .fc-a { font-size: 0.95rem; line-height: 1.6; }
+  .fc-hint { font-size: 0.78rem; opacity: 0.7; margin-top: 1rem; }
+  .fc-nav { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+  .fc-counter { font-size: 0.88rem; color: var(--text2); min-width: 80px; text-align: center; }
+  .fc-progress { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 1rem; }
+  .fc-progress-bar { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.3s; }
+
+  /* QUIZ */
+  .quiz-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: gap; }
+  .quiz-chapter { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .chapter-btn { padding: 0.4rem 1rem; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.85rem; transition: all 0.15s; }
+  .chapter-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+  .q-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; }
+  .q-num { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.5rem; font-weight: 600; }
+  .q-text { font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .opt { padding: 0.6rem 0.9rem; border-radius: 8px; border: 1.5px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.88rem; transition: all 0.15s; text-align: left; }
+  .opt:hover { border-color: var(--green); background: var(--green-light); }
+  .opt.selected { border-color: var(--blue); background: var(--blue-light); }
+  .opt.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 600; }
+  .opt.wrong { border-color: var(--red); background: var(--red-light); color: #A32D2D; }
+  .explain-box { display: none; background: var(--amber-light); border-left: 3px solid var(--amber); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; font-size: 0.88rem; }
+  .explain-box.show { display: block; }
+  .score-box { background: linear-gradient(135deg, var(--green-dark), var(--green)); color: #fff; border-radius: var(--radius); padding: 2rem; text-align: center; }
+  .score-big { font-size: 3rem; font-weight: 700; }
+  .score-label { font-size: 1rem; opacity: 0.85; margin-bottom: 1rem; }
+  .score-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.25rem; }
+  .score-item { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 0.75rem; }
+  .score-item .n { font-size: 1.5rem; font-weight: 700; }
+  .score-item .l { font-size: 0.78rem; opacity: 0.8; }
+  .quiz-timer { background: var(--amber-light); color: var(--amber-dark); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.9rem; }
+
+  /* TIPS PAGE */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .tip-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.25rem; }
+  .tip-card .icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .tip-card h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 0.5rem; }
+  .tip-card p, .tip-card ul { font-size: 0.88rem; color: var(--text2); }
+  .tip-card ul { padding-left: 1.1rem; }
+  .tip-card ul li { margin-bottom: 0.3rem; }
+  .roadmap-step { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.9rem; }
+  .step-body { flex: 1; }
+  .step-body h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+  .step-body p { font-size: 0.85rem; color: var(--text2); }
+  .accordion { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 0.5rem; }
+  .acc-header { padding: 0.9rem 1.25rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--card); font-weight: 600; font-size: 0.9rem; }
+  .acc-header:hover { background: var(--gray-light); }
+  .acc-body { display: none; padding: 1rem 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--text2); }
+  .acc-body.open { display: block; }
+  .chevron { transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+  .valence-table { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
+  .val-item { background: var(--green-light); border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.82rem; color: var(--green-dark); font-weight: 600; }
+  .periodic-hint { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 0.4rem; margin: 0.75rem 0; }
+  .elem { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem; text-align: center; font-size: 0.8rem; }
+  .elem .sym { font-size: 1.1rem; font-weight: 700; color: var(--green-dark); }
+  .elem .name { font-size: 0.7rem; color: var(--text2); }
+  .elem .val { font-size: 0.75rem; color: var(--amber-dark); font-weight: 600; }
+
+  /* EXAM PAGE */
+  .exam-select-row { display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1rem; align-items:center; }
+  .exam-card-btn { padding:0.5rem 1.1rem; border-radius:20px; border:1.5px solid var(--border); background:var(--card); cursor:pointer; font-size:0.88rem; font-weight:600; transition:all 0.15s; }
+  .exam-card-btn.active { background:var(--coral); color:#fff; border-color:var(--coral); }
+  .exam-meta { display:flex; gap:1.5rem; font-size:0.85rem; color:var(--text2); margin-bottom:1rem; flex-wrap:wrap; }
+  .exam-meta span { display:flex; align-items:center; gap:0.35rem; }
+  .exam-section-title { font-weight:700; font-size:1rem; background:var(--gray-light); padding:0.6rem 1rem; border-radius:8px; margin:1rem 0 0.75rem; }
+  .exam-score-bar { height:8px; background:var(--border); border-radius:4px; margin:0.5rem 0; }
+  .exam-score-bar-fill { height:100%; border-radius:4px; background:var(--green); transition:width 0.5s; }
+  .result-summary { background:linear-gradient(135deg,var(--coral-dark),var(--coral)); color:#fff; border-radius:var(--radius); padding:1.5rem; text-align:center; }
+  .result-summary .big { font-size:2.5rem; font-weight:700; }
+  .result-summary .grade { font-size:1.1rem; margin-top:0.25rem; }
+  .detail-table { width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:0.75rem; }
+  .detail-table th { background:var(--gray-light); padding:0.4rem 0.75rem; text-align:left; }
+  .detail-table td { padding:0.4rem 0.75rem; border-bottom:1px solid var(--border); }
+  .correct-row td { background:#f0faf5; }
+  .wrong-row td { background:#fff5f5; }
+
+  /* MINDMAP */
+  .mm-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+  .mm-tab { padding:0.4rem 1rem; border-radius:20px; border:1.5px solid var(--border); cursor:pointer; font-size:0.85rem; font-weight:600; background:var(--card); }
+  .mm-tab.active { color:#fff; border-color:transparent; }
+  .mm-canvas { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; overflow-x:auto; min-height:400px; }
+  .mm-root { display:flex; flex-direction:column; align-items:center; }
+  .mm-center { padding:0.75rem 1.5rem; border-radius:30px; font-weight:700; font-size:1rem; color:#fff; text-align:center; margin-bottom:1.5rem; }
+  .mm-branches { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; width:100%; }
+  .mm-branch { display:flex; flex-direction:column; align-items:center; min-width:160px; max-width:200px; }
+  .mm-node { padding:0.5rem 1rem; border-radius:20px; font-weight:700; font-size:0.85rem; color:#fff; text-align:center; position:relative; width:100%; }
+  .mm-node::before { content:''; position:absolute; top:-16px; left:50%; width:2px; height:16px; background:#ccc; }
+  .mm-branch:first-child .mm-node::before, .mm-branch:last-child .mm-node::before { display:none; }
+  .mm-leaves { display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem; width:100%; }
+  .mm-leaf { padding:0.35rem 0.75rem; border-radius:8px; font-size:0.78rem; text-align:left; border:1.5px solid; white-space:pre-wrap; line-height:1.5; }
+  .mm-connector { width:2px; height:1rem; background:#ccc; margin:0 auto; }
+  .mm-legend { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; }
+  .mm-legend-item { display:flex; align-items:center; gap:0.4rem; font-size:0.82rem; }
+  .mm-legend-dot { width:12px; height:12px; border-radius:50%; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">⚗️ Hoá <span>9</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('home')">🏠 Trang chủ</div>
+    <div class="nav-tab" onclick="showPage('theory')">📖 Lý thuyết</div>
+    <div class="nav-tab" onclick="showPage('flashcard')">🃏 Flashcard</div>
+    <div class="nav-tab" onclick="showPage('quiz')">📝 Bài tập</div>
+    <div class="nav-tab" onclick="showPage('exam')">📋 Đề Thi</div>
+    <div class="nav-tab" onclick="showPage('mindmap')">🗺️ Sơ Đồ</div>
+    <div class="nav-tab" onclick="showPage('tips')">💡 Bí kíp học</div>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>Hoá Học Lớp 9 🧪</h1>
+    <p>Học thông minh — hiểu nhanh — nhớ lâu. Dành cho học sinh trung bình.</p>
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">5</div><div class="lbl">Chương lý thuyết</div></div>
+      <div class="stat-card"><div class="num">60+</div><div class="lbl">Flashcard</div></div>
+      <div class="stat-card"><div class="num">50+</div><div class="lbl">Bài tập trắc nghiệm</div></div>
+      <div class="stat-card"><div class="num">4</div><div class="lbl">Bộ đề thi HK1</div></div>
+      <div class="stat-card"><div class="num">5</div><div class="lbl">Sơ đồ tư duy</div></div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    💡 <strong>Mẹo học nhanh:</strong> Mỗi ngày chỉ cần học 1 thẻ flashcard + làm 5 câu trắc nghiệm là đủ để nhớ lâu!
+  </div>
+
+  <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:1rem;">
+    <div class="card" style="cursor:pointer; border-left: 4px solid var(--green);" onclick="showPage('theory')">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">📖</div>
+      <div style="font-weight:700; margin-bottom:0.25rem;">Lý Thuyết</div>
+      <div style="font-size:0.85rem; color:var(--text2);">Oxit, Axit, Bazơ, Muối, Kim loại, Phi kim — giải thích đơn giản, dễ hiểu</div>
+    </div>
+    <div class="card" style="cursor:pointer; border-left: 4px solid var(--blue);" onclick="showPage('flashcard')">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">🃏</div>
+      <div style="font-weight:700; margin-bottom:0.25rem;">Flashcard</div>
+      <div style="font-size:0.85rem; color:var(--text2);">Ôn nhanh công thức, định nghĩa, tính chất hoá học</div>
+    </div>
+    <div class="card" style="cursor:pointer; border-left: 4px solid var(--amber);" onclick="showPage('quiz')">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">📝</div>
+      <div style="font-weight:700; margin-bottom:0.25rem;">Bài Tập</div>
+      <div style="font-size:0.85rem; color:var(--text2);">Trắc nghiệm tự chấm có giải thích, chia theo chương</div>
+    </div>
+    <div class="card" style="cursor:pointer; border-left: 4px solid var(--coral);" onclick="showPage('exam')">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">📋</div>
+      <div style="font-weight:700; margin-bottom:0.25rem;">Đề Thi HK1</div>
+      <div style="font-size:0.85rem; color:var(--text2);">4 bộ đề thi thật, tự chấm điểm, xem đáp án chi tiết</div>
+    </div>
+    <div class="card" style="cursor:pointer; border-left: 4px solid var(--purple);" onclick="showPage('mindmap')">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">🗺️</div>
+      <div style="font-weight:700; margin-bottom:0.25rem;">Sơ Đồ Tư Duy</div>
+      <div style="font-size:0.85rem; color:var(--text2);">Sơ đồ trực quan từng chương, nhìn là nhớ ngay</div>
+    </div>
+    <div class="card" style="cursor:pointer; border-left: 4px solid var(--green);" onclick="showPage('tips')">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">💡</div>
+      <div style="font-weight:700; margin-bottom:0.25rem;">Bí Kíp Học</div>
+      <div style="font-size:0.85rem; color:var(--text2);">Cách nhớ bài lâu, mẹo làm bài thi, lộ trình học hiệu quả</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1rem;">
+    <div style="font-weight:700; margin-bottom:0.75rem; font-size:1rem;">🗺️ Toàn bộ chương trình Hoá 9</div>
+    <div style="display:grid; gap:0.5rem;">
+      <div style="display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0; border-bottom:1px solid var(--border);">
+        <span style="background:var(--green); color:#fff; border-radius:6px; padding:2px 10px; font-size:0.8rem; font-weight:700;">C1</span>
+        <span>Các loại hợp chất vô cơ — Oxit, Axit, Bazơ, Muối</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0; border-bottom:1px solid var(--border);">
+        <span style="background:var(--blue); color:#fff; border-radius:6px; padding:2px 10px; font-size:0.8rem; font-weight:700;">C2</span>
+        <span>Kim loại — Tính chất, dãy hoạt động, nhôm, sắt</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0; border-bottom:1px solid var(--border);">
+        <span style="background:var(--amber); color:#fff; border-radius:6px; padding:2px 10px; font-size:0.8rem; font-weight:700;">C3</span>
+        <span>Phi kim — Clo, Cacbon, Silic, Công nghiệp Silicat</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0; border-bottom:1px solid var(--border);">
+        <span style="background:var(--coral); color:#fff; border-radius:6px; padding:2px 10px; font-size:0.8rem; font-weight:700;">C4</span>
+        <span>Hiđrocacbon và nhiên liệu — Metan, Etilen, Axetilen, Benzen</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0;">
+        <span style="background:var(--purple); color:#fff; border-radius:6px; padding:2px 10px; font-size:0.8rem; font-weight:700;">C5</span>
+        <span>Dẫn xuất Hiđrocacbon — Rượu, Axit, Chất béo, Glucozơ, Polime</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THEORY PAGE -->
+<div class="page" id="page-theory">
+  <h2 style="font-size:1.3rem; margin-bottom:1rem;">📖 Lý Thuyết</h2>
+
+  <!-- CHAPTER 1: OXIT -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('oxit')">
+      <div class="card-icon" style="background:var(--green-light); font-size:1.5rem;">🔴</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 1 — Oxit <span class="badge badge-green">Cơ bản</span></div>
+        <div class="card-subtitle">Định nghĩa, phân loại, tính chất hoá học</div>
+      </div>
+      <span id="chevron-oxit" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-oxit">
+      <h3>📌 Oxit là gì?</h3>
+      <p>Oxit là hợp chất của <strong>2 nguyên tố</strong>, trong đó có <strong>1 nguyên tố là oxi (O)</strong>.</p>
+      <div class="example-box">
+        <div class="ex-title">📎 Ví dụ</div>
+        CO₂, SO₂, Fe₂O₃, CaO, Na₂O, Al₂O₃
+      </div>
+
+      <h3>🔀 Phân loại Oxit</h3>
+      <table class="prop-table">
+        <tr><th>Loại</th><th>Tên gọi</th><th>Ví dụ</th><th>Tác dụng với</th></tr>
+        <tr><td><strong>Oxit bazơ</strong></td><td>Oxit của kim loại</td><td>CaO, Na₂O, Fe₂O₃</td><td>Nước, axit</td></tr>
+        <tr><td><strong>Oxit axit</strong></td><td>Oxit của phi kim</td><td>CO₂, SO₂, SO₃, P₂O₅</td><td>Nước, bazơ</td></tr>
+        <tr><td><strong>Oxit lưỡng tính</strong></td><td>Tác dụng cả hai</td><td>Al₂O₃, ZnO</td><td>Cả axit và bazơ</td></tr>
+        <tr><td><strong>Oxit trung tính</strong></td><td>Không tác dụng</td><td>CO, NO</td><td>Không tác dụng</td></tr>
+      </table>
+
+      <h3>⚗️ Tính chất hoá học của Oxit bazơ</h3>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">① Tác dụng với nước → Bazơ</p>
+        <div class="reaction-eq">
+          <span class="chem react">CaO</span><span class="plus">+</span><span class="chem react">H₂O</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">Ca(OH)₂</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">② Tác dụng với axit → Muối + Nước</p>
+        <div class="reaction-eq">
+          <span class="chem react">CaO</span><span class="plus">+</span><span class="chem react">2HCl</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">CaCl₂</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">③ Oxit bazơ + Oxit axit → Muối</p>
+        <div class="reaction-eq">
+          <span class="chem react">CaO</span><span class="plus">+</span><span class="chem react">CO₂</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">CaCO₃</span>
+        </div>
+      </div>
+
+      <h3>⚗️ Tính chất hoá học của Oxit axit</h3>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">① Tác dụng với nước → Axit</p>
+        <div class="reaction-eq">
+          <span class="chem react">SO₃</span><span class="plus">+</span><span class="chem react">H₂O</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">H₂SO₄</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">② Tác dụng với bazơ → Muối + Nước</p>
+        <div class="reaction-eq">
+          <span class="chem react">CO₂</span><span class="plus">+</span><span class="chem react">Ca(OH)₂</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">CaCO₃↓</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+
+      <div class="memory-trick">
+        <div class="trick-title">🧠 Mẹo nhớ</div>
+        <strong>"Oxit Bazơ = Kim loại + O"</strong> → tác dụng với <strong>Axit</strong> (đối lập)<br>
+        <strong>"Oxit Axit = Phi kim + O"</strong> → tác dụng với <strong>Bazơ</strong> (đối lập)<br>
+        <em>Hai kẻ đối lập luôn phản ứng với nhau!</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 1: AXIT -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('axit')">
+      <div class="card-icon" style="background:var(--coral-light); font-size:1.5rem;">🍋</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 1 — Axit <span class="badge badge-coral">Quan trọng</span></div>
+        <div class="card-subtitle">HCl, H₂SO₄, HNO₃, H₃PO₄ — tính chất và ứng dụng</div>
+      </div>
+      <span id="chevron-axit" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-axit">
+      <h3>📌 Định nghĩa</h3>
+      <p>Axit là hợp chất có <strong>H ở đầu</strong>, khi tan trong nước phân li ra ion H⁺.</p>
+      <div class="formula-box">
+        <div class="label">Công thức tổng quát</div>
+        HₙA &nbsp;→&nbsp; nH⁺ + A<sup>n-</sup>
+      </div>
+
+      <h3>🔀 Phân loại</h3>
+      <table class="prop-table">
+        <tr><th>Loại</th><th>Ví dụ</th><th>Đặc điểm</th></tr>
+        <tr><td><strong>Axit không có oxi</strong></td><td>HCl, H₂S, HBr</td><td>Không chứa O trong gốc axit</td></tr>
+        <tr><td><strong>Axit có oxi</strong></td><td>H₂SO₄, HNO₃, H₃PO₄</td><td>Có O trong gốc axit</td></tr>
+        <tr><td><strong>Axit mạnh</strong></td><td>HCl, H₂SO₄, HNO₃</td><td>Phân li hoàn toàn, ăn mòn mạnh</td></tr>
+        <tr><td><strong>Axit yếu</strong></td><td>H₂S, H₂CO₃, CH₃COOH</td><td>Phân li không hoàn toàn</td></tr>
+      </table>
+
+      <h3>⚗️ Tính chất hoá học của Axit</h3>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">① Làm đổi màu quỳ tím → <span style="color:red">Đỏ</span></p>
+        <div class="reaction-eq"><span class="chem react">Quỳ tím</span><span class="arrow">+</span><span class="chem react">Axit</span><span class="arrow">→</span><span class="chem prod" style="color:red">Quỳ ĐỎ</span></div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">② Tác dụng kim loại → Muối + H₂↑</p>
+        <div class="reaction-eq">
+          <span class="chem react">Fe</span><span class="plus">+</span><span class="chem react">2HCl</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">FeCl₂</span><span class="plus">+</span><span class="chem prod">H₂↑</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">③ Tác dụng oxit bazơ → Muối + H₂O</p>
+        <div class="reaction-eq">
+          <span class="chem react">CuO</span><span class="plus">+</span><span class="chem react">H₂SO₄</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">CuSO₄</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">④ Tác dụng bazơ → Muối + H₂O (Trung hoà)</p>
+        <div class="reaction-eq">
+          <span class="chem react">NaOH</span><span class="plus">+</span><span class="chem react">HCl</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">NaCl</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">⑤ Tác dụng muối → Muối mới + Axit mới</p>
+        <div class="reaction-eq">
+          <span class="chem react">BaCl₂</span><span class="plus">+</span><span class="chem react">H₂SO₄</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">BaSO₄↓</span><span class="plus">+</span><span class="chem prod">2HCl</span>
+        </div>
+      </div>
+
+      <div class="tip-box" style="margin-top:1rem;">
+        ⚠️ <strong>H₂SO₄ đặc nguy hiểm:</strong> Không pha loãng bằng cách đổ nước vào axit! Luôn đổ <strong>axit vào nước</strong> từ từ.
+      </div>
+
+      <div class="memory-trick">
+        <div class="trick-title">🧠 Mẹo nhớ tính chất Axit</div>
+        <strong>Quỳ Đỏ — Kim H₂ — Oxit Muối — Bazơ Trung Hoà — Muối Mới</strong><br>
+        <em>= 5 tính chất theo thứ tự dễ thuộc</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAZƠ -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('bazo')">
+      <div class="card-icon" style="background:var(--blue-light); font-size:1.5rem;">🔵</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 1 — Bazơ <span class="badge badge-blue">Quan trọng</span></div>
+        <div class="card-subtitle">NaOH, Ca(OH)₂, Mg(OH)₂ — tính chất và phân loại</div>
+      </div>
+      <span id="chevron-bazo" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-bazo">
+      <h3>📌 Định nghĩa</h3>
+      <p>Bazơ = Kim loại + nhóm <strong>OH</strong>. Khi tan phân li ra ion OH⁻.</p>
+      <div class="formula-box">
+        <div class="label">Công thức tổng quát</div>
+        M(OH)ₙ &nbsp;|&nbsp; Ví dụ: NaOH, Ca(OH)₂, Al(OH)₃
+      </div>
+
+      <h3>🔀 Phân loại</h3>
+      <table class="prop-table">
+        <tr><th>Loại</th><th>Ví dụ</th><th>Đặc điểm</th></tr>
+        <tr><td><strong>Bazơ tan (kiềm)</strong></td><td>NaOH, KOH, Ca(OH)₂, Ba(OH)₂</td><td>Tan trong nước, làm quỳ xanh</td></tr>
+        <tr><td><strong>Bazơ không tan</strong></td><td>Fe(OH)₂, Cu(OH)₂, Mg(OH)₂</td><td>Không tan, bị nhiệt phân</td></tr>
+      </table>
+
+      <h3>⚗️ Tính chất hoá học</h3>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">① Bazơ tan làm quỳ tím → <span style="color:blue">Xanh</span></p>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">② Bazơ + Axit → Muối + H₂O</p>
+        <div class="reaction-eq">
+          <span class="chem react">Ca(OH)₂</span><span class="plus">+</span><span class="chem react">2HCl</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">CaCl₂</span><span class="plus">+</span><span class="chem prod">2H₂O</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">③ Bazơ + Oxit axit → Muối + H₂O</p>
+        <div class="reaction-eq">
+          <span class="chem react">2NaOH</span><span class="plus">+</span><span class="chem react">CO₂</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">Na₂CO₃</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">④ Bazơ không tan → bị nhiệt phân</p>
+        <div class="reaction-eq">
+          <span class="chem react">Cu(OH)₂</span>
+          <span class="cond">→ nhiệt</span>
+          <span class="chem prod">CuO</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+
+      <div class="memory-trick">
+        <div class="trick-title">🧠 Mẹo nhớ: Bazơ tan (kiềm)</div>
+        <strong>"Na Kali Ba — Tan ra kiềm mạnh"</strong> = NaOH, KOH, Ba(OH)₂, Ca(OH)₂<br>
+        <em>Chỉ có 4 bazơ này tan nhiều trong nước!</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUỐI -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('muoi')">
+      <div class="card-icon" style="background:var(--amber-light); font-size:1.5rem;">🧂</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 1 — Muối <span class="badge badge-amber">Quan trọng</span></div>
+        <div class="card-subtitle">NaCl, CaCO₃, CuSO₄ — phân loại, tính chất, điều chế</div>
+      </div>
+      <span id="chevron-muoi" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-muoi">
+      <h3>📌 Định nghĩa</h3>
+      <p>Muối = Kim loại + gốc axit. Sản phẩm của phản ứng Axit + Bazơ.</p>
+
+      <h3>⚗️ Tính chất hoá học</h3>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">① Muối + Kim loại → Muối mới + Kim loại mới</p>
+        <div class="reaction-eq">
+          <span class="chem react">CuSO₄</span><span class="plus">+</span><span class="chem react">Fe</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">FeSO₄</span><span class="plus">+</span><span class="chem prod">Cu↓</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">② Muối + Axit → Muối mới + Axit mới</p>
+        <div class="reaction-eq">
+          <span class="chem react">CaCO₃</span><span class="plus">+</span><span class="chem react">2HCl</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">CaCl₂</span><span class="plus">+</span><span class="chem prod">CO₂↑</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">③ Muối + Bazơ → Muối mới + Bazơ mới</p>
+        <div class="reaction-eq">
+          <span class="chem react">Na₂SO₄</span><span class="plus">+</span><span class="chem react">Ba(OH)₂</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">BaSO₄↓</span><span class="plus">+</span><span class="chem prod">2NaOH</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">④ Muối + Muối → 2 Muối mới (điều kiện: tạo kết tủa)</p>
+        <div class="reaction-eq">
+          <span class="chem react">NaCl</span><span class="plus">+</span><span class="chem react">AgNO₃</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">AgCl↓</span><span class="plus">+</span><span class="chem prod">NaNO₃</span>
+        </div>
+      </div>
+
+      <div class="tip-box" style="margin-top:0.75rem;">
+        💡 <strong>Nhận biết kết tủa AgCl:</strong> Cho AgNO₃ vào dung dịch muối chứa Cl⁻ → kết tủa trắng. Đây là cách nhận biết ion Cl⁻!
+      </div>
+    </div>
+  </div>
+
+  <!-- CHƯƠNG 2: KIM LOẠI -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('kimloai')">
+      <div class="card-icon" style="background:var(--gray-light); font-size:1.5rem;">⚙️</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 2 — Kim Loại <span class="badge badge-green">Cơ bản</span></div>
+        <div class="card-subtitle">Tính chất vật lý, hoá học, dãy hoạt động hoá học</div>
+      </div>
+      <span id="chevron-kimloai" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-kimloai">
+      <h3>📌 Tính chất chung của Kim loại</h3>
+      <ul class="clean">
+        <li>Dẫn điện, dẫn nhiệt tốt</li>
+        <li>Có ánh kim, dẻo, có thể kéo sợi/dát mỏng</li>
+        <li>Nhiệt độ nóng chảy cao (trừ Hg)</li>
+      </ul>
+
+      <h3>🏆 Dãy hoạt động hoá học</h3>
+      <div style="background:var(--blue-light); border-radius:10px; padding:1rem; margin:0.75rem 0; overflow-x:auto;">
+        <div style="font-size:0.88rem; font-weight:700; color:var(--blue-dark); margin-bottom:0.5rem; white-space:nowrap;">
+          K &gt; Na &gt; Mg &gt; Al &gt; Zn &gt; Fe &gt; Ni &gt; Sn &gt; Pb &gt; <span style="color:var(--amber-dark)">H</span> &gt; Cu &gt; Ag &gt; Au
+        </div>
+        <div style="font-size:0.78rem; color:var(--blue-dark);">← Hoạt động mạnh hơn &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hoạt động yếu hơn →</div>
+      </div>
+      <div class="memory-trick">
+        <div class="trick-title">🧠 Mẹo nhớ dãy hoạt động</div>
+        <strong>"Khi Nào May Áo Záp Sắt Nên Sang Phố Hỏi Cửa Hàng Á"</strong><br>
+        K — Na — Mg — Al — Zn — Fe — Ni — Sn — Pb — H — Cu — Ag — Au
+      </div>
+
+      <h3>⚗️ Tính chất hoá học Kim loại</h3>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">① Tác dụng với phi kim (O₂, S, Cl₂)</p>
+        <div class="reaction-eq">
+          <span class="chem react">2Fe</span><span class="plus">+</span><span class="chem react">3Cl₂</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">2FeCl₃</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">② Tác dụng với dung dịch axit → Muối + H₂↑</p>
+        <div class="reaction-eq">
+          <span class="chem react">Zn</span><span class="plus">+</span><span class="chem react">H₂SO₄(loãng)</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">ZnSO₄</span><span class="plus">+</span><span class="chem prod">H₂↑</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">③ Kim loại mạnh đẩy kim loại yếu ra khỏi dung dịch muối</p>
+        <div class="reaction-eq">
+          <span class="chem react">Fe</span><span class="plus">+</span><span class="chem react">CuSO₄</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">FeSO₄</span><span class="plus">+</span><span class="chem prod">Cu↓</span>
+        </div>
+      </div>
+
+      <div class="tip-box" style="margin-top:0.75rem;">
+        ⚠️ <strong>Lưu ý:</strong> Kim loại đứng trước H mới phản ứng với dung dịch axit loãng giải phóng H₂. Cu, Ag, Au không phản ứng với HCl, H₂SO₄ loãng!
+      </div>
+    </div>
+  </div>
+
+  <!-- PHI KIM -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('phikim')">
+      <div class="card-icon" style="background:var(--purple-light); font-size:1.5rem;">🌿</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 3 — Phi Kim & Clo <span class="badge badge-purple">Trọng tâm</span></div>
+        <div class="card-subtitle">Clo, Cacbon, Silic và ứng dụng</div>
+      </div>
+      <span id="chevron-phikim" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-phikim">
+      <h3>📌 Tính chất chung Phi kim</h3>
+      <ul class="clean">
+        <li>Dẫn điện, dẫn nhiệt kém (trừ graphit)</li>
+        <li>Nhiều phi kim tồn tại dạng khí ở nhiệt độ thường</li>
+        <li>Tác dụng với kim loại → muối</li>
+        <li>Tác dụng với hidro → hợp chất khí</li>
+        <li>Tác dụng với oxi → oxit axit</li>
+      </ul>
+
+      <h3>🟢 Clo (Cl₂)</h3>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">Cl₂ + nước → Hỗn hợp HCl + HClO (nước clo)</p>
+        <div class="reaction-eq">
+          <span class="chem react">Cl₂</span><span class="plus">+</span><span class="chem react">H₂O</span>
+          <span class="arrow">⇌</span>
+          <span class="chem prod">HCl</span><span class="plus">+</span><span class="chem prod">HClO</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">Cl₂ + NaOH → Nước Javen (tẩy trắng)</p>
+        <div class="reaction-eq">
+          <span class="chem react">Cl₂</span><span class="plus">+</span><span class="chem react">2NaOH</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">NaCl</span><span class="plus">+</span><span class="chem prod">NaClO</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+
+      <h3>⬛ Cacbon (C)</h3>
+      <table class="prop-table">
+        <tr><th>Dạng thù hình</th><th>Tính chất</th><th>Ứng dụng</th></tr>
+        <tr><td>Kim cương</td><td>Cứng nhất, trong suốt</td><td>Trang sức, mũi khoan</td></tr>
+        <tr><td>Graphit</td><td>Mềm, dẫn điện</td><td>Bút chì, điện cực</td></tr>
+        <tr><td>Than vô định hình</td><td>Xốp, hấp phụ tốt</td><td>Lọc nước, mặt nạ</td></tr>
+      </table>
+
+      <div class="memory-trick">
+        <div class="trick-title">🧠 Mẹo nhớ: CO₂ làm đục nước vôi</div>
+        CO₂ + Ca(OH)₂ → CaCO₃↓ (trắng đục) + H₂O<br>
+        <em>Đây là phản ứng nhận biết CO₂ trong phòng thí nghiệm!</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIĐROCACBON -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('hidrocacbon')">
+      <div class="card-icon" style="background:var(--coral-light); font-size:1.5rem;">🔥</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 4 — Hiđrocacbon <span class="badge badge-coral">Hữu cơ</span></div>
+        <div class="card-subtitle">Metan, Etilen, Axetilen, Benzen</div>
+      </div>
+      <span id="chevron-hidrocacbon" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-hidrocacbon">
+      <table class="prop-table">
+        <tr><th>Chất</th><th>CTPT</th><th>Liên kết</th><th>Phản ứng đặc trưng</th></tr>
+        <tr><td><strong>Metan</strong></td><td>CH₄</td><td>Đơn (no)</td><td>Thế (với Cl₂ có ánh sáng)</td></tr>
+        <tr><td><strong>Etilen</strong></td><td>C₂H₄</td><td>Đôi</td><td>Cộng, trùng hợp → PE</td></tr>
+        <tr><td><strong>Axetilen</strong></td><td>C₂H₂</td><td>Ba</td><td>Cộng, đặc biệt cộng H₂O → Anđehit</td></tr>
+        <tr><td><strong>Benzen</strong></td><td>C₆H₆</td><td>Vòng thơm</td><td>Thế, không làm mất màu brom</td></tr>
+      </table>
+
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">Etilen cộng Brom (làm mất màu dd brom)</p>
+        <div class="reaction-eq">
+          <span class="chem react">C₂H₄</span><span class="plus">+</span><span class="chem react">Br₂</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">C₂H₄Br₂</span>
+        </div>
+      </div>
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">Trùng hợp Etilen → Polietilen (PE)</p>
+        <div class="reaction-eq">
+          <span class="chem react">nC₂H₄</span>
+          <span class="cond">xt, t°, p</span>
+          <span class="arrow">→</span>
+          <span class="chem prod">(-CH₂-CH₂-)ₙ</span>
+        </div>
+      </div>
+
+      <div class="memory-trick">
+        <div class="trick-title">🧠 Mẹo phân biệt</div>
+        <strong>Liên kết đôi/ba = không no = làm mất màu dd Brom</strong><br>
+        Metan, Benzen = no/thơm = KHÔNG làm mất màu dd Brom thường
+      </div>
+    </div>
+  </div>
+
+  <!-- DẪN XUẤT -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('danxuat')">
+      <div class="card-icon" style="background:var(--green-light); font-size:1.5rem;">🍬</div>
+      <div style="flex:1">
+        <div class="card-title">Chương 5 — Dẫn xuất Hiđrocacbon <span class="badge badge-green">Hữu cơ</span></div>
+        <div class="card-subtitle">Rượu etylic, Axit axetic, Glucozơ, Tinh bột, Chất béo</div>
+      </div>
+      <span id="chevron-danxuat" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-danxuat">
+      <table class="prop-table">
+        <tr><th>Chất</th><th>CTPT</th><th>Nhận biết / Tính chất nổi bật</th></tr>
+        <tr><td><strong>Rượu etylic</strong></td><td>C₂H₅OH</td><td>Cháy hoàn toàn, tác dụng Na giải phóng H₂</td></tr>
+        <tr><td><strong>Axit axetic</strong></td><td>CH₃COOH</td><td>Vị chua, làm đỏ quỳ tím</td></tr>
+        <tr><td><strong>Glucozơ</strong></td><td>C₆H₁₂O₆</td><td>Tráng gương (phản ứng tráng bạc)</td></tr>
+        <tr><td><strong>Tinh bột</strong></td><td>(C₆H₁₀O₅)ₙ</td><td>Dung dịch Iot → xanh tím</td></tr>
+        <tr><td><strong>Xenlulozo</strong></td><td>(C₆H₁₀O₅)ₙ</td><td>Thành phần chính của gỗ, bông</td></tr>
+        <tr><td><strong>Chất béo</strong></td><td>Triglixerit</td><td>Không tan trong nước, nhẹ hơn nước</td></tr>
+      </table>
+
+      <div class="reaction-visual">
+        <p style="font-size:0.78rem; color:var(--text2); margin-bottom:0.5rem;">Phản ứng Este hoá: Rượu + Axit → Este + H₂O</p>
+        <div class="reaction-eq">
+          <span class="chem react">C₂H₅OH</span><span class="plus">+</span><span class="chem react">CH₃COOH</span>
+          <span class="cond">H₂SO₄, t°</span>
+          <span class="arrow">⇌</span>
+          <span class="chem prod">CH₃COOC₂H₅</span><span class="plus">+</span><span class="chem prod">H₂O</span>
+        </div>
+      </div>
+
+      <div class="memory-trick">
+        <div class="trick-title">🧠 Mẹo nhận biết các chất hữu cơ</div>
+        <ul style="padding-left:1.2rem; font-size:0.88rem;">
+          <li>Tinh bột → nhỏ Iot → xanh tím ✓</li>
+          <li>Glucozơ → tráng bạc → gương sáng ✓</li>
+          <li>Rượu etylic → cháy ngọn xanh ✓</li>
+          <li>Axit axetic → quỳ đỏ + mùi giấm ✓</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARD PAGE -->
+<div class="page" id="page-flashcard">
+  <h2 style="font-size:1.3rem; margin-bottom:1rem;">🃏 Flashcard Ôn Tập</h2>
+
+  <div class="fc-controls">
+    <select id="fc-chapter" onchange="loadFlashcards()">
+      <option value="all">📚 Tất cả chương</option>
+      <option value="c1">Chương 1 — Hợp chất vô cơ</option>
+      <option value="c2">Chương 2 — Kim loại</option>
+      <option value="c3">Chương 3 — Phi kim</option>
+      <option value="c4">Chương 4 — Hiđrocacbon</option>
+      <option value="c5">Chương 5 — Dẫn xuất</option>
+    </select>
+    <button class="btn btn-outline btn-sm" onclick="shuffleCards()">🔀 Trộn bài</button>
+    <button class="btn btn-outline btn-sm" onclick="resetCards()">↩️ Làm lại</button>
+  </div>
+
+  <div class="fc-progress"><div class="fc-progress-bar" id="fc-bar" style="width:0%"></div></div>
+
+  <div class="fc-scene" onclick="flipCard()">
+    <div class="fc-inner" id="fc-inner">
+      <div class="fc-front">
+        <div class="fc-q" id="fc-q">Nhấp để bắt đầu</div>
+        <div class="fc-hint">👆 Nhấp để lật thẻ xem đáp án</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-a" id="fc-a">Đáp án sẽ hiện ở đây</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-nav">
+    <button class="btn btn-outline" onclick="prevCard()">← Trước</button>
+    <span class="fc-counter" id="fc-counter">1 / 60</span>
+    <button class="btn btn-primary" onclick="nextCard()">Tiếp →</button>
+  </div>
+
+  <div style="margin-top:1rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+    <button class="btn btn-sm" style="background:var(--green-light); color:var(--green-dark); border:none;" onclick="markCard('know')">✅ Đã biết</button>
+    <button class="btn btn-sm" style="background:var(--coral-light); color:var(--coral-dark); border:none;" onclick="markCard('learn')">🔁 Cần học thêm</button>
+  </div>
+
+  <div class="card" style="margin-top:1rem;">
+    <div style="display:flex; gap:1rem; font-size:0.88rem;">
+      <span>✅ Đã biết: <strong id="fc-know">0</strong></span>
+      <span>🔁 Cần học: <strong id="fc-learn">0</strong></span>
+      <span>⬜ Chưa xem: <strong id="fc-unseen">60</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ PAGE -->
+<div class="page" id="page-quiz">
+  <h2 style="font-size:1.3rem; margin-bottom:0.5rem;">📝 Bài Tập Trắc Nghiệm</h2>
+
+  <div id="quiz-setup">
+    <div class="quiz-chapter" id="qchapters">
+      <div class="chapter-btn active" onclick="selectChapter(this,'all')">📚 Tất cả</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c1')">C1 — Hợp chất vô cơ</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c2')">C2 — Kim loại</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c3')">C3 — Phi kim</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c4')">C4 — Hiđrocacbon</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c5')">C5 — Dẫn xuất</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem; flex-wrap:wrap;">
+      <label style="font-size:0.88rem; color:var(--text2);">Số câu hỏi:</label>
+      <select id="q-count" style="padding:0.4rem 0.75rem; border-radius:8px; border:1px solid var(--border);">
+        <option value="5">5 câu (nhanh)</option>
+        <option value="10" selected>10 câu (vừa)</option>
+        <option value="20">20 câu (ôn tập)</option>
+      </select>
+      <button class="btn btn-primary" onclick="startQuiz()">▶️ Bắt đầu thi</button>
+    </div>
+  </div>
+
+  <div id="quiz-area" style="display:none;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+      <span id="q-progress" style="font-size:0.88rem; color:var(--text2);"></span>
+      <span class="quiz-timer" id="q-timer">⏱ 00:00</span>
+      <button class="btn btn-outline btn-sm" onclick="submitQuiz()">Nộp bài</button>
+    </div>
+    <div id="q-list"></div>
+  </div>
+
+  <div id="quiz-result" style="display:none;">
+    <div class="score-box">
+      <div class="score-big" id="r-score">0/10</div>
+      <div class="score-label" id="r-pct">Điểm: 0%</div>
+      <div class="score-breakdown">
+        <div class="score-item"><div class="n" id="r-correct">0</div><div class="l">✅ Đúng</div></div>
+        <div class="score-item"><div class="n" id="r-wrong">0</div><div class="l">❌ Sai</div></div>
+        <div class="score-item"><div class="n" id="r-time">0s</div><div class="l">⏱ Thời gian</div></div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:1rem; display:flex; gap:0.75rem; justify-content:center;">
+      <button class="btn btn-primary" onclick="startQuiz()">🔁 Thi lại</button>
+      <button class="btn btn-outline" onclick="showReview()">📋 Xem đáp án</button>
+    </div>
+    <div id="q-review" style="margin-top:1rem;"></div>
+  </div>
+</div>
+
+<!-- EXAM PAGE -->
+<div class="page" id="page-exam">
+  <h2 style="font-size:1.3rem; margin-bottom:0.75rem;">📋 Bộ Đề Thi Học Kỳ 1</h2>
+  <div class="tip-box">⚠️ <strong>Lưu ý:</strong> Chọn đề thi bên dưới, nhấn "Bắt đầu đếm giờ" rồi làm bài. Nộp bài để tự chấm điểm phần trắc nghiệm. Phần tự luận có nút xem đáp án gợi ý.</div>
+  <div class="exam-select-row" id="exam-list"></div>
+  <div id="exam-content">
+    <div style="text-align:center; padding:3rem; color:var(--text2);">👆 Chọn đề thi để bắt đầu</div>
+  </div>
+</div>
+
+<!-- MINDMAP PAGE -->
+<div class="page" id="page-mindmap">
+  <h2 style="font-size:1.3rem; margin-bottom:0.75rem;">🗺️ Sơ Đồ Tư Duy</h2>
+  <div class="tip-box">💡 Xem sơ đồ → che lại → tự vẽ lại. Làm 3 lần sẽ nhớ rất lâu! Nhấp vào từng tab để xem từng chương.</div>
+  <div class="mm-tabs">
+    <div class="mm-tab active" id="mm-tab-c1oxit" onclick="renderMindmap('c1oxit')" style="background:#1D9E75; color:#fff;">Oxit</div>
+    <div class="mm-tab" id="mm-tab-c1axit" onclick="renderMindmap('c1axit')">Axit</div>
+    <div class="mm-tab" id="mm-tab-c2" onclick="renderMindmap('c2')">Kim Loại</div>
+    <div class="mm-tab" id="mm-tab-c3" onclick="renderMindmap('c3')">Phi Kim</div>
+    <div class="mm-tab" id="mm-tab-c4c5" onclick="renderMindmap('c4c5')">Hữu Cơ</div>
+  </div>
+  <div class="mm-canvas" id="mm-canvas">
+    <div style="text-align:center; padding:2rem; color:var(--text2);">Đang tải sơ đồ...</div>
+  </div>
+</div>
+
+<!-- TIPS PAGE -->
+<div class="page" id="page-tips">
+  <h2 style="font-size:1.3rem; margin-bottom:1rem;">💡 Bí Kíp Học Hoá Lớp 9</h2>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="icon">🧠</div>
+      <h3>Phương pháp ghi nhớ</h3>
+      <ul>
+        <li>Dùng câu thơ/ca dao để thuộc dãy hoạt động</li>
+        <li>Vẽ sơ đồ tư duy cho từng chương</li>
+        <li>Ghi chú bằng màu sắc: xanh = an toàn, đỏ = nguy hiểm</li>
+        <li>Học 20 phút, nghỉ 5 phút — không học liên tục >1 tiếng</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="icon">📝</div>
+      <h3>Làm bài thi hiệu quả</h3>
+      <ul>
+        <li>Đọc kỹ đề 2 lần trước khi làm</li>
+        <li>Câu khó bỏ qua làm sau</li>
+        <li>Cân bằng PTHH: đếm nguyên tử hai vế</li>
+        <li>Kiểm tra đơn vị mol, gam, lít</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="icon">⚗️</div>
+      <h3>Nhận biết chất dễ dàng</h3>
+      <ul>
+        <li>Quỳ tím đỏ → Axit</li>
+        <li>Quỳ tím xanh → Bazơ</li>
+        <li>Tráng gương → Glucozơ</li>
+        <li>Màu Iot xanh → Tinh bột</li>
+        <li>Kết tủa trắng + HCl → BaSO₄</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <div class="icon">🔗</div>
+      <h3>Chuỗi phản ứng hay gặp</h3>
+      <ul>
+        <li>Kim loại → Oxit → Bazơ → Muối</li>
+        <li>Phi kim → Oxit axit → Axit → Muối</li>
+        <li>Học theo sơ đồ, không học rời rạc</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700; margin-bottom:1rem;">🗓️ Lộ trình ôn tập 30 ngày</div>
+    <div class="roadmap-step">
+      <div class="step-num">1-5</div>
+      <div class="step-body">
+        <h4>Tuần 1 — Chương 1: Hợp chất vô cơ</h4>
+        <p>Học lý thuyết Oxit → Axit → Bazơ → Muối. Làm 10 flashcard/ngày. Luyện 5 trắc nghiệm.</p>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="step-num">6-10</div>
+      <div class="step-body">
+        <h4>Tuần 2 — Chương 2: Kim loại</h4>
+        <p>Thuộc dãy hoạt động. Làm bài tập chuỗi phản ứng. Ôn lại Chương 1.</p>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="step-num">11-16</div>
+      <div class="step-body">
+        <h4>Tuần 3 — Chương 3-4: Phi kim & Hữu cơ cơ bản</h4>
+        <p>Học Clo, Cacbon, các Hiđrocacbon. Làm bài tập nhận biết.</p>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="step-num">17-22</div>
+      <div class="step-body">
+        <h4>Tuần 4 — Chương 5: Hữu cơ nâng cao</h4>
+        <p>Rượu, Axit, Glucozơ, Tinh bột, Polime. Học nhận biết nhanh.</p>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="step-num">23-30</div>
+      <div class="step-body">
+        <h4>Tuần 5 — Ôn tổng hợp</h4>
+        <p>Làm đề thi tổng hợp 20 câu. Xem lại phần sai. Ôn flashcard hàng ngày.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700; margin-bottom:1rem;">❓ Bảng hoá trị cần nhớ</div>
+    <div class="valence-table" id="valence-table"></div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700; margin-bottom:0.75rem;">📊 Các nguyên tố thường gặp</div>
+    <div class="periodic-hint" id="elements-grid"></div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700; margin-bottom:1rem;">❓ Hỏi đáp nhanh</div>
+    <div id="faq-list"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const flashcards = [
+  // C1 - Oxit
+  {chapter:'c1', q:'Oxit là gì?', a:'Hợp chất 2 nguyên tố, trong đó có 1 nguyên tố là oxi (O). Ví dụ: CaO, CO₂, Fe₂O₃'},
+  {chapter:'c1', q:'Oxit bazơ + nước → ?', a:'Tạo thành Bazơ (kiềm)\nVí dụ: CaO + H₂O → Ca(OH)₂'},
+  {chapter:'c1', q:'Oxit axit + nước → ?', a:'Tạo thành Axit\nVí dụ: SO₃ + H₂O → H₂SO₄'},
+  {chapter:'c1', q:'Oxit bazơ + axit → ?', a:'Muối + Nước\nVí dụ: CaO + 2HCl → CaCl₂ + H₂O'},
+  {chapter:'c1', q:'Oxit axit + bazơ → ?', a:'Muối + Nước\nVí dụ: CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O'},
+  {chapter:'c1', q:'Axit là gì?', a:'Hợp chất có H ở đầu công thức, khi tan trong nước phân li ra H⁺'},
+  {chapter:'c1', q:'Axit + Kim loại (đứng trước H) → ?', a:'Muối + H₂↑\nVí dụ: Zn + H₂SO₄ → ZnSO₄ + H₂↑'},
+  {chapter:'c1', q:'Phản ứng trung hoà là gì?', a:'Axit + Bazơ → Muối + Nước\nVí dụ: NaOH + HCl → NaCl + H₂O'},
+  {chapter:'c1', q:'Bazơ tan (kiềm) gồm những chất nào?', a:'NaOH, KOH, Ca(OH)₂, Ba(OH)₂\nNhớ: Na, K, Ba, Ca là kim loại tạo bazơ tan'},
+  {chapter:'c1', q:'Quỳ tím + Axit → màu gì?', a:'Màu ĐỎ\n(Axit = Đỏ; Bazơ = Xanh; Trung tính = Tím)'},
+  {chapter:'c1', q:'Muối là gì?', a:'Hợp chất gồm kim loại + gốc axit\nVí dụ: NaCl, CaCO₃, FeSO₄'},
+  {chapter:'c1', q:'Muối + Axit → ?', a:'Muối mới + Axit mới\nĐiều kiện: Muối mới hoặc axit mới không bền (bay hơi/kết tủa)'},
+  {chapter:'c1', q:'Nhận biết ion Cl⁻ bằng cách nào?', a:'Cho AgNO₃ vào → xuất hiện kết tủa trắng AgCl↓\nAgNO₃ + NaCl → AgCl↓ + NaNO₃'},
+  {chapter:'c1', q:'H₂SO₄ đặc nguy hiểm như thế nào?', a:'Pha loãng phải đổ từ từ AXIT vào NƯỚC (không ngược lại) vì phản ứng tỏa nhiệt mạnh có thể bắn axit'},
+  {chapter:'c1', q:'Bazơ không tan + nhiệt độ cao → ?', a:'Oxit + Nước\nVí dụ: Cu(OH)₂ → CuO + H₂O'},
+  // C2 - Kim loại
+  {chapter:'c2', q:'Dãy hoạt động hoá học của kim loại?', a:'K > Na > Mg > Al > Zn > Fe > Ni > Sn > Pb > H > Cu > Ag > Au\n"Khi Nào May Áo Záp Sắt Nên Sang Phố Hỏi Cửa Hàng Á"'},
+  {chapter:'c2', q:'Kim loại đứng trước H phản ứng với axit loãng như thế nào?', a:'Giải phóng H₂ và tạo muối\nCu, Ag, Au không phản ứng với HCl, H₂SO₄ loãng'},
+  {chapter:'c2', q:'Kim loại + Oxi → ?', a:'Oxit kim loại\nVí dụ: 4Al + 3O₂ → 2Al₂O₃'},
+  {chapter:'c2', q:'Kim loại mạnh đẩy kim loại yếu khỏi muối như thế nào?', a:'Fe + CuSO₄ → FeSO₄ + Cu↓\nFe đẩy Cu vì Fe đứng trước Cu trong dãy hoạt động'},
+  {chapter:'c2', q:'Tính chất vật lý đặc trưng của kim loại?', a:'Dẫn điện, dẫn nhiệt tốt; Dẻo; Có ánh kim; Thường ở trạng thái rắn (trừ Hg)'},
+  {chapter:'c2', q:'Nhôm (Al) có tính chất gì đặc biệt?', a:'Tác dụng được với cả axit VÀ bazơ (lưỡng tính)\n2Al + 2NaOH + 2H₂O → 2NaAlO₂ + 3H₂↑'},
+  {chapter:'c2', q:'Sắt (Fe) phản ứng với Clo tạo ra gì?', a:'2Fe + 3Cl₂ → 2FeCl₃ (sắt III clorua)\nLưu ý: Clo oxy hóa Fe lên +3'},
+  {chapter:'c2', q:'Gang và Thép khác nhau thế nào?', a:'Gang: 2-5% C, cứng giòn\nThép: <2% C, bền dẻo hơn gang\nThép không gỉ có thêm Cr và Ni'},
+  // C3 - Phi kim
+  {chapter:'c3', q:'Clo (Cl₂) có màu và mùi như thế nào?', a:'Màu vàng lục, mùi hắc, rất độc\nCl₂ tan trong nước tạo nước clo'},
+  {chapter:'c3', q:'Clo + NaOH → ?', a:'Cl₂ + 2NaOH → NaCl + NaClO + H₂O\nSản phẩm là Nước Javen — có tính tẩy trắng'},
+  {chapter:'c3', q:'Nước clo có tác dụng gì?', a:'Cl₂ + H₂O ⇌ HCl + HClO\nHClO (axit hipoclorơ) có tính oxi hóa mạnh, dùng tẩy trắng và sát trùng'},
+  {chapter:'c3', q:'3 dạng thù hình của Cacbon là gì?', a:'1. Kim cương: cứng nhất, không dẫn điện\n2. Graphit: mềm, dẫn điện\n3. Than vô định hình: xốp, hấp phụ tốt'},
+  {chapter:'c3', q:'CO₂ làm đục nước vôi trong như thế nào?', a:'CO₂ + Ca(OH)₂ → CaCO₃↓ (trắng đục) + H₂O\nĐây là cách nhận biết CO₂'},
+  {chapter:'c3', q:'Silic (Si) có ứng dụng gì?', a:'Làm pin mặt trời, chip điện tử, kính, thủy tinh\nSiO₂ là thành phần chính của cát và thạch anh'},
+  // C4 - Hiđrocacbon
+  {chapter:'c4', q:'Metan (CH₄) có phản ứng đặc trưng nào?', a:'Phản ứng thế với Cl₂ khi có ánh sáng:\nCH₄ + Cl₂ → CH₃Cl + HCl\nMetan KHÔNG làm mất màu dung dịch brom'},
+  {chapter:'c4', q:'Etilen (C₂H₄) phản ứng với Brom như thế nào?', a:'C₂H₄ + Br₂ → C₂H₄Br₂\nLàm MẤT MÀU dung dịch brom → đây là cách nhận biết etilen'},
+  {chapter:'c4', q:'Phản ứng trùng hợp Etilen tạo ra gì?', a:'nC₂H₄ → (-CH₂-CH₂-)ₙ\nTạo Polietilen (PE) — nhựa dẻo thông dụng'},
+  {chapter:'c4', q:'Axetilen (C₂H₂) có liên kết gì?', a:'Liên kết ba (C≡C)\nCó thể cộng H₂O → anđehit axetic\nDùng hàn cắt kim loại'},
+  {chapter:'c4', q:'Benzen (C₆H₆) có phản ứng gì đặc trưng?', a:'Phản ứng thế (như Brom khi có xúc tác FeBr₃)\nKHÔNG làm mất màu dung dịch brom thường'},
+  {chapter:'c4', q:'Phân biệt Metan, Etilen và Axetilen bằng gì?', a:'Cho qua dd Brom:\n- Làm mất màu = Etilen hoặc Axetilen\n- Không mất màu = Metan hoặc Benzen\nAxetilen + AgNO₃/NH₃ → kết tủa vàng'},
+  // C5 - Dẫn xuất
+  {chapter:'c5', q:'Rượu etylic (C₂H₅OH) cháy như thế nào?', a:'C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O\nCháy ngọn xanh, không tạo khói'},
+  {chapter:'c5', q:'Axit axetic có đặc điểm gì?', a:'CH₃COOH — vị chua, mùi giấm\nLàm đỏ quỳ tím, phản ứng với rượu tạo este'},
+  {chapter:'c5', q:'Phản ứng este hoá là gì?', a:'Rượu + Axit → Este + Nước\nC₂H₅OH + CH₃COOH ⇌ CH₃COOC₂H₅ + H₂O\nXúc tác: H₂SO₄, đun nóng'},
+  {chapter:'c5', q:'Nhận biết Glucozơ bằng cách nào?', a:'Phản ứng tráng gương (tráng bạc):\nGlucozơ + 2AgNO₃ + NH₃ → bạc bám vào thành bình → gương sáng'},
+  {chapter:'c5', q:'Nhận biết Tinh bột bằng cách nào?', a:'Nhỏ dung dịch Iot vào → chuyển màu XANH TÍM\nĐây là phản ứng đặc trưng riêng của tinh bột'},
+  {chapter:'c5', q:'Chất béo là gì?', a:'Este của glixerol với các axit béo\nKhông tan trong nước, nhẹ hơn nước\nChất béo lỏng (dầu): giàu axit béo không no\nChất béo đặc (mỡ): giàu axit béo no'},
+  {chapter:'c5', q:'Polime là gì? Cho ví dụ', a:'Hợp chất có phân tử lớn gồm nhiều đơn vị nhỏ (monome)\nPE: từ etilen\nPVC: từ vinyl clorua\nCao su: từ isopren'},
+  {chapter:'c5', q:'Phân biệt Glucozơ và Tinh bột bằng gì?', a:'Glucozơ: tráng gương được\nTinh bột: Iot → xanh tím\n→ Hai chất này nhận biết bằng 2 phản ứng khác nhau hoàn toàn'},
+];
+
+const questions = [
+  // C1
+  {chapter:'c1', q:'Oxit bazơ tác dụng với nước tạo thành sản phẩm gì?', opts:['Axit','Muối','Bazơ','Oxit lưỡng tính'], ans:2, ex:'Oxit bazơ + H₂O → Bazơ (kiềm). Ví dụ: CaO + H₂O → Ca(OH)₂'},
+  {chapter:'c1', q:'Chất nào sau đây là oxit axit?', opts:['CaO','Na₂O','SO₂','Fe₂O₃'], ans:2, ex:'SO₂ là oxit của phi kim lưu huỳnh nên là oxit axit. CaO, Na₂O, Fe₂O₃ là oxit của kim loại (oxit bazơ)'},
+  {chapter:'c1', q:'Axit tác dụng với kim loại (đứng trước H) tạo ra gì?', opts:['Muối + O₂','Muối + H₂O','Muối + H₂↑','Bazơ + H₂'], ans:2, ex:'Kim loại + Axit → Muối + H₂↑. Ví dụ: Zn + 2HCl → ZnCl₂ + H₂↑'},
+  {chapter:'c1', q:'Thêm axit vào quỳ tím, quỳ chuyển sang màu gì?', opts:['Xanh','Đỏ','Vàng','Không đổi'], ans:1, ex:'Axit làm quỳ tím → ĐỎ. Bazơ làm quỳ tím → Xanh. Dung dịch trung tính không đổi màu'},
+  {chapter:'c1', q:'Phản ứng giữa axit và bazơ được gọi là gì?', opts:['Phản ứng phân hủy','Phản ứng hóa hợp','Phản ứng trung hòa','Phản ứng oxi hóa-khử'], ans:2, ex:'Phản ứng Axit + Bazơ → Muối + Nước được gọi là phản ứng TRUNG HÒA'},
+  {chapter:'c1', q:'Cho H₂SO₄ vào BaCl₂, hiện tượng nào xảy ra?', opts:['Tan hoàn toàn','Kết tủa trắng xuất hiện','Khí bay lên','Không có hiện tượng'], ans:1, ex:'H₂SO₄ + BaCl₂ → BaSO₄↓ (trắng) + 2HCl. BaSO₄ là kết tủa trắng không tan trong axit'},
+  {chapter:'c1', q:'Bazơ nào sau đây KHÔNG tan trong nước?', opts:['NaOH','KOH','Ca(OH)₂','Fe(OH)₃'], ans:3, ex:'Fe(OH)₃ là bazơ không tan (màu nâu đỏ). NaOH, KOH, Ca(OH)₂ là bazơ tan (kiềm)'},
+  {chapter:'c1', q:'CO₂ + Ca(OH)₂ → ?', opts:['CaCO₃↓ + H₂O','Ca + CO₃ + H₂O','CaO + H₂CO₃','Không phản ứng'], ans:0, ex:'CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O. Đây là phản ứng nhận biết CO₂ (làm đục nước vôi trong)'},
+  {chapter:'c1', q:'Muối nào sau đây tan trong nước?', opts:['BaSO₄','AgCl','NaCl','CaCO₃'], ans:2, ex:'NaCl (muối ăn) tan hoàn toàn trong nước. BaSO₄, AgCl, CaCO₃ là các muối không tan'},
+  {chapter:'c1', q:'Cách pha loãng H₂SO₄ đặc an toàn là?', opts:['Đổ nước vào axit','Đổ axit vào nước','Đun nóng cả hai','Đổ nhanh một lần'], ans:1, ex:'LUÔN đổ từ từ AXIT vào NƯỚC (không ngược lại) để tránh phản ứng tỏa nhiệt mạnh gây bắn axit'},
+  // C2
+  {chapter:'c2', q:'Kim loại nào đứng đầu trong dãy hoạt động hoá học?', opts:['Na','Fe','Cu','K'], ans:3, ex:'K (Kali) đứng đầu dãy hoạt động, là kim loại hoạt động mạnh nhất trong dãy'},
+  {chapter:'c2', q:'Khi cho Fe vào dung dịch CuSO₄, hiện tượng gì xảy ra?', opts:['Fe tan, không có gì kết tủa','Đồng (Cu) màu đỏ bám trên Fe','Khí H₂ bay lên','Không phản ứng'], ans:1, ex:'Fe + CuSO₄ → FeSO₄ + Cu↓. Fe đứng trước Cu trong dãy nên đẩy Cu ra khỏi muối'},
+  {chapter:'c2', q:'Kim loại nào không phản ứng với HCl?', opts:['Zn','Al','Fe','Cu'], ans:3, ex:'Cu đứng SAU H trong dãy hoạt động nên không phản ứng với HCl và H₂SO₄ loãng'},
+  {chapter:'c2', q:'Tính chất nào KHÔNG phải của kim loại?', opts:['Dẫn điện tốt','Có ánh kim','Giòn, dễ vỡ','Dẫn nhiệt tốt'], ans:2, ex:'Kim loại có tính dẻo, không giòn. Phi kim mới có thể giòn. Riêng gang (hợp kim Fe) thì giòn'},
+  {chapter:'c2', q:'Nhôm (Al) phản ứng được với chất nào?', opts:['Chỉ axit','Chỉ bazơ','Cả axit và bazơ','Không phản ứng với axit hay bazơ'], ans:2, ex:'Al là kim loại lưỡng tính: phản ứng với cả axit (HCl) và bazơ (NaOH), đây là đặc điểm đặc biệt'},
+  // C3
+  {chapter:'c3', q:'Khí Cl₂ có màu gì?', opts:['Không màu','Màu vàng lục','Màu xanh lam','Màu đỏ nâu'], ans:1, ex:'Cl₂ có màu vàng lục, mùi hắc, rất độc. Dễ phân biệt với các khí khác nhờ màu đặc trưng'},
+  {chapter:'c3', q:'Nước Javen được tạo ra từ phản ứng nào?', opts:['Cl₂ + H₂O','Cl₂ + NaOH','Cl₂ + CaO','HCl + NaClO'], ans:1, ex:'Cl₂ + 2NaOH → NaCl + NaClO + H₂O. Hỗn hợp NaCl + NaClO là Nước Javen, dùng tẩy trắng'},
+  {chapter:'c3', q:'Dạng thù hình nào của Cacbon cứng nhất?', opts:['Than vô định hình','Graphit','Kim cương','Than cốc'], ans:2, ex:'Kim cương là vật chất cứng nhất tự nhiên, dùng làm đồ trang sức và mũi khoan'},
+  {chapter:'c3', q:'Nhỏ dung dịch CO₂ vào nước vôi trong, hiện tượng gì?', opts:['Dung dịch trong suốt hơn','Nước vôi vẫn trong','Xuất hiện kết tủa trắng đục','Dung dịch chuyển màu xanh'], ans:2, ex:'CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O. CaCO₃ không tan làm nước vôi vẩn đục → nhận biết CO₂'},
+  // C4
+  {chapter:'c4', q:'Chất nào làm mất màu dung dịch Brom?', opts:['CH₄','C₆H₆','C₂H₄','CO₂'], ans:2, ex:'C₂H₄ (Etilen) có liên kết đôi, cộng Br₂ → làm mất màu. CH₄ và C₆H₆ không làm mất màu dd Brom thường'},
+  {chapter:'c4', q:'Phản ứng trùng hợp Etilen tạo ra polime nào?', opts:['PVC','PE (Polietilen)','PS','PP'], ans:1, ex:'nC₂H₄ → (-CH₂-CH₂-)ₙ = Polietilen (PE). PVC từ vinyl clorua, PS từ stiren, PP từ propen'},
+  {chapter:'c4', q:'Metan (CH₄) phản ứng đặc trưng với gì?', opts:['Brom trong dd','Brom có ánh sáng','Dung dịch NaOH','Dung dịch HCl'], ans:1, ex:'Metan thực hiện phản ứng thế với Cl₂ (và Br₂) khi có ánh sáng. Metan không làm mất màu dd Brom'},
+  {chapter:'c4', q:'Axetilen (C₂H₂) có kiểu liên kết gì?', opts:['Liên kết đơn','Liên kết đôi','Liên kết ba','Liên kết ion'], ans:2, ex:'C₂H₂ có liên kết ba (C≡C). Đây là hiđrocacbon không no mạnh nhất, dùng hàn cắt kim loại'},
+  // C5
+  {chapter:'c5', q:'Nhỏ dung dịch Iot vào tinh bột, màu sắc thay đổi thế nào?', opts:['Không đổi','Đỏ','Xanh tím','Vàng'], ans:2, ex:'Tinh bột + Iot → màu XANH TÍM đặc trưng. Đây là phản ứng nhận biết tinh bột'},
+  {chapter:'c5', q:'Phản ứng tráng gương nhận biết chất gì?', opts:['Tinh bột','Axit axetic','Glucozơ','Xenlulozo'], ans:2, ex:'Glucozơ có tính khử mạnh, phản ứng với AgNO₃/NH₃ → bạc bám vào thành bình tạo gương sáng'},
+  {chapter:'c5', q:'Phản ứng giữa Rượu và Axit tạo ra gì?', opts:['Muối + Nước','Este + Nước','Anđehit + H₂','Bazơ + CO₂'], ans:1, ex:'Rượu + Axit → Este + Nước (phản ứng este hoá). Ví dụ: CH₃COOH + C₂H₅OH → CH₃COOC₂H₅ + H₂O'},
+  {chapter:'c5', q:'Chất béo có tính chất vật lý nào?', opts:['Tan tốt trong nước','Nặng hơn nước','Không tan trong nước','Tan trong axit'], ans:2, ex:'Chất béo KHÔNG tan trong nước, nhẹ hơn nước, tan trong dung môi hữu cơ như xăng, ete'},
+  {chapter:'c5', q:'Polietilen (PE) được điều chế bằng phản ứng gì?', opts:['Thế','Cộng','Trùng hợp','Trao đổi'], ans:2, ex:'PE được điều chế bằng phản ứng TRÙNG HỢP: nC₂H₄ → (-CH₂-CH₂-)ₙ'},
+];
+
+const faqs = [
+  {q:'Cân bằng phương trình hoá học như thế nào?', a:'Đếm số nguyên tử mỗi nguyên tố ở 2 vế. Thêm hệ số trước công thức (không thay đổi chỉ số dưới) sao cho số nguyên tử 2 vế bằng nhau.'},
+  {q:'Khi nào phản ứng trao đổi xảy ra?', a:'Khi sản phẩm có ít nhất 1 trong 3 thứ: Kết tủa ↓, Khí bay ↑, hoặc Nước H₂O. Nếu không có 3 thứ này thì phản ứng không xảy ra.'},
+  {q:'Tính mol từ khối lượng như thế nào?', a:'n = m / M (n = mol, m = khối lượng gam, M = khối lượng mol). Ví dụ: 9g nước = 9/18 = 0.5 mol'},
+  {q:'Nồng độ dung dịch là gì?', a:'C% = (m_ct / m_dd) × 100%. CM = n / V (mol/L). Học đơn vị kỹ trước, rồi áp công thức'},
+  {q:'Phân biệt phản ứng cộng và phản ứng thế?', a:'Cộng: 2 chất → 1 chất (thêm vào liên kết đôi/ba). Thế: A + BC → AC + B (thay 1 nguyên tử/nhóm)'},
+];
+
+const valences = [
+  {name:'Natri (Na)', val:'I'}, {name:'Kali (K)', val:'I'}, {name:'Bạc (Ag)', val:'I'},
+  {name:'Magie (Mg)', val:'II'}, {name:'Canxi (Ca)', val:'II'}, {name:'Kẽm (Zn)', val:'II'},
+  {name:'Đồng (Cu)', val:'I, II'}, {name:'Sắt (Fe)', val:'II, III'}, {name:'Nhôm (Al)', val:'III'},
+  {name:'Oxi (O)', val:'II'}, {name:'Nhóm OH', val:'I'}, {name:'Nhóm SO₄', val:'II'},
+  {name:'Nhóm NO₃', val:'I'}, {name:'Nhóm CO₃', val:'II'}, {name:'Nhóm PO₄', val:'III'},
+];
+
+const elements = [
+  {sym:'H', name:'Hiđro', val:'I'}, {sym:'O', name:'Oxi', val:'II'}, {sym:'C', name:'Cacbon', val:'II,IV'},
+  {sym:'N', name:'Nitơ', val:'II-V'}, {sym:'S', name:'Lưu huỳnh', val:'II,IV,VI'}, {sym:'Cl', name:'Clo', val:'I'},
+  {sym:'Na', name:'Natri', val:'I'}, {sym:'Mg', name:'Magie', val:'II'}, {sym:'Al', name:'Nhôm', val:'III'},
+  {sym:'K', name:'Kali', val:'I'}, {sym:'Ca', name:'Canxi', val:'II'}, {sym:'Fe', name:'Sắt', val:'II,III'},
+  {sym:'Cu', name:'Đồng', val:'I,II'}, {sym:'Zn', name:'Kẽm', val:'II'}, {sym:'Ag', name:'Bạc', val:'I'},
+  {sym:'Ba', name:'Bari', val:'II'}, {sym:'Si', name:'Silic', val:'IV'}, {sym:'P', name:'Photpho', val:'III,V'},
+];
+
+// ===== FLASHCARD STATE =====
+let fcCards = [], fcIdx = 0, fcKnow = new Set(), fcLearn = new Set();
+
+function loadFlashcards() {
+  const ch = document.getElementById('fc-chapter').value;
+  fcCards = ch === 'all' ? [...flashcards] : flashcards.filter(c => c.chapter === ch);
+  fcIdx = 0;
+  fcKnow.clear(); fcLearn.clear();
+  updateFC();
+}
+
+function updateFC() {
+  if (!fcCards.length) return;
+  const card = fcCards[fcIdx];
+  document.getElementById('fc-q').textContent = card.q;
+  document.getElementById('fc-a').textContent = card.a;
+  document.getElementById('fc-counter').textContent = `${fcIdx+1} / ${fcCards.length}`;
+  document.getElementById('fc-bar').style.width = `${((fcIdx+1)/fcCards.length)*100}%`;
+  document.getElementById('fc-know').textContent = fcKnow.size;
+  document.getElementById('fc-learn').textContent = fcLearn.size;
+  document.getElementById('fc-unseen').textContent = fcCards.length - fcKnow.size - fcLearn.size;
+  document.getElementById('fc-inner').classList.remove('flipped');
+}
+
+function flipCard() { document.getElementById('fc-inner').classList.toggle('flipped'); }
+function nextCard() { if (fcIdx < fcCards.length-1) { fcIdx++; updateFC(); } }
+function prevCard() { if (fcIdx > 0) { fcIdx--; updateFC(); } }
+function shuffleCards() { fcCards.sort(() => Math.random()-0.5); fcIdx = 0; updateFC(); }
+function resetCards() { fcIdx = 0; fcKnow.clear(); fcLearn.clear(); updateFC(); }
+function markCard(type) {
+  if (type === 'know') { fcKnow.add(fcIdx); fcLearn.delete(fcIdx); }
+  else { fcLearn.add(fcIdx); fcKnow.delete(fcIdx); }
+  updateFC();
+  if (fcIdx < fcCards.length-1) setTimeout(nextCard, 300);
+}
+
+// ===== QUIZ STATE =====
+let quizChapter = 'all', quizQs = [], quizAnswers = {}, timerInterval, timerSec = 0;
+
+function selectChapter(el, ch) {
+  document.querySelectorAll('.chapter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  quizChapter = ch;
+}
+
+function startQuiz() {
+  const pool = quizChapter === 'all' ? questions : questions.filter(q => q.chapter === quizChapter);
+  const count = parseInt(document.getElementById('q-count').value);
+  quizQs = pool.sort(() => Math.random()-0.5).slice(0, Math.min(count, pool.length));
+  quizAnswers = {};
+  timerSec = 0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timerSec++;
+    const m = String(Math.floor(timerSec/60)).padStart(2,'0');
+    const s = String(timerSec%60).padStart(2,'0');
+    document.getElementById('q-timer').textContent = `⏱ ${m}:${s}`;
+  }, 1000);
+
+  document.getElementById('quiz-setup').style.display = 'block';
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('q-progress').textContent = `${quizQs.length} câu hỏi`;
+
+  const list = document.getElementById('q-list');
+  list.innerHTML = quizQs.map((q, i) => `
+    <div class="q-card" id="qcard-${i}">
+      <div class="q-num">Câu ${i+1}/${quizQs.length} &nbsp; <span class="badge badge-${['green','blue','amber','coral','purple'][quizQs[i].chapter==='c1'?0:quizQs[i].chapter==='c2'?1:quizQs[i].chapter==='c3'?2:quizQs[i].chapter==='c4'?3:4]}">C${quizQs[i].chapter[1]}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,j) => `<button class="opt" id="opt-${i}-${j}" onclick="selectOpt(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}
+      </div>
+      <div class="explain-box" id="ex-${i}">${q.ex}</div>
+    </div>
+  `).join('');
+}
+
+function selectOpt(qi, oi) {
+  if (quizAnswers[qi] !== undefined) return;
+  quizAnswers[qi] = oi;
+  const q = quizQs[qi];
+  for (let j = 0; j < q.opts.length; j++) {
+    const btn = document.getElementById(`opt-${qi}-${j}`);
+    if (j === q.ans) btn.classList.add('correct');
+    else if (j === oi && oi !== q.ans) btn.classList.add('wrong');
+    else btn.classList.add('selected');
+  }
+  document.getElementById(`ex-${qi}`).classList.add('show');
+}
+
+function submitQuiz() {
+  clearInterval(timerInterval);
+  let correct = 0;
+  quizQs.forEach((q, i) => {
+    if (quizAnswers[i] === undefined) selectOpt(i, -1);
+    if (quizAnswers[i] === q.ans) correct++;
+  });
+  const total = quizQs.length;
+  const pct = Math.round(correct/total*100);
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  document.getElementById('r-score').textContent = `${correct}/${total}`;
+  document.getElementById('r-pct').textContent = pct >= 80 ? `🏆 Xuất sắc! ${pct}%` : pct >= 60 ? `👍 Khá tốt! ${pct}%` : `💪 Cố lên! ${pct}%`;
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = total - correct;
+  const m = String(Math.floor(timerSec/60)).padStart(2,'0');
+  const s = String(timerSec%60).padStart(2,'0');
+  document.getElementById('r-time').textContent = `${m}:${s}`;
+  document.getElementById('q-review').innerHTML = '';
+}
+
+function showReview() {
+  const rev = document.getElementById('q-review');
+  rev.innerHTML = '<h3 style="margin:1rem 0 0.75rem; font-size:1rem;">📋 Xem lại đáp án:</h3>' +
+    quizQs.map((q, i) => {
+      const correct = quizAnswers[i] === q.ans;
+      return `<div class="q-card" style="border-left:4px solid ${correct ? 'var(--green)' : 'var(--red)'}">
+        <div class="q-num">${correct ? '✅' : '❌'} Câu ${i+1}</div>
+        <div class="q-text">${q.q}</div>
+        <div style="font-size:0.88rem; margin-top:0.5rem;">
+          <span style="color:var(--green-dark); font-weight:600;">Đáp án đúng: ${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}</span>
+          ${quizAnswers[i] !== q.ans ? `<br><span style="color:var(--red);">Bạn chọn: ${String.fromCharCode(65+quizAnswers[i])}. ${q.opts[quizAnswers[i]]}</span>` : ''}
+        </div>
+        <div class="explain-box show" style="margin-top:0.5rem;">${q.ex}</div>
+      </div>`;
+    }).join('');
+}
+
+// ===== PAGE NAV =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const map = {home:0, theory:1, flashcard:2, quiz:3, exam:4, mindmap:5, tips:6};
+  tabs[map[id]].classList.add('active');
+  if (id === 'flashcard' && !fcCards.length) loadFlashcards();
+  if (id === 'exam') renderExamList();
+  if (id === 'mindmap') renderMindmap(currentMM);
+}
+
+// ===== THEORY ACCORDION =====
+function toggleTheory(id) {
+  const body = document.getElementById('body-' + id);
+  const chev = document.getElementById('chevron-' + id);
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+// ===== FAQ =====
+function buildFAQ() {
+  document.getElementById('faq-list').innerHTML = faqs.map((f, i) => `
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleFAQ(${i})">
+        ${f.q} <span class="chevron" id="faq-chev-${i}">▼</span>
+      </div>
+      <div class="acc-body" id="faq-body-${i}">${f.a}</div>
+    </div>
+  `).join('');
+}
+function toggleFAQ(i) {
+  document.getElementById('faq-body-'+i).classList.toggle('open');
+  document.getElementById('faq-chev-'+i).classList.toggle('open');
+}
+
+// ===== VALENCE TABLE + ELEMENTS =====
+function buildTips() {
+  document.getElementById('valence-table').innerHTML = valences.map(v =>
+    `<div class="val-item">${v.name}: <strong>${v.val}</strong></div>`
+  ).join('');
+  document.getElementById('elements-grid').innerHTML = elements.map(e =>
+    `<div class="elem"><div class="sym">${e.sym}</div><div class="name">${e.name}</div><div class="val">Hóa trị: ${e.val}</div></div>`
+  ).join('');
+  buildFAQ();
+}
+
+// ===== EXAM DATA =====
+const exams = [
+  {
+    id:'e1', title:'Đề 1', source:'Châu Thành', time:45, type:'tuluan',
+    sections:[
+      { title:'Câu 1 (2đ) — Tính chất hoá học của Axit', type:'essay',
+        questions:[
+          {q:'a. Nêu các tính chất hoá học của axit và viết phương trình minh hoạ.', ans:'Axit làm đổi màu quỳ tím → đỏ. Tác dụng oxit bazơ → muối + nước. Tác dụng bazơ → muối + nước. Tác dụng kim loại → muối + H₂. Tác dụng muối → muối mới + axit mới.', pts:1.5},
+          {q:'b. Tại sao không được đổ nước vào axit H₂SO₄ đặc?', ans:'Khi pha loãng H₂SO₄ đặc phải đổ từ từ AXIT vào NƯỚC (không ngược lại). Vì H₂SO₄ đặc nặng hơn nước, khi cho nước vào axit sẽ gây sôi mãnh liệt, bắn axit ra ngoài gây nguy hiểm.', pts:0.5}
+        ]},
+      { title:'Câu 2 (2đ) — Nhận biết dung dịch', type:'essay',
+        questions:[
+          {q:'Phân biệt 4 dung dịch: HNO₃, HCl, BaCl₂, NaOH bằng phương pháp hoá học.', ans:'1. Dùng quỳ tím: HNO₃ và HCl → đỏ; NaOH → xanh; BaCl₂ → tím (không đổi). 2. Phân biệt HNO₃ và HCl: Cho AgNO₃ vào → HCl tạo kết tủa trắng AgCl↓, HNO₃ không có kết tủa.', pts:2}
+        ]},
+      { title:'Câu 3 (1đ) — Chuỗi phản ứng', type:'essay',
+        questions:[
+          {q:'Hoàn thành chuỗi: Na → NaOH → Na₂CO₃ → Na₂SO₄ → NaCl', ans:'(1) 2Na + 2H₂O → 2NaOH + H₂↑\n(2) 2NaOH + CO₂ → Na₂CO₃ + H₂O\n(3) Na₂CO₃ + H₂SO₄ → Na₂SO₄ + H₂O + CO₂↑\n(4) Na₂SO₄ + BaCl₂ → BaSO₄↓ + 2NaCl', pts:1}
+        ]},
+      { title:'Câu 5 (3đ) — Bài toán CO₂', type:'essay',
+        questions:[
+          {q:'2,24 lít CO₂ (đktc) tác dụng với 200ml dung dịch Ba(OH)₂ tạo muối trung hoà và nước.\na. Viết phương trình\nb. Tính nồng độ mol dung dịch Ba(OH)₂\nc. Tính khối lượng kết tủa', ans:'n(CO₂) = 2,24/22,4 = 0,1 mol\n(a) CO₂ + Ba(OH)₂ → BaCO₃↓ + H₂O\n(b) n(Ba(OH)₂) = n(CO₂) = 0,1 mol → CM = 0,1/0,2 = 0,5M\n(c) m(BaCO₃) = 0,1 × 197 = 19,7 gam', pts:3}
+        ]}
+    ]
+  },
+  {
+    id:'e2', title:'Đề 2 — TN+TL', source:'Vĩnh Tường', time:45, type:'mixed',
+    mc: [
+      {q:'Phương trình hoá học nào SAI?', opts:['2Fe + 3Cl₂ → 2FeCl₃','2CO₂ + Ca(OH)₂ → Ca(HCO₃)₂','2NaCl + H₂SO₄ → Na₂SO₄ + 2HCl','Fe + CuSO₄ → FeSO₄ + Cu'], ans:2, ex:'2CO₂ + Ca(OH)₂ → Ca(HCO₃)₂ là SAI vì tỉ lệ mol CO₂:Ca(OH)₂ = 2:1 → tạo muối axit Ca(HCO₃)₂. Công thức đúng nhưng điều kiện là CO₂ dư. Phương trình chưa phân biệt rõ nên sai về phát biểu.'},
+      {q:'Ngâm lá Zn dư vào 200ml AgNO₃ 1M. Khối lượng Ag thu được là:', opts:['6,5g','10,8g','13g','21,6g'], ans:3, ex:'n(AgNO₃) = 0,2×1 = 0,2 mol. Zn + 2AgNO₃ → Zn(NO₃)₂ + 2Ag. n(Ag) = 0,2 mol. m(Ag) = 0,2×108 = 21,6g'},
+      {q:'Cho NaOH lần lượt vào Al, Fe, CuO, CO₂, FeSO₄, H₂SO₄. NaOH phản ứng với:', opts:['Al, CO₂, FeSO₄, H₂SO₄','Fe, CO₂, FeSO₄, H₂SO₄','Al, Fe, CuO, FeSO₄','Al, Fe, CO₂, H₂SO₄'], ans:0, ex:'NaOH phản ứng với: Al (tạo NaAlO₂+H₂), CO₂ (tạo Na₂CO₃), FeSO₄ (tạo Fe(OH)₂↓), H₂SO₄ (phản ứng trung hoà). Fe và CuO không tan trong NaOH.'},
+      {q:'Kim loại X: phản ứng với oxit khi nung, phản ứng với AgNO₃, phản ứng H₂SO₄ loãng → H₂ và muối hóa trị II. X là:', opts:['Cu','Fe','Al','Na'], ans:1, ex:'Fe phản ứng với FeCl₃ (oxit khi nung alumino), tác dụng AgNO₃, và Fe + H₂SO₄ loãng → FeSO₄ + H₂ (hóa trị II)'}
+    ],
+    sections:[
+      { title:'Câu 5 (3đ) — Chuỗi biến hoá Al → Fe → FeCl₃ → Fe(OH)₃ → Fe₂O₃', type:'essay',
+        questions:[{q:'Viết PTHH hoàn thành chuỗi biến hoá: Al → Fe → FeCl₃ → Fe(OH)₃ → Fe₂O₃ (ghi điều kiện nếu có)', ans:'(1) 2Al + 3FeCl₂ → 2AlCl₃ + 3Fe\n(2) 2Fe + 3Cl₂ →(t°) 2FeCl₃\n(3) FeCl₃ + 3KOH → Fe(OH)₃↓ + 3KCl\n(4) 2Fe(OH)₃ →(t°) Fe₂O₃ + 3H₂O', pts:3}]},
+      { title:'Câu 6 (2đ) — Nhận biết NaOH, H₂SO₄, Na₂SO₄, HCl', type:'essay',
+        questions:[{q:'Nhận biết 4 dung dịch: NaOH, H₂SO₄, Na₂SO₄, HCl bằng phương pháp hoá học.', ans:'B1: Dùng quỳ tím → H₂SO₄ và HCl → đỏ; NaOH → xanh; Na₂SO₄ → tím.\nB2: Nhóm làm quỳ đỏ, thêm BaCl₂ → H₂SO₄ tạo BaSO₄↓ trắng; HCl không có hiện tượng.', pts:2}]}
+    ]
+  },
+  {
+    id:'e3', title:'Đề 3 — 40 câu TN', source:'Tổng hợp', time:45, type:'mc',
+    mc:[
+      {q:'1,84g hỗn hợp ACO₃ và BCO₃ + HCl dư → 0,672L CO₂ (đktc). Khối lượng muối trong dung dịch X là:', opts:['1,17g','2,17g','3,17g','4,17g'], ans:1, ex:'Áp dụng bảo toàn khối lượng: m(muối) = m(hỗn hợp) + m(HCl) - m(CO₂) - m(H₂O). n(CO₂)=0,03, n(HCl)=0,06 → m(HCl)=2,19g; m(H₂O)=0,54g → m(muối)=1,84+2,19-0,03×44-0,54=2,17g'},
+      {q:'Trộn CuSO₄ (0,1mol) + NaOH (0,3mol), lọc kết tủa nung đến không đổi. m chất rắn là:', opts:['4g','8g','6g','12g'], ans:1, ex:'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄. n(Cu(OH)₂)=0,1mol. Cu(OH)₂ → CuO + H₂O. n(CuO)=0,1 → m=0,1×80=8g'},
+      {q:'Muốn pha loãng H₂SO₄ đặc phải:', opts:['Rót nhanh axit vào nước','Rót từ từ axit đặc vào nước','Rót từ từ nước vào axit đặc','Rót nước vào axit đặc'], ans:1, ex:'Phải đổ từ từ AXIT vào NƯỚC — không bao giờ đổ nước vào axit vì sẽ tỏa nhiệt dữ dội, axit bắn tung tóa gây bỏng.'},
+      {q:'Khử 6,4g hỗn hợp CuO và Fe₂O₃ bằng H₂, tạo 1,8g H₂O. Khối lượng kim loại thu được là:', opts:['4,5g','4,8g','4,9g','5,2g'], ans:1, ex:'n(H₂O)=0,1 → n(H₂)=0,1 → n(O bị lấy)=0,1. Bảo toàn khối lượng: m(KL) = m(oxit) - m(O) = 6,4 - 0,1×16 = 4,8g'},
+      {q:'Để làm sạch NaCl lẫn Na₂SO₄, dùng:', opts:['Dung dịch BaCl₂','Dung dịch Pb(NO₃)₂','Dung dịch HCl','Dung dịch AgNO₃'], ans:0, ex:'BaCl₂ + Na₂SO₄ → BaSO₄↓ + 2NaCl. Lọc bỏ BaSO₄, thu được NaCl tinh khiết (BaCl₂ dư thì thêm Na₂SO₄ vừa đủ rồi lọc tiếp).'},
+      {q:'Nhóm bazơ vừa tác dụng HCl vừa tác dụng KOH:', opts:['Ba(OH)₂ và NaOH','NaOH và Cu(OH)₂','Al(OH)₃ và Zn(OH)₂','Zn(OH)₂ và Mg(OH)₂'], ans:2, ex:'Al(OH)₃ và Zn(OH)₂ là bazơ lưỡng tính: tác dụng với cả axit (HCl) lẫn bazơ (KOH). Đây là tính chất đặc biệt của nhôm và kẽm.'},
+      {q:'Cho 5,6g Fe + 5,6L Cl₂ (đktc). Muối thu được là:', opts:['16,20g','15,25g','17,25g','16,25g'], ans:3, ex:'n(Fe)=0,1; n(Cl₂)=0,25. 2Fe + 3Cl₂ → 2FeCl₃. Fe thiếu → n(FeCl₃)=0,1 mol. m=0,1×162,5=16,25g'},
+      {q:'Cho CaO (0,2mol) + HCl 1M (500ml). Khối lượng muối thu được là:', opts:['2,22g','22,2g','22,3g','23,2g'], ans:1, ex:'n(HCl)=0,5; n(CaO)=0,2. CaO + 2HCl → CaCl₂ + H₂O. n(CaO):n(HCl) = 0,2:0,5 = 1:2,5 → HCl dư, CaO hết. n(CaCl₂)=0,2 → m=0,2×111=22,2g'},
+      {q:'Dung dịch làm quỳ tím đỏ được tạo từ:', opts:['1,5mol Ca(OH)₂ + 1,5mol HCl','1mol HCl + 1mol KOH','1mol H₂SO₄ + 1,7mol NaOH','0,5mol H₂SO₄ + 1,5mol NaOH'], ans:2, ex:'H₂SO₄ + 2NaOH → Na₂SO₄ + H₂O. 1mol H₂SO₄ cần 2mol NaOH để trung hoà. Có 1,7mol NaOH < 2mol → H₂SO₄ dư → quỳ đỏ.'},
+      {q:'Ngâm đinh sắt sạch trong AgNO₃. Hiện tượng:', opts:['Không có gì','Bạc giải phóng, sắt không biến đổi','Không chất nào sinh ra, sắt hoà tan','Sắt hoà tan một phần, bạc giải phóng'], ans:3, ex:'Fe + 2AgNO₃ → Fe(NO₃)₂ + 2Ag. Sắt bị hoà tan dần, bạc màu trắng bám lên đinh sắt, dung dịch nhạt màu dần.'},
+      {q:'Cặp oxit + nước → dung dịch bazơ ở nhiệt độ thường:', opts:['Al₂O₃, CuO','K₂O, Fe₂O₃','ZnO, MgO','Na₂O, K₂O'], ans:3, ex:'Na₂O + H₂O → 2NaOH; K₂O + H₂O → 2KOH. Oxit của kim loại kiềm (Na, K) tan tốt trong nước tạo dung dịch bazơ mạnh.'},
+      {q:'Hấp thụ 11,2L CO₂ (đktc) + 20g NaOH. Muối tạo thành là:', opts:['Hỗn hợp Na₂CO₃ và NaHCO₃','NaHCO₃','Na₂CO₃','Na(HCO₃)₂'], ans:1, ex:'n(CO₂)=0,5; n(NaOH)=0,5. Tỉ lệ NaOH:CO₂ = 1:1 → tạo muối axit NaHCO₃. (Nếu tỉ lệ = 2 → Na₂CO₃; tỉ lệ 1÷2 → hỗn hợp cả hai muối)'},
+      {q:'Nhôm phản ứng được với:', opts:['Oxit bazơ, H₂, dung dịch bazơ, axit','Oxit axit, Cl₂, dung dịch bazơ, axit','Khí O₂, H₂, dung dịch bazơ, axit','Khí O₂, Cl₂, dung dịch bazơ, axit'], ans:3, ex:'Al + O₂, Cl₂ (phi kim); Al + NaOH (bazơ); Al + HCl, H₂SO₄ (axit). Al KHÔNG phản ứng H₂ hay oxit bazơ.'},
+      {q:'Để điều chế Ba(OH)₂, người ta cho:', opts:['BaO + dung dịch HCl','BaCl₂ + Na₂CO₃','BaO + H₂O','Ba(NO₃)₂ + Na₂SO₄'], ans:2, ex:'BaO + H₂O → Ba(OH)₂. Đây là cách đơn giản nhất. Các phương án khác tạo ra muối hoặc tạo kết tủa BaSO₄, BaCO₃ không phải Ba(OH)₂.'},
+      {q:'Nhôm được sản xuất bằng phương trình:', opts:['Al₂O₃ + 3CO → 2Al + 3CO₂','Al₂O₃ + 3H₂ → 2Al + 3H₂O','dpnc: 2Al₂O₃ → 4Al + 3O₂','3Mg + 2Al(NO₃)₃ → 2Al + 3Mg(NO₃)₂'], ans:2, ex:'Trong công nghiệp: điện phân nóng chảy Al₂O₃ (có criolit làm giảm nhiệt độ nóng chảy). dpnc: 2Al₂O₃ → 4Al + 3O₂'},
+      {q:'Oxit của P có %P = 43,66%, M = 142. Công thức là:', opts:['PO₂','P₂O₅','P₂O₄','P₂O₃'], ans:1, ex:'m(P) = 43,66% × 142 = 62. n(P) = 62/31 = 2. m(O) = 142-62 = 80 → n(O) = 5. CTPT: P₂O₅'},
+    ]
+  },
+  {
+    id:'e4', title:'Đề 4 — 24 câu TN', source:'Tổng hợp', time:45, type:'mixed',
+    mc:[
+      {q:'Thể tích HCl 2M cần để hoà tan 16,8g Fe là:', opts:['0,2L','0,1L','0,25L','0,3L'], ans:3, ex:'n(Fe)=16,8/56=0,3mol. Fe + 2HCl → FeCl₂ + H₂. n(HCl)=0,6mol. V=0,6/2=0,3L'},
+      {q:'Chất nào đều phản ứng với NaOH?', opts:['Al, CO₂, SO₂, Ba(OH)₂','CO₂, SO₂, CuSO₄, Fe','CO₂, CuSO₄, SO₂, H₃PO₄','KOH, CO₂, SO₂, CuSO₄'], ans:2, ex:'CO₂ + NaOH → muối; SO₂ + NaOH → muối; CuSO₄ + NaOH → Cu(OH)₂↓; H₃PO₄ + NaOH → muối. Tất cả đều phản ứng được.'},
+      {q:'Thể tích H₂ (đktc) khi hoà tan 8,1g Al + HCl dư:', opts:['10,08L','6,72L','5,04L','4,48L'], ans:0, ex:'n(Al)=8,1/27=0,3mol. 2Al + 6HCl → 2AlCl₃ + 3H₂. n(H₂)=0,45mol → V=0,45×22,4=10,08L'},
+      {q:'Dãy nào đều phản ứng với HCl?', opts:['Cu, BaO, Ca(OH)₂, NaNO₃','Quỳ tím, CuO, Ba(OH)₂, AgNO₃, Zn','Quỳ tím, CuO, AgNO₃, Cu','Quỳ tím, AgNO₃, Zn, NO, CaO'], ans:1, ex:'Quỳ tím đổi màu với HCl; CuO + HCl → muối; Ba(OH)₂ + HCl → muối; AgNO₃ + HCl → AgCl↓; Zn + HCl → muối + H₂. Tất cả đều phản ứng.'},
+      {q:'Al và Fe không tác dụng được với:', opts:['HNO₃ đặc nguội','Lưu huỳnh','Khí oxi','Khí clo'], ans:0, ex:'Al và Fe bị thụ động hoá bởi HNO₃ đặc nguội (tạo lớp oxit bảo vệ bề mặt). Đây là hiện tượng thụ động hoá rất quan trọng cần nhớ.'},
+      {q:'Phát biểu đúng về Gang:', opts:['Nguyên liệu sx thép là quặng sắt tự nhiên','Khung cửa thép để lâu không bị ăn mòn','Gang là hợp kim Fe-C, C chiếm 2-5%','Thép là hợp kim Fe-C, C chiếm 2-5%'], ans:2, ex:'Gang: hợp kim Fe-C, trong đó hàm lượng C từ 2-5%. Thép: hàm lượng C <2%. Cần phân biệt rõ gang và thép.'},
+      {q:'Công thức phân đạm urê là:', opts:['NH₄Cl','(NH₂)₂CO','NH₄HCO₃','NH₄NO₃'], ans:1, ex:'Phân đạm urê: (NH₂)₂CO — chứa 46,6% N, loại phân bón có lượng đạm cao nhất. NH₄Cl (đạm 2 lá), NH₄NO₃ (đạm 1 lá).'},
+      {q:'Nhôm được điều chế trong công nghiệp bằng cách:', opts:['Cho Fe tác dụng Al₂O₃','Dùng than chì khử Al₂O₃ nhiệt độ cao','Điện phân dung dịch muối nhôm','Điện phân nóng chảy Al₂O₃ có xúc tác'], ans:3, ex:'Al được điều chế bằng điện phân nóng chảy Al₂O₃ (bauxite) với xúc tác criolit (Na₃AlF₆) để hạ nhiệt độ nóng chảy và tăng độ dẫn điện.'},
+      {q:'Phát biểu nào KHÔNG đúng?', opts:['Kim loại dẻo, dẫn điện, dẫn nhiệt, có ánh kim','Phi kim tồn tại cả 3 trạng thái ở đk thường','Hợp kim Fe-Cu dùng chế tạo máy bay','Phi kim phần lớn không dẫn điện, nhiệt độ s/n thấp'], ans:2, ex:'Máy bay được chế tạo từ hợp kim NHÔM (nhẹ, bền) chứ không phải hợp kim sắt-đồng. Hợp kim nhôm dùng phổ biến trong hàng không.'},
+      {q:'Dãy toàn oxit axit:', opts:['H₂O, CaO, FeO, CuO','CO₂, SO₃, Na₂O, NO₂','CO₂, SO₂, CuO, P₂O₅','SO₂, P₂O₅, CO₂, N₂O₅'], ans:3, ex:'SO₂, P₂O₅, CO₂, N₂O₅ đều là oxit của phi kim → oxit axit. CuO là oxit bazơ. Na₂O là oxit bazơ. H₂O là oxit đặc biệt.'},
+      {q:'Thể tích Cl₂ (đktc) tác dụng vừa đủ với 22,4g Fe là:', opts:['13,44L','6,72L','8,96L','26,88L'], ans:0, ex:'n(Fe)=22,4/56=0,4mol. 2Fe + 3Cl₂ → 2FeCl₃. n(Cl₂)=0,6mol → V=0,6×22,4=13,44L'},
+      {q:'Khí màu vàng lục:', opts:['CO₂','Cl₂','H₂','SO₂'], ans:1, ex:'Cl₂ (clo) có màu vàng lục, mùi hắc, rất độc. CO₂ và H₂ không màu, không mùi. SO₂ không màu, mùi hắc.'},
+      {q:'Oxit khi tan trong nước làm quỳ tím → xanh:', opts:['CuO','P₂O₅','MgO','Na₂O'], ans:3, ex:'Na₂O + H₂O → 2NaOH. NaOH là bazơ mạnh → làm quỳ xanh. CuO, MgO không tan trong nước. P₂O₅ + H₂O → H₃PO₄ (axit) → quỳ đỏ.'},
+      {q:'Phân biệt Al và Al₂O₃, Fe₂O₃, Cu chỉ dùng 1 chất:', opts:['Dung dịch CuSO₄','Dung dịch NaCl','Dung dịch H₂SO₄ loãng','Dung dịch AgNO₃'], ans:2, ex:'H₂SO₄ loãng: Al → tan + H₂↑; Al₂O₃ → tan không khí; Fe₂O₃ → tan, dung dịch vàng; Cu → không tan. Phân biệt được cả 4 chất.'},
+      {q:'8,96L CO₂ (đktc) + Ca(OH)₂ dư → m gam kết tủa. m =', opts:['30g','40g','20g','15g'], ans:1, ex:'n(CO₂)=0,4mol. CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O. Ca(OH)₂ dư → n(CaCO₃)=0,4mol. m=0,4×100=40g'},
+      {q:'Phân biệt Al và Fe bằng:', opts:['Dung dịch AgNO₃','Dung dịch CuSO₄','Dung dịch HCl','Dung dịch NaOH'], ans:3, ex:'Dùng NaOH: Al + NaOH + H₂O → NaAlO₂ + H₂↑ (tan và sủi bọt); Fe không phản ứng với NaOH. → Dễ phân biệt.'},
+      {q:'Khử 32g Fe₂O₃ cần V lít CO (đktc). V =', opts:['13,44L','6,72L','8,96L','26,88L'], ans:0, ex:'n(Fe₂O₃)=32/160=0,2mol. Fe₂O₃ + 3CO → 2Fe + 3CO₂. n(CO)=0,6mol → V=0,6×22,4=13,44L'},
+      {q:'Chất tan trong nước:', opts:['CaCO₃','Al','Na','NaCl'], ans:3, ex:'NaCl là muối ăn, tan hoàn toàn trong nước. CaCO₃ không tan. Al tan trong axit và bazơ, không tan trong nước. Na phản ứng mạnh với nước.'},
+      {q:'Na₂CO₃ tác dụng được với:', opts:['Mg(OH)₂','Na₂SO₄','BaSO₄','HCl'], ans:3, ex:'Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂↑. Na₂CO₃ là muối của axit yếu nên tác dụng với axit mạnh HCl.'},
+      {q:'200ml HCl 0,2M + AgNO₃ vừa đủ. Khối lượng kết tủa là:', opts:['5,74g','28,7g','57,4g','2,87g'], ans:3, ex:'n(HCl)=0,2×0,2=0,04mol. HCl + AgNO₃ → AgCl↓ + HNO₃. n(AgCl)=0,04mol → m=0,04×143,5=5,74g... Đáp án A=5,74g'},
+      {q:'Al không tác dụng được với:', opts:['Dung dịch NaOH','Dung dịch HCl','Dung dịch KNO₃','Dung dịch CuSO₄'], ans:2, ex:'Al không phản ứng với KNO₃ (muối trung tính). Al tác dụng NaOH (bazơ), HCl (axit), CuSO₄ (muối kim loại yếu hơn Al).'},
+      {q:'Cặp chất nào có phản ứng xảy ra?', opts:['Dung dịch NaCl + KNO₃','Dung dịch Na₂S + HCl','Dung dịch BaCl₂ + HNO₃','Dung dịch BaCl₂ + NaNO₃'], ans:1, ex:'Na₂S + 2HCl → 2NaCl + H₂S↑. Khí H₂S bay ra là dấu hiệu phản ứng xảy ra. Các cặp còn lại không có sản phẩm kết tủa, khí hay nước.'},
+      {q:'Hoà tan m gam Al + NaOH dư → 5,04L H₂ (đktc). m =', opts:['6,075g','4,05g','8,1g','2,025g'], ans:1, ex:'n(H₂)=5,04/22,4=0,225mol. 2Al + 2NaOH + 2H₂O → 2NaAlO₂ + 3H₂. n(Al)=0,225×(2/3)=0,15mol → m=0,15×27=4,05g'},
+      {q:'Dãy bazơ đều bị nhiệt phân:', opts:['Fe(OH)₂, Pb(OH)₂, Cu(OH)₂','Ca(OH)₂, KOH, Fe(OH)₃, Zn(OH)₂','KOH, Cu(OH)₂, NaOH, Ba(OH)₂','Mg(OH)₂, Cu(OH)₂, NaOH'], ans:0, ex:'Bazơ KHÔNG tan đều bị nhiệt phân: Fe(OH)₂ → FeO + H₂O; Pb(OH)₂ → PbO + H₂O; Cu(OH)₂ → CuO + H₂O. KOH, NaOH, Ca(OH)₂, Ba(OH)₂ (bazơ tan) bền nhiệt hơn.'}
+    ],
+    sections:[
+      { title:'Bài 2 (2đ) — Hoà tan 21,6g Al + CuCl₂ 1,5M', type:'essay',
+        questions:[{q:'Hoà tan hoàn toàn 21,6g Al + CuCl₂ 1,5M vừa đủ. Sau phản ứng thu được chất rắn A màu đỏ và dung dịch B.\n1. Tính khối lượng chất rắn A.\n2. Tính thể tích CuCl₂ đã dùng.\n3. Viết PTHH khi cho dd B + NaOH dư.', ans:'n(Al)=21,6/27=0,8mol. PTHH: 2Al + 3CuCl₂ → 2AlCl₃ + 3Cu\nn(Cu)=0,8×(3/2)=1,2mol → m(Cu)=1,2×64=76,8g (chất rắn A)\nn(CuCl₂)=0,8×(3/2)=1,2mol → V=1,2/1,5=0,8L\nDd B chứa AlCl₃:\nAlCl₃ + 3NaOH → Al(OH)₃↓ + 3NaCl\nAl(OH)₃ + NaOH → NaAlO₂ + 2H₂O', pts:2}]}
+    ]
+  }
+];
+
+// ===== EXAM STATE =====
+let currentExam = null, examAnswers = {}, examMCDone = false, examTimer, examSec = 0;
+
+function renderExamList() {
+  document.getElementById('exam-list').innerHTML = exams.map(e =>
+    `<button class="exam-card-btn ${currentExam && currentExam.id===e.id?'active':''}" onclick="selectExam('${e.id}')">${e.title}</button>`
+  ).join('');
+}
+
+function selectExam(id) {
+  currentExam = exams.find(e=>e.id===id);
+  examAnswers = {}; examMCDone = false;
+  clearInterval(examTimer); examSec = 0;
+  // remove old timer display if any
+  const old = document.getElementById('exam-timer-display');
+  if (old) old.remove();
+  renderExamList();
+  renderExam();
+}
+
+function renderExam() {
+  if (!currentExam) return;
+  const e = currentExam;
+  let html = `<div class="exam-meta">
+    <span>📋 ${e.title} — ${e.source}</span>
+    <span>⏱ ${e.time} phút</span>
+    <span>📊 ${e.type==='mc'?'Trắc nghiệm':(e.type==='tuluan'?'Tự luận':'Trắc nghiệm + Tự luận')}</span>
+  </div>`;
+
+  if (e.mc && e.mc.length) {
+    html += `<div class="exam-section-title">A. TRẮC NGHIỆM (${e.mc.length} câu)</div>`;
+    html += e.mc.map((q,i) => `
+      <div class="q-card" id="exam-q-${i}">
+        <div class="q-num">Câu ${i+1}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="options">
+          ${q.opts.map((o,j)=>`<button class="opt" id="eopt-${i}-${j}" onclick="examSelect(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}
+        </div>
+        <div class="explain-box" id="eex-${i}">${q.ex}</div>
+      </div>`).join('');
+  }
+
+  if (e.sections && e.sections.length) {
+    html += `<div class="exam-section-title">B. TỰ LUẬN</div>`;
+    html += e.sections.map((s,si) => `
+      <div class="card" style="margin-bottom:0.75rem; border-left:4px solid var(--blue);">
+        <div style="font-weight:700; margin-bottom:0.75rem; color:var(--blue-dark);">${s.title}</div>
+        ${s.questions.map((q,qi) => `
+          <div style="margin-bottom:0.75rem;">
+            <div style="font-size:0.88rem; margin-bottom:0.5rem; white-space:pre-wrap;">${q.q}</div>
+            <div style="font-size:0.8rem; color:var(--text2); margin-bottom:0.4rem;">Điểm: ${q.pts}đ</div>
+            <div class="explain-box show" style="display:none;" id="tl-ans-${si}-${qi}"><strong>Đáp án gợi ý:</strong><br><span style="white-space:pre-wrap;">${q.ans}</span></div>
+            <button class="btn btn-outline btn-sm" onclick="toggleTLAns(${si},${qi})">👁 Xem đáp án</button>
+          </div>`).join('')}
+      </div>`).join('');
+  }
+
+  html += `<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+    ${e.mc&&e.mc.length?`<button class="btn btn-primary" onclick="submitExam()">✅ Nộp bài & Xem điểm</button>`:''}
+    <button class="btn btn-outline" id="exam-timer-btn" onclick="startExamTimer()">⏱ Bắt đầu đếm giờ</button>
+  </div>
+  <div id="exam-result-area" style="margin-top:1rem;"></div>`;
+
+  document.getElementById('exam-content').innerHTML = html;
+}
+
+function toggleTLAns(si, qi) {
+  const el = document.getElementById(`tl-ans-${si}-${qi}`);
+  el.style.display = el.style.display==='none'?'block':'none';
+}
+
+function examSelect(qi, oi) {
+  if (examMCDone) return;
+  examAnswers[qi] = oi;
+  const mc = currentExam.mc;
+  for (let j = 0; j < mc[qi].opts.length; j++) {
+    const btn = document.getElementById(`eopt-${qi}-${j}`);
+    btn.classList.remove('selected','correct','wrong');
+    if (j===oi) btn.classList.add('selected');
+  }
+}
+
+function submitExam() {
+  if (!currentExam || !currentExam.mc) return;
+  examMCDone = true;
+  clearInterval(examTimer);
+  let correct = 0;
+  currentExam.mc.forEach((q,i) => {
+    const ans = examAnswers[i];
+    for (let j=0; j<q.opts.length; j++) {
+      const btn = document.getElementById(`eopt-${i}-${j}`);
+      btn.classList.remove('selected','correct','wrong');
+      if (j===q.ans) btn.classList.add('correct');
+      else if (ans===j && j!==q.ans) btn.classList.add('wrong');
+    }
+    document.getElementById(`eex-${i}`).classList.add('show');
+    if (ans===q.ans) correct++;
+  });
+  const total = currentExam.mc.length;
+  const pct = Math.round(correct/total*100);
+  const grade = pct>=80?'Giỏi 🏆':pct>=65?'Khá 👍':pct>=50?'Trung bình 📚':'Cần cố gắng thêm 💪';
+  const m = String(Math.floor(examSec/60)).padStart(2,'0');
+  const s = String(examSec%60).padStart(2,'0');
+  document.getElementById('exam-result-area').innerHTML = `
+    <div class="result-summary">
+      <div class="big">${correct}/${total}</div>
+      <div class="grade">${grade} — ${pct}%</div>
+      <div style="font-size:0.85rem;opacity:0.8;margin-top:0.5rem;">Thời gian: ${m}:${s}</div>
+    </div>
+    <div class="exam-score-bar" style="margin-top:0.75rem;"><div class="exam-score-bar-fill" style="width:${pct}%"></div></div>`;
+}
+
+function startExamTimer() {
+  clearInterval(examTimer); examSec = 0;
+  const maxSec = (currentExam ? currentExam.time : 45) * 60;
+  const btn = document.getElementById('exam-timer-btn');
+  if (btn) btn.textContent = `⏱ ${String(Math.floor(maxSec/60)).padStart(2,'0')}:00`;
+  examTimer = setInterval(() => {
+    examSec++;
+    const rem = maxSec - examSec;
+    const m = String(Math.floor(rem/60)).padStart(2,'0');
+    const s = String(rem%60).padStart(2,'0');
+    const b = document.getElementById('exam-timer-btn');
+    if (b) b.textContent = `⏱ ${m}:${s}`;
+    if (rem <= 0) { clearInterval(examTimer); submitExam(); }
+  }, 1000);
+}
+
+// ===== MINDMAP DATA =====
+const mindmaps = {
+  c1oxit: {
+    title:'Oxit', color:'#1D9E75',
+    center:'OXIT\n(Kim loại/Phi kim + O)',
+    branches:[
+      { label:'Phân loại', color:'#085041', leaves:[
+        {text:'Oxit bazơ\n(kim loại + O)', bg:'#E1F5EE', border:'#1D9E75'},
+        {text:'Oxit axit\n(phi kim + O)', bg:'#E1F5EE', border:'#1D9E75'},
+        {text:'Oxit lưỡng tính\nAl₂O₃, ZnO', bg:'#E1F5EE', border:'#1D9E75'},
+        {text:'Oxit trung tính\nCO, NO', bg:'#E1F5EE', border:'#1D9E75'},
+      ]},
+      { label:'Oxit Bazơ\n+ phản ứng', color:'#378ADD', leaves:[
+        {text:'+ Nước → Bazơ\nCaO+H₂O→Ca(OH)₂', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'+ Axit → Muối+H₂O\nCaO+2HCl→CaCl₂+H₂O', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'+ Oxit axit → Muối\nCaO+CO₂→CaCO₃', bg:'#E6F1FB', border:'#378ADD'},
+      ]},
+      { label:'Oxit Axit\n+ phản ứng', color:'#D85A30', leaves:[
+        {text:'+ Nước → Axit\nSO₃+H₂O→H₂SO₄', bg:'#FAECE7', border:'#D85A30'},
+        {text:'+ Bazơ → Muối+H₂O\nCO₂+Ca(OH)₂→CaCO₃', bg:'#FAECE7', border:'#D85A30'},
+        {text:'+ Oxit bazơ → Muối\nCO₂+CaO→CaCO₃', bg:'#FAECE7', border:'#D85A30'},
+      ]},
+      { label:'Ví dụ thường gặp', color:'#BA7517', leaves:[
+        {text:'CaO (vôi sống)', bg:'#FAEEDA', border:'#BA7517'},
+        {text:'CO₂ (khí cacbonic)', bg:'#FAEEDA', border:'#BA7517'},
+        {text:'SO₂ (khí lưu huỳnh)', bg:'#FAEEDA', border:'#BA7517'},
+        {text:'Fe₂O₃ (gỉ sắt)', bg:'#FAEEDA', border:'#BA7517'},
+      ]},
+    ]
+  },
+  c1axit: {
+    title:'Axit', color:'#D85A30',
+    center:'AXIT\nHₙA — Phân li ra H⁺',
+    branches:[
+      { label:'Phân loại', color:'#4A1B0C', leaves:[
+        {text:'Không có oxi\nHCl, H₂S, HBr', bg:'#FAECE7', border:'#D85A30'},
+        {text:'Có oxi\nH₂SO₄, HNO₃', bg:'#FAECE7', border:'#D85A30'},
+        {text:'Mạnh: HCl, H₂SO₄\nHNO₃', bg:'#FAECE7', border:'#D85A30'},
+        {text:'Yếu: H₂S, H₂CO₃\nCH₃COOH', bg:'#FAECE7', border:'#D85A30'},
+      ]},
+      { label:'5 Tính chất\nhoá học', color:'#D85A30', leaves:[
+        {text:'① Quỳ tím → ĐỎ', bg:'#FAECE7', border:'#D85A30'},
+        {text:'② + Kim loại → Muối+H₂↑\nZn+H₂SO₄→ZnSO₄+H₂', bg:'#FAECE7', border:'#D85A30'},
+        {text:'③ + Oxit bazơ → Muối+H₂O\nCuO+H₂SO₄→CuSO₄+H₂O', bg:'#FAECE7', border:'#D85A30'},
+        {text:'④ + Bazơ → Muối+H₂O\n(Trung hoà)', bg:'#FAECE7', border:'#D85A30'},
+        {text:'⑤ + Muối → Muối mới+Axit\nBaCl₂+H₂SO₄→BaSO₄↓', bg:'#FAECE7', border:'#D85A30'},
+      ]},
+      { label:'H₂SO₄ đặc\nĐặc biệt', color:'#633806', leaves:[
+        {text:'Hút ẩm mạnh\nDùng làm khô khí', bg:'#FAEEDA', border:'#BA7517'},
+        {text:'Oxi hoá mạnh\n+ Cu, Ag ở nhiệt độ cao', bg:'#FAEEDA', border:'#BA7517'},
+        {text:'⚠️ Pha loãng:\nAxit vào Nước', bg:'#FAEEDA', border:'#BA7517'},
+      ]},
+    ]
+  },
+  c2: {
+    title:'Kim Loại', color:'#888780',
+    center:'KIM LOẠI\nTính chất & Ứng dụng',
+    branches:[
+      { label:'Tính chất\nvật lý', color:'#2C2C2A', leaves:[
+        {text:'Dẫn điện tốt\n(Ag > Cu > Al > Fe)', bg:'#F1EFE8', border:'#888780'},
+        {text:'Dẫn nhiệt tốt', bg:'#F1EFE8', border:'#888780'},
+        {text:'Dẻo, kéo sợi\ndát mỏng được', bg:'#F1EFE8', border:'#888780'},
+        {text:'Có ánh kim\ntrạng thái rắn (trừ Hg)', bg:'#F1EFE8', border:'#888780'},
+      ]},
+      { label:'Dãy hoạt động\nhoá học', color:'#378ADD', leaves:[
+        {text:'K>Na>Mg>Al>Zn', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'Fe>Ni>Sn>Pb>H', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'Cu>Ag>Au', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'Nhớ: "Khi Nào May\nÁo Záp Sắt Nên\nSang Phố Hỏi Cửa\nHàng Á"', bg:'#E6F1FB', border:'#378ADD'},
+      ]},
+      { label:'Tính chất\nhoá học', color:'#1D9E75', leaves:[
+        {text:'+ Phi kim → Muối\n2Fe+3Cl₂→2FeCl₃', bg:'#E1F5EE', border:'#1D9E75'},
+        {text:'+ Axit loãng → Muối+H₂\n(KL đứng trước H)', bg:'#E1F5EE', border:'#1D9E75'},
+        {text:'+ Dung dịch muối\n(KL mạnh đẩy KL yếu)\nFe+CuSO₄→FeSO₄+Cu', bg:'#E1F5EE', border:'#1D9E75'},
+      ]},
+      { label:'Nhôm & Sắt\nĐặc biệt', color:'#D85A30', leaves:[
+        {text:'Al: tan trong NaOH\n(lưỡng tính)', bg:'#FAECE7', border:'#D85A30'},
+        {text:'Al,Fe: thụ động\nHNO₃ đặc nguội', bg:'#FAECE7', border:'#D85A30'},
+        {text:'Fe có 2 hóa trị:\nFe²⁺ (FeCl₂)\nFe³⁺ (FeCl₃)', bg:'#FAECE7', border:'#D85A30'},
+        {text:'Gang: C 2-5%\nThép: C <2%', bg:'#FAECE7', border:'#D85A30'},
+      ]},
+    ]
+  },
+  c3: {
+    title:'Phi Kim', color:'#7F77DD',
+    center:'PHI KIM\nClo, Cacbon, Silic',
+    branches:[
+      { label:'Tính chất\nchung', color:'#26215C', leaves:[
+        {text:'Không dẫn điện\n(trừ graphit)', bg:'#EEEDFE', border:'#7F77DD'},
+        {text:'+ Kim loại → Muối\n2Na+Cl₂→2NaCl', bg:'#EEEDFE', border:'#7F77DD'},
+        {text:'+ Hidro → Hợp chất khí\nH₂+Cl₂→2HCl', bg:'#EEEDFE', border:'#7F77DD'},
+        {text:'+ Oxi → Oxit axit\nS+O₂→SO₂', bg:'#EEEDFE', border:'#7F77DD'},
+      ]},
+      { label:'CLO (Cl₂)\nVàng lục, độc', color:'#D85A30', leaves:[
+        {text:'+ H₂O → HCl+HClO\n(nước clo, tẩy trắng)', bg:'#FAECE7', border:'#D85A30'},
+        {text:'+ NaOH → NaCl+NaClO\n(nước Javen)', bg:'#FAECE7', border:'#D85A30'},
+        {text:'+ Ca(OH)₂ → Clorua vôi\ntẩy trắng vải, sát trùng', bg:'#FAECE7', border:'#D85A30'},
+      ]},
+      { label:'CACBON (C)\n3 dạng thù hình', color:'#2C2C2A', leaves:[
+        {text:'Kim cương:\nCứng nhất, không dẫn điện', bg:'#F1EFE8', border:'#888780'},
+        {text:'Graphit:\nMềm, dẫn điện (bút chì)', bg:'#F1EFE8', border:'#888780'},
+        {text:'Than vô định hình:\nXốp, hấp phụ (lọc nước)', bg:'#F1EFE8', border:'#888780'},
+        {text:'CO₂+Ca(OH)₂→CaCO₃↓\n(nhận biết CO₂)', bg:'#F1EFE8', border:'#888780'},
+      ]},
+    ]
+  },
+  c4c5: {
+    title:'Hóa Hữu Cơ', color:'#378ADD',
+    center:'HỮU CƠ\nHiđrocacbon & Dẫn xuất',
+    branches:[
+      { label:'Hiđrocacbon\nno và không no', color:'#0C447C', leaves:[
+        {text:'CH₄ (Metan)\nLK đơn → phản ứng THẾ\nKhông mất màu Br₂', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'C₂H₄ (Etilen)\nLK đôi → phản ứng CỘNG\nMất màu dd Br₂', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'C₂H₂ (Axetilen)\nLK ba → cộng mạnh\nDùng hàn cắt KL', bg:'#E6F1FB', border:'#378ADD'},
+        {text:'C₆H₆ (Benzen)\nVòng thơm → phản ứng THẾ\nKhông mất màu Br₂ thường', bg:'#E6F1FB', border:'#378ADD'},
+      ]},
+      { label:'Polime\n(Trùng hợp)', color:'#1D9E75', leaves:[
+        {text:'PE: nC₂H₄ → (-CH₂CH₂-)ₙ\n(túi nilon, màng bọc)', bg:'#E1F5EE', border:'#1D9E75'},
+        {text:'PVC: nCH₂=CHCl\n(ống nước, áo mưa)', bg:'#E1F5EE', border:'#1D9E75'},
+        {text:'Cao su: từ Isopren\n(đàn hồi, không thấm nước)', bg:'#E1F5EE', border:'#1D9E75'},
+      ]},
+      { label:'Dẫn xuất\nOxi hoá', color:'#BA7517', leaves:[
+        {text:'Rượu etylic C₂H₅OH\nCháy ngọn xanh\n+ Na → H₂↑', bg:'#FAEEDA', border:'#BA7517'},
+        {text:'Axit axetic CH₃COOH\nVị chua (giấm)\nQuỳ tím → đỏ', bg:'#FAEEDA', border:'#BA7517'},
+        {text:'Este = Rượu + Axit\nC₂H₅OH + CH₃COOH →\nCH₃COOC₂H₅ + H₂O', bg:'#FAEEDA', border:'#BA7517'},
+      ]},
+      { label:'Glucozơ &\nTinh bột', color:'#7F77DD', leaves:[
+        {text:'Glucozơ C₆H₁₂O₆\nTráng gương → bạc sáng\nNhận biết glucozơ', bg:'#EEEDFE', border:'#7F77DD'},
+        {text:'Tinh bột (C₆H₁₀O₅)ₙ\nIot → XANH TÍM\nNhận biết tinh bột', bg:'#EEEDFE', border:'#7F77DD'},
+        {text:'Xenlulozo (C₆H₁₀O₅)ₙ\nThành phần gỗ, bông\nKhông tráng gương', bg:'#EEEDFE', border:'#7F77DD'},
+      ]},
+    ]
+  }
+};
+
+let currentMM = 'c1oxit';
+
+function renderMindmap(key) {
+  currentMM = key;
+  document.querySelectorAll('.mm-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('mm-tab-'+key).classList.add('active');
+  document.getElementById('mm-tab-'+key).style.background = mindmaps[key].color;
+
+  const mm = mindmaps[key];
+  let html = `<div class="mm-root">
+    <div class="mm-center" style="background:${mm.color}">${mm.center}</div>
+    <div class="mm-branches">`;
+
+  mm.branches.forEach(b => {
+    html += `<div class="mm-branch">
+      <div class="mm-node" style="background:${b.color}">${b.label}</div>
+      <div class="mm-connector"></div>
+      <div class="mm-leaves">`;
+    b.leaves.forEach(l => {
+      html += `<div class="mm-leaf" style="background:${l.bg}; border-color:${l.border}; color:#1a1a1a;">${l.text}</div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  html += `</div></div>
+  <div class="tip-box" style="margin-top:1rem;">
+    💡 <strong>Mẹo học:</strong> Nhìn sơ đồ → che lại → tự vẽ lại từ trí nhớ. Làm 3 lần sẽ nhớ rất lâu!
+  </div>`;
+  document.getElementById('mm-canvas').innerHTML = html;
+}
+
+// ===== INIT (sau khi tất cả data + hàm đã khai báo) =====
+buildTips();
+loadFlashcards();
+renderExamList();
+renderMindmap('c1oxit');
+</script>
+</body>
+</html>

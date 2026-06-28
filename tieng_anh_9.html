@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiếng Anh 9 — Học Thông Minh</title>
+<style>
+:root{--blue:#1e90ff;--green:#16a34a;--red:#e11d48;--orange:#d97706;--purple:#7c3aed;--dark:#1e293b;--light:#f1f5f9;--border:#e2e8f0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--light);color:var(--dark);font-size:15px;line-height:1.6}
+.app{max-width:940px;margin:0 auto;background:#fff;border-radius:14px;box-shadow:0 4px 24px rgba(0,0,0,.12);overflow:hidden}
+.app-header{background:linear-gradient(135deg,#1e3a8a 0%,#1e90ff 100%);color:#fff;padding:1.2rem 1.5rem;text-align:center}
+.app-header h1{font-size:1.4rem;margin-bottom:.3rem}
+.app-header p{opacity:.85;font-size:.85rem}
+.nav{display:flex;background:#0f172a;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:.75rem 1.1rem;color:rgba(255,255,255,.6);border:none;background:none;cursor:pointer;font-size:.82rem;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap;transition:.2s}
+.nav-btn:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-btn.active{color:#fff;border-bottom-color:#38bdf8}
+.panel{display:none;padding:1.25rem}
+.panel.active{display:block}
+/* Unit bar */
+.unit-bar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.unit-pill{padding:.3rem .75rem;border-radius:20px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:.8rem;font-weight:600;transition:.15s}
+.unit-pill.active,.unit-pill:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+/* Search */
+.search-row{display:flex;gap:.5rem;margin-bottom:1rem}
+.search-row input{flex:1;padding:.5rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem}
+.search-row input:focus{outline:none;border-color:var(--blue)}
+/* Vocab table */
+.vtable{width:100%;border-collapse:collapse;font-size:.86rem}
+.vtable th{background:#1e3a8a;color:#fff;padding:.6rem .75rem;text-align:left;position:sticky;top:0;z-index:1}
+.vtable td{padding:.5rem .75rem;border-bottom:1px solid var(--border);vertical-align:top}
+.vtable tr:hover td{background:#f8faff}
+.word{font-weight:700;font-size:.95rem;color:#1e3a8a}
+.ipa{color:var(--purple);font-size:.82rem}
+.vi{color:var(--green);font-weight:600}
+.memo{color:#7c3aed;font-size:.78rem;font-style:italic}
+/* Badges */
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.68rem;font-weight:700;color:#fff;text-transform:uppercase;white-space:nowrap}
+.bn{background:#e11d48}.bv{background:#16a34a}.badj{background:#d97706}.badv{background:#0891b2}.bphr{background:#7c3aed}.bexp{background:#9333ea}
+.speak-btn{background:none;border:none;cursor:pointer;font-size:1.1rem;padding:.15rem;transition:.15s}
+.speak-btn:hover{transform:scale(1.25)}
+/* Grammar */
+.gram-acc{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:.6rem}
+.gram-head{padding:.75rem 1.1rem;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;background:#f8faff;font-size:.88rem;color:#1e3a8a}
+.gram-head:hover{background:#eff6ff}
+.gram-body{display:none;padding:.85rem 1.1rem;border-top:1px solid var(--border)}
+.gram-body.open{display:block}
+.formula-box{background:#eff6ff;border-left:4px solid var(--blue);border-radius:6px;padding:.6rem .9rem;font-family:monospace;font-size:.88rem;margin:.5rem 0;color:#1e40af}
+.ex-ok{background:#f0fdf4;border-left:4px solid var(--green);border-radius:6px;padding:.5rem .85rem;font-size:.86rem;margin:.3rem 0;color:#14532d}
+.warn-box{background:#fffbeb;border-left:4px solid var(--orange);border-radius:6px;padding:.55rem .85rem;font-size:.86rem;margin:.4rem 0;color:#92400e}
+.tip-box-g{background:#faf5ff;border-left:4px solid var(--purple);border-radius:6px;padding:.55rem .85rem;font-size:.86rem;margin:.4rem 0;color:#4c1d95}
+.err-box{background:#fff1f2;border-left:4px solid var(--red);border-radius:6px;padding:.55rem .85rem;font-size:.86rem;margin:.4rem 0}
+.quiz-area{background:#f0fdf4;border-radius:8px;padding:.85rem;margin-top:.6rem}
+.quiz-area .qlabel{font-weight:600;color:#15803d;font-size:.88rem;margin-bottom:.5rem}
+.opt-row{display:flex;gap:.4rem;flex-wrap:wrap}
+.g-opt{padding:.35rem .85rem;border-radius:7px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:.82rem;transition:.15s}
+.g-opt:hover{border-color:var(--green);background:#f0fdf4}
+/* Flashcard */
+.fc-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.85rem;align-items:center}
+.fc-controls select{padding:.4rem .75rem;border-radius:8px;border:1.5px solid var(--border);font-size:.85rem}
+.fc-progress{height:5px;background:var(--border);border-radius:3px;margin-bottom:.75rem}
+.fc-bar{height:100%;background:var(--blue);border-radius:3px;transition:.3s}
+.fc-scene{perspective:1000px;width:100%;max-width:500px;height:230px;margin:0 auto 1rem;cursor:pointer}
+.fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:.5s}
+.fc-inner.flipped{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;text-align:center}
+.fc-front{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff}
+.fc-back{background:linear-gradient(135deg,#14532d,#16a34a);color:#fff;transform:rotateY(180deg)}
+.fc-word{font-size:1.6rem;font-weight:700;margin-bottom:.25rem}
+.fc-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:.65rem}
+.fc-counter{font-size:.88rem;color:#64748b;min-width:65px;text-align:center}
+.fc-stat{display:flex;gap:1.5rem;justify-content:center;font-size:.84rem;color:#64748b;margin-top:.5rem}
+/* Drill */
+.drill-stats{display:flex;gap:1.5rem;margin-bottom:1rem;font-size:.88rem;flex-wrap:wrap}
+.drill-box{background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;text-align:center}
+.drill-q{font-size:1rem;font-weight:700;color:#1e3a8a;margin-bottom:.4rem}
+.drill-hint{font-size:.85rem;color:#64748b;margin-bottom:.85rem}
+.drill-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:.6rem}
+.drill-input{padding:.55rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:.95rem;min-width:220px}
+.drill-input:focus{outline:none;border-color:var(--blue)}
+.drill-input.correct{border-color:var(--green);background:#f0fdf4;color:#15803d;font-weight:700}
+.drill-input.wrong{border-color:var(--red);background:#fff1f2}
+/* Exam */
+.exam-score{background:#eff6ff;border-radius:10px;padding:.85rem 1.25rem;text-align:center;font-weight:700;font-size:1rem;color:#1e40af;margin-bottom:1rem;position:sticky;top:0;z-index:10;border:1px solid #bfdbfe}
+.q-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.1rem;margin-bottom:.8rem}
+.q-num{font-size:.75rem;color:#64748b;font-weight:600;margin-bottom:.35rem}
+.q-text{font-weight:600;margin-bottom:.75rem;line-height:1.6}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+@media(max-width:480px){.opts-grid{grid-template-columns:1fr}}
+.opt-btn{padding:.55rem .85rem;border:1.5px solid var(--border);border-radius:7px;background:#fff;cursor:pointer;font-size:.86rem;text-align:left;transition:.15s}
+.opt-btn:hover{border-color:var(--blue);background:#eff6ff}
+.opt-btn.correct{border-color:var(--green)!important;background:#f0fdf4!important;color:#14532d;font-weight:700}
+.opt-btn.wrong{border-color:var(--red)!important;background:#fff1f2!important;color:#9f1239}
+.expl{display:none;background:#fffbeb;border-left:3px solid var(--orange);border-radius:6px;padding:.65rem .9rem;margin-top:.6rem;font-size:.84rem;line-height:1.55}
+.expl.show{display:block}
+/* Tips */
+.tip-section{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem}
+.tip-section h4{color:#1e3a8a;margin-bottom:.65rem;font-size:.95rem}
+.err-list li{margin-bottom:.6rem;font-size:.86rem;line-height:1.55;list-style:disc;margin-left:1.1rem}
+/* Buttons */
+.btn{padding:.45rem 1.1rem;border-radius:8px;border:none;cursor:pointer;font-weight:700;font-size:.84rem;transition:.15s}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{opacity:.88}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{opacity:.88}
+.btn-gray{background:#e2e8f0;color:var(--dark)}.btn-gray:hover{background:#cbd5e1}
+.btn-outline{background:transparent;border:1.5px solid var(--blue);color:#1e40af}.btn-outline:hover{background:#eff6ff}
+.btn-purple{background:var(--purple);color:#fff}.btn-purple:hover{opacity:.88}
+.btn-sm{padding:.3rem .75rem;font-size:.8rem}
+h3{color:#1e3a8a;font-size:1.05rem;margin-bottom:.75rem}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="app-header">
+  <h1>🇬🇧 TIẾNG ANH 9 — HỌC THÔNG MINH 🇻🇳</h1>
+  <p>Từ vựng đầy đủ 12 Unit · Ngữ pháp · Flashcard · Luyện trả bài · Đề thi HK1</p>
+</div>
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('vocab',this)">📖 Từ Vựng</button>
+  <button class="nav-btn" onclick="showTab('grammar',this)">📐 Ngữ Pháp</button>
+  <button class="nav-btn" onclick="showTab('flashcard',this)">🃏 Flashcard</button>
+  <button class="nav-btn" onclick="showTab('drill',this)">✍️ Luyện Trả Bài</button>
+  <button class="nav-btn" onclick="showTab('exam',this)">📝 Đề Thi HK1</button>
+  <button class="nav-btn" onclick="showTab('tips',this)">💡 Mẹo &amp; Lỗi</button>
+</nav>
+
+<!-- ══ TAB 1: VOCAB ══ -->
+<div id="tab-vocab" class="panel active">
+  <div class="search-row">
+    <input id="s-inp" type="text" placeholder="🔍 Tìm từ tiếng Anh hoặc nghĩa tiếng Việt..." oninput="filterVocab()">
+    <button class="btn btn-gray btn-sm" onclick="document.getElementById('s-inp').value='';renderVocab()">Xoá</button>
+  </div>
+  <div class="unit-bar" id="unit-bar"></div>
+  <div style="overflow-x:auto">
+    <table class="vtable">
+      <thead><tr><th>Từ vựng</th><th>Loại từ</th><th>Phiên âm</th><th>Nghĩa TV</th><th>Mẹo nhớ</th><th>🔊</th></tr></thead>
+      <tbody id="vtbody"></tbody>
+    </table>
+  </div>
+  <p id="v-empty" style="display:none;text-align:center;padding:2rem;color:#94a3b8">Không tìm thấy từ nào.</p>
+</div>
+
+<!-- ══ TAB 2: GRAMMAR ══ -->
+<div id="tab-grammar" class="panel">
+  <h3>📐 12 Điểm Ngữ Pháp Trọng Tâm — Học Kì 1</h3>
+  <div id="gram-list"></div>
+</div>
+
+<!-- ══ TAB 3: FLASHCARD ══ -->
+<div id="tab-flashcard" class="panel">
+  <div class="fc-controls">
+    <select id="fc-sel" onchange="fcLoad()"></select>
+    <button class="btn btn-gray btn-sm" onclick="fcShuffle()">🔀 Trộn</button>
+    <button class="btn btn-gray btn-sm" onclick="fcReset()">↩️ Làm lại</button>
+    <button class="btn btn-purple btn-sm" onclick="fcFilterUnknown()">🔁 Ôn từ chưa nhớ</button>
+  </div>
+  <div class="fc-progress"><div class="fc-bar" id="fc-bar" style="width:0%"></div></div>
+  <div class="fc-scene" onclick="fcFlip()">
+    <div class="fc-inner" id="fc-inner">
+      <div class="fc-front">
+        <div class="fc-word" id="fc-word">Chọn Unit để bắt đầu</div>
+        <div style="font-size:.85rem;opacity:.75;margin-top:.5rem" id="fc-ipa"></div>
+        <div style="margin-top:.5rem" id="fc-type"></div>
+        <div style="margin-top:1rem;font-size:.78rem;opacity:.65">👆 Nhấp để lật xem nghĩa</div>
+      </div>
+      <div class="fc-back">
+        <div style="font-size:1.2rem;font-weight:700;margin-bottom:.35rem" id="fc-vi"></div>
+        <div style="font-size:.85rem;opacity:.85;font-style:italic;margin-bottom:.5rem" id="fc-memo"></div>
+        <div style="font-size:.8rem;opacity:.8">📝 <span id="fc-ex"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-nav">
+    <button class="btn btn-gray btn-sm" onclick="fcPrev()">← Trước</button>
+    <span class="fc-counter" id="fc-counter">0 / 0</span>
+    <button class="btn btn-blue btn-sm" onclick="fcNext()">Tiếp →</button>
+  </div>
+  <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-sm" style="background:#f0fdf4;color:#15803d;border:1.5px solid var(--green)" onclick="fcMark('know')">✅ Đã nhớ</button>
+    <button class="btn btn-sm" style="background:#fff1f2;color:#9f1239;border:1.5px solid var(--red)" onclick="fcMark('unk')">❌ Chưa nhớ</button>
+  </div>
+  <div class="fc-stat">
+    <span>✅ <strong id="fc-k">0</strong></span>
+    <span>❌ <strong id="fc-u">0</strong></span>
+    <span>⬜ Chưa xem: <strong id="fc-unseen">0</strong></span>
+  </div>
+</div>
+
+<!-- ══ TAB 4: DRILL ══ -->
+<div id="tab-drill" class="panel">
+  <div class="drill-stats">
+    <span>✅ Đúng: <strong id="d-cor">0</strong></span>
+    <span>❌ Sai: <strong id="d-wro">0</strong></span>
+    <span>📊 Tổng: <strong id="d-tot">0</strong></span>
+  </div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
+    <select id="dr-sel" style="padding:.4rem .75rem;border-radius:8px;border:1.5px solid var(--border)" onchange="drillLoad()"></select>
+    <button class="btn btn-blue btn-sm" onclick="drillLoad()">🎲 Bài mới</button>
+    <button class="btn btn-gray btn-sm" onclick="drillReset()">↩️ Reset điểm</button>
+  </div>
+  <div class="drill-box">
+    <div class="drill-q" id="d-q">Nhấn "Bài mới" để bắt đầu!</div>
+    <div class="drill-hint" id="d-hint"></div>
+    <div class="drill-row">
+      <input class="drill-input" id="d-inp" type="text" placeholder="Nhập từ tiếng Anh..." onkeydown="if(event.key==='Enter')drillCheck()">
+      <button class="btn btn-blue" onclick="drillCheck()">Kiểm tra ✓</button>
+    </div>
+    <button class="btn btn-gray btn-sm" onclick="drillHint()" style="margin-bottom:.5rem">💡 Gợi ý chữ cái đầu</button>
+    <div id="d-fb" style="min-height:1.4rem;font-size:.9rem;font-weight:600;margin-top:.25rem"></div>
+    <button class="btn btn-green btn-sm" id="d-next" onclick="drillNext()" style="display:none;margin-top:.5rem">→ Từ tiếp theo</button>
+  </div>
+</div>
+
+<!-- ══ TAB 5: EXAM ══ -->
+<div id="tab-exam" class="panel">
+  <div class="exam-score">📊 Điểm: <span id="e-cor">0</span>/<span id="e-tot">0</span> &nbsp;|&nbsp; <span id="e-pct">–</span></div>
+  <div id="e-qs"></div>
+</div>
+
+<!-- ══ TAB 6: TIPS ══ -->
+<div id="tab-tips" class="panel">
+  <div class="tip-section">
+    <h4>⚠️ 15 Lỗi Thường Gặp Nhất Trong Bài Thi</h4>
+    <ul class="err-list" id="err-list"></ul>
+  </div>
+  <div class="tip-section">
+    <h4>🧠 Bảng phân biệt cấu trúc hay nhầm</h4>
+    <div style="overflow-x:auto">
+    <table class="vtable" style="font-size:.83rem">
+      <tr style="background:#1e3a8a"><th>Cấu trúc</th><th>Dùng khi nào</th><th>Ví dụ</th></tr>
+      <tr><td><strong>Although/Even though</strong></td><td>+ Mệnh đề (S+V)</td><td>Although it rained, we went out.</td></tr>
+      <tr><td><strong>In spite of / Despite</strong></td><td>+ Cụm danh từ / V-ing</td><td>Despite the rain, we went out.</td></tr>
+      <tr><td><strong>Because</strong></td><td>+ Mệnh đề (S+V)</td><td>Because she was tired, she slept.</td></tr>
+      <tr><td><strong>Because of / Due to</strong></td><td>+ Cụm danh từ</td><td>Because of tiredness, she slept.</td></tr>
+      <tr><td><strong>-ed adjective</strong></td><td>Người/vật bị tác động</td><td>I feel bored. (Tôi buồn chán)</td></tr>
+      <tr><td><strong>-ing adjective</strong></td><td>Vật gây ra cảm xúc</td><td>The film is boring. (Phim chán)</td></tr>
+      <tr><td><strong>Used to + V</strong></td><td>Thói quen quá khứ (không còn nữa)</td><td>I used to play chess.</td></tr>
+      <tr><td><strong>Be used to + V-ing</strong></td><td>Đã quen với việc gì (hiện tại)</td><td>I am used to waking up early.</td></tr>
+      <tr><td><strong>Câu hỏi gián tiếp</strong></td><td>Trật tự: Wh + S + V (khẳng định)</td><td>She asked where he lived.</td></tr>
+      <tr><td><strong>Wish + V-ed/were</strong></td><td>Ước điều trái với hiện tại</td><td>I wish I were taller.</td></tr>
+      <tr><td><strong>Say vs Tell</strong></td><td>Say = không cần object. Tell = cần object.</td><td>He told me. / She said that.</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="tip-section">
+    <h4>📚 Bí kíp học từ vựng nhớ lâu</h4>
+    <ul class="err-list">
+      <li><strong>Nhóm theo chủ đề:</strong> Học 5-7 từ cùng topic, não liên kết dễ hơn.</li>
+      <li><strong>Dùng câu chuyện hài hước:</strong> "Anh Ti San artisan làm thợ" → nhớ cực lâu.</li>
+      <li><strong>Flashcard 15 phút/ngày:</strong> Spaced repetition — ôn đúng lúc sắp quên.</li>
+      <li><strong>Nói to khi học:</strong> Đọc thành tiếng giúp não ghi nhớ tốt hơn đọc thầm 3 lần.</li>
+      <li><strong>Học qua ví dụ:</strong> "She embroiders silk" nhớ hơn "embroider = thêu".</li>
+      <li><strong>Ôn lại cách quãng:</strong> Sau 1h, 1 ngày, 3 ngày, 1 tuần → nhớ 90%.</li>
+    </ul>
+  </div>
+</div>
+</div><!-- end .app -->
+
+<script>
+// ════════════════════ DATA ════════════════════
+
+const UNITS=[
+  {id:1,name:"Local Environment"},
+  {id:2,name:"City Life"},
+  {id:3,name:"Teen Stress & Pressure"},
+  {id:4,name:"Life in the Past"},
+  {id:5,name:"Wonders of Viet Nam"},
+  {id:6,name:"Viet Nam: Then and Now"},
+  {id:7,name:"Recipes & Eating Habits"},
+  {id:8,name:"Tourism"},
+  {id:9,name:"English Speaking Countries"},
+  {id:10,name:"Space Travel"},
+  {id:11,name:"Changing Roles in Society"},
+  {id:12,name:"My Future Career"},
+];
+
+const VOCAB=[
+  // Unit 1
+  {u:1,w:"artisan",t:"n",ipa:"/ˌɑːtɪˈzæn/",vi:"Thợ thủ công, nghệ nhân",memo:"'Anh Ti San' làm nghề khéo tay",ex:"Local artisans make beautiful pottery."},
+  {u:1,w:"craft village",t:"n",ipa:"/krɑːft ˈvɪlɪdʒ/",vi:"Làng nghề truyền thống",memo:"Craft = nghề thủ công",ex:"We visited a famous craft village near Hanoi."},
+  {u:1,w:"embroider",t:"v",ipa:"/ɪmˈbrɔɪdər/",vi:"Thêu (hoa văn)",memo:"'em BROID er' → em thêu hoa",ex:"She embroiders beautiful flowers on silk."},
+  {u:1,w:"lacquerware",t:"n",ipa:"/ˈlækərweər/",vi:"Đồ sơn mài",memo:"Lacquer = sơn mài, ware = đồ vật",ex:"Vietnamese lacquerware is famous worldwide."},
+  {u:1,w:"preserve",t:"v",ipa:"/prɪˈzɜːrv/",vi:"Bảo tồn, gìn giữ",memo:"Pre-serve → phục vụ trước = giữ lại",ex:"We must preserve traditional crafts."},
+  {u:1,w:"ceramics",t:"n",ipa:"/səˈræmɪks/",vi:"Đồ gốm sứ",memo:"Cera tiếng Hy Lạp = đất sét",ex:"Bat Trang ceramics are famous worldwide."},
+  {u:1,w:"conical hat",t:"n",ipa:"/ˈkɒnɪkl hæt/",vi:"Nón lá",memo:"Conical = hình nón → nón lá",ex:"The conical hat symbolises Vietnam."},
+  {u:1,w:"weave",t:"v",ipa:"/wiːv/",vi:"Dệt (vải, lụa)",memo:"W+eave → wove/woven (bất quy tắc)",ex:"Artisans weave silk on traditional looms."},
+  {u:1,w:"memorable",t:"adj",ipa:"/ˈmemərəbl/",vi:"Đáng nhớ, khó quên",memo:"Memory + able → có thể nhớ được",ex:"It was a memorable trip."},
+  {u:1,w:"heritage",t:"n",ipa:"/ˈherɪtɪdʒ/",vi:"Di sản văn hoá",memo:"Heir = người thừa kế → di sản thừa kế",ex:"Hue is a UNESCO World Heritage Site."},
+  {u:1,w:"unique",t:"adj",ipa:"/juːˈniːk/",vi:"Độc đáo, duy nhất",memo:"Uni = một → chỉ có một không hai",ex:"Each village has its unique products."},
+  {u:1,w:"outstanding",t:"adj",ipa:"/ˌaʊtˈstændɪŋ/",vi:"Nổi bật, xuất sắc",memo:"Out + standing → đứng ra khỏi đám đông",ex:"She is an outstanding student."},
+  {u:1,w:"recommend",t:"v",ipa:"/ˌrekəˈmend/",vi:"Đề xuất, giới thiệu",memo:"Re-commend → giới thiệu lại cho ai đó",ex:"I recommend visiting Hoi An."},
+  {u:1,w:"silk",t:"n",ipa:"/sɪlk/",vi:"Lụa tơ tằm",memo:"Silk ngắn gọn, dễ nhớ",ex:"Ha Dong silk is very soft and beautiful."},
+  {u:1,w:"communal house",t:"n",ipa:"/kəˈmjuːnl haʊs/",vi:"Đình làng",memo:"Communal = cộng đồng → nhà của làng",ex:"The communal house is the village heart."},
+  // Unit 2
+  {u:2,w:"cosmopolitan",t:"adj",ipa:"/ˌkɒzməˈpɒlɪtən/",vi:"Đa văn hoá, quốc tế",memo:"Cosmos+polis = thành phố thế giới",ex:"Sydney is a very cosmopolitan city."},
+  {u:2,w:"multicultural",t:"adj",ipa:"/ˌmʌltiˈkʌltʃərəl/",vi:"Đa văn hoá",memo:"Multi = nhiều + cultural",ex:"Canada is a multicultural country."},
+  {u:2,w:"skyscraper",t:"n",ipa:"/ˈskaɪskreɪpər/",vi:"Toà nhà chọc trời",memo:"Sky=bầu trời, scrape=cào → cào trời",ex:"New York is famous for its skyscrapers."},
+  {u:2,w:"traffic congestion",t:"n",ipa:"/ˈtræfɪk kənˈdʒestʃən/",vi:"Tắc đường",memo:"Congest = nghẹt → giao thông nghẹt",ex:"Traffic congestion is a big city problem."},
+  {u:2,w:"urbanisation",t:"n",ipa:"/ˌɜːrbənɪˈzeɪʃn/",vi:"Đô thị hoá",memo:"Urban = đô thị + isation = quá trình",ex:"Rapid urbanisation causes social problems."},
+  {u:2,w:"pollution",t:"n",ipa:"/pəˈluːʃn/",vi:"Ô nhiễm môi trường",memo:"Pollute → pollution",ex:"Air pollution is getting worse."},
+  {u:2,w:"facility",t:"n",ipa:"/fəˈsɪlɪti/",vi:"Cơ sở vật chất, tiện nghi",memo:"Facil = dễ → thứ giúp cuộc sống dễ hơn",ex:"The school has excellent sports facilities."},
+  {u:2,w:"reliable",t:"adj",ipa:"/rɪˈlaɪəbl/",vi:"Đáng tin cậy",memo:"Rely = tin cậy + able",ex:"The public transport here is reliable."},
+  {u:2,w:"infrastructure",t:"n",ipa:"/ˈɪnfrəstrʌktʃər/",vi:"Cơ sở hạ tầng",memo:"Infra = bên dưới + structure",ex:"A city needs good infrastructure."},
+  {u:2,w:"suburb",t:"n",ipa:"/ˈsʌbɜːrb/",vi:"Vùng ngoại ô",memo:"Sub = ngoài + urb = thành phố",ex:"Many families prefer living in suburbs."},
+  {u:2,w:"commute",t:"v",ipa:"/kəˈmjuːt/",vi:"Đi lại hàng ngày (nhà→nơi làm)",memo:"Commuter = người đi tàu xe hàng ngày",ex:"Many people commute from suburbs."},
+  {u:2,w:"diversity",t:"n",ipa:"/daɪˈvɜːrsəti/",vi:"Sự đa dạng",memo:"Diverse → diversity",ex:"Cultural diversity makes cities vibrant."},
+  {u:2,w:"liveable",t:"adj",ipa:"/ˈlɪvəbl/",vi:"Dễ sinh sống, đáng sống",memo:"Live + able → có thể sống tốt",ex:"Melbourne is one of the most liveable cities."},
+  {u:2,w:"residents",t:"n",ipa:"/ˈrezɪdənts/",vi:"Cư dân, người địa phương",memo:"Reside = sinh sống + nts",ex:"Local residents are proud of their city."},
+  {u:2,w:"metropolitan",t:"adj",ipa:"/ˌmetrəˈpɒlɪtən/",vi:"Thuộc về đô thị lớn",memo:"Metro = thành phố lớn",ex:"The metropolitan area has 10 million people."},
+  // Unit 3
+  {u:3,w:"pressure",t:"n",ipa:"/ˈpreʃər/",vi:"Áp lực",memo:"Press = ép + ure → lực ép xuống",ex:"Students face a lot of exam pressure."},
+  {u:3,w:"stressed",t:"adj",ipa:"/strest/",vi:"Căng thẳng (cảm giác người bị tác động)",memo:"-ed: người bị tác động → I feel stressed",ex:"She felt very stressed before the test."},
+  {u:3,w:"stressful",t:"adj",ipa:"/ˈstresfəl/",vi:"Gây căng thẳng (mô tả sự vật)",memo:"-ful: The exam is stressful (bài thi gây stress)",ex:"City life can be very stressful."},
+  {u:3,w:"overwhelmed",t:"adj",ipa:"/ˌoʊvərˈwelmd/",vi:"Bị quá tải, choáng ngợp",memo:"Over=quá + whelm=chìm → chìm vì quá nhiều",ex:"She felt overwhelmed with homework."},
+  {u:3,w:"counselor",t:"n",ipa:"/ˈkaʊnsələr/",vi:"Chuyên viên tư vấn tâm lý",memo:"Council = hội đồng → người tư vấn",ex:"Talk to a school counselor if stressed."},
+  {u:3,w:"coping strategy",t:"n",ipa:"/ˈkoʊpɪŋ ˈstrætɪdʒi/",vi:"Chiến lược đối phó",memo:"Cope = đối phó + strategy = kế hoạch",ex:"Exercise is a good coping strategy."},
+  {u:3,w:"mental health",t:"n",ipa:"/ˈmentl helθ/",vi:"Sức khoẻ tâm thần",memo:"Mental = tâm thần + health = sức khoẻ",ex:"We should take care of our mental health."},
+  {u:3,w:"independent",t:"adj",ipa:"/ˌɪndɪˈpendənt/",vi:"Độc lập, tự lập",memo:"In = không + depend = phụ thuộc",ex:"Teenagers need to be more independent."},
+  {u:3,w:"peer pressure",t:"n",ipa:"/pɪər ˈpreʃər/",vi:"Áp lực từ bạn bè đồng trang lứa",memo:"Peer = bạn cùng lứa + pressure",ex:"Peer pressure can lead teens to bad habits."},
+  {u:3,w:"anxiety",t:"n",ipa:"/æŋˈzaɪɪti/",vi:"Lo lắng, lo âu",memo:"Anxious → anxiety",ex:"Many students suffer from exam anxiety."},
+  {u:3,w:"motivation",t:"n",ipa:"/ˌmoʊtɪˈveɪʃn/",vi:"Động lực",memo:"Motive = lý do → thứ cho bạn lý do hành động",ex:"Good grades give students motivation."},
+  {u:3,w:"relaxation",t:"n",ipa:"/ˌriːlækˈseɪʃn/",vi:"Sự thư giãn",memo:"Relax → relaxation",ex:"Music is a great form of relaxation."},
+  {u:3,w:"time management",t:"n",ipa:"/taɪm ˈmænɪdʒmənt/",vi:"Quản lý thời gian",memo:"Manage = quản lý + ment",ex:"Good time management reduces stress."},
+  {u:3,w:"depressed",t:"adj",ipa:"/dɪˈprest/",vi:"Chán nản, trầm cảm",memo:"De=xuống + press=ép → bị đè về cảm xúc",ex:"She felt depressed after failing the test."},
+  {u:3,w:"face up to",t:"phr",ipa:"/feɪs ʌp tuː/",vi:"Dũng cảm đối mặt với",memo:"Face = đối mặt + up = thẳng đứng",ex:"You must face up to your problems."},
+  // Unit 4
+  {u:4,w:"pastime",t:"n",ipa:"/ˈpɑːstaɪm/",vi:"Trò giải trí, thú vui giải khuây",memo:"Pass time = giết thời gian → thú vui",ex:"Reading was a popular pastime in the past."},
+  {u:4,w:"board game",t:"n",ipa:"/bɔːrd ɡeɪm/",vi:"Trò chơi cờ bàn",memo:"Board = bàn gỗ → trò trên bàn",ex:"Chess is a classic board game."},
+  {u:4,w:"folk game",t:"n",ipa:"/foʊk ɡeɪm/",vi:"Trò chơi dân gian",memo:"Folk = dân gian (folk music = nhạc dân gian)",ex:"O an quan is a Vietnamese folk game."},
+  {u:4,w:"chore",t:"n",ipa:"/tʃɔːr/",vi:"Việc nhà, công việc vặt",memo:"'chó' làm việc nhà nhàm chán",ex:"Children used to help with household chores."},
+  {u:4,w:"convenient",t:"adj",ipa:"/kənˈviːniənt/",vi:"Tiện lợi, thuận tiện",memo:"Con-VENI-ent → nhanh gọn tiện",ex:"Modern appliances make life more convenient."},
+  {u:4,w:"socialise",t:"v",ipa:"/ˈsoʊʃəlaɪz/",vi:"Giao lưu, gặp gỡ xã hội",memo:"Social = xã hội + ise",ex:"People used to socialise at community events."},
+  {u:4,w:"superstition",t:"n",ipa:"/ˌsuːpərˈstɪʃn/",vi:"Mê tín dị đoan",memo:"Super = trên + stition → tin vào thứ vô lý",ex:"Some old superstitions are still believed."},
+  {u:4,w:"custom",t:"n",ipa:"/ˈkʌstəm/",vi:"Phong tục, tập quán",memo:"Custom = quen thuộc → thứ quen làm",ex:"It is a custom to bow when greeting elders."},
+  {u:4,w:"ancestor",t:"n",ipa:"/ˈænsestər/",vi:"Tổ tiên, ông bà tổ",memo:"Ante = trước → người đến trước",ex:"Vietnamese people worship their ancestors."},
+  {u:4,w:"decade",t:"n",ipa:"/ˈdekeɪd/",vi:"Thập kỷ (10 năm)",memo:"Deca = 10 (như December = tháng 10 La Mã)",ex:"Life has changed over the past decade."},
+  {u:4,w:"rural",t:"adj",ipa:"/ˈrʊərəl/",vi:"Thuộc về nông thôn",memo:"Rural ≠ Urban (đô thị)",ex:"Rural life in the past was peaceful."},
+  {u:4,w:"worship",t:"v",ipa:"/ˈwɜːrʃɪp/",vi:"Thờ cúng, tôn thờ",memo:"Worth + ship → tôn thờ thứ có giá trị",ex:"They worship at the temple every new year."},
+  {u:4,w:"blacksmith",t:"n",ipa:"/ˈblæksmɪθ/",vi:"Thợ rèn",memo:"Black=đen (than) + smith=thợ",ex:"The village blacksmith made tools by hand."},
+  {u:4,w:"tradition",t:"n",ipa:"/trəˈdɪʃn/",vi:"Truyền thống",memo:"Tra-DI-tion → 'truyền di' từ đời này sang đời khác",ex:"Tet is an important Vietnamese tradition."},
+  {u:4,w:"nomadic",t:"adj",ipa:"/noʊˈmædɪk/",vi:"Du mục, lang thang",memo:"Noma = lang thang → sống du mục",ex:"Nomadic people moved from place to place."},
+  // Unit 5
+  {u:5,w:"limestone",t:"n",ipa:"/ˈlaɪmstoʊn/",vi:"Đá vôi",memo:"Lime = vôi + stone = đá",ex:"Ha Long Bay has limestone islands."},
+  {u:5,w:"stunning",t:"adj",ipa:"/ˈstʌnɪŋ/",vi:"Tuyệt đẹp, choáng ngợp",memo:"Stun = làm choáng → đẹp đến choáng",ex:"The view from the mountain is stunning."},
+  {u:5,w:"ancient",t:"adj",ipa:"/ˈeɪnʃənt/",vi:"Cổ đại, cổ xưa",memo:"An-CIENT /eɪ/ → cổ đại xa xưa",ex:"Hue has many ancient royal tombs."},
+  {u:5,w:"imperial",t:"adj",ipa:"/ɪmˈpɪəriəl/",vi:"Hoàng gia, đế quốc",memo:"Emperor → imperial = liên quan đến vua",ex:"The Imperial City of Hue is magnificent."},
+  {u:5,w:"cave",t:"n",ipa:"/keɪv/",vi:"Hang động",memo:"Cave ngắn gọn = hang",ex:"Son Doong is the world's largest cave."},
+  {u:5,w:"terraced fields",t:"n",ipa:"/ˈterəst fiːldz/",vi:"Ruộng bậc thang",memo:"Terrace = bậc thang → ruộng theo từng bậc",ex:"The terraced fields in Sapa are breathtaking."},
+  {u:5,w:"ecosystem",t:"n",ipa:"/ˈiːkoʊsɪstəm/",vi:"Hệ sinh thái",memo:"Eco = sinh thái + system",ex:"Phong Nha has a rich cave ecosystem."},
+  {u:5,w:"abundant",t:"adj",ipa:"/əˈbʌndənt/",vi:"Phong phú, dồi dào",memo:"Ab-BUND-ant → bồng bềnh nhiều",ex:"Vietnam is abundant in natural resources."},
+  {u:5,w:"fascinating",t:"adj",ipa:"/ˈfæsɪneɪtɪŋ/",vi:"Hấp dẫn, lôi cuốn",memo:"Fascinate = mê hoặc + ing",ex:"The history of Hue is truly fascinating."},
+  {u:5,w:"magnificent",t:"adj",ipa:"/mæɡˈnɪfɪsənt/",vi:"Hùng vĩ, tráng lệ",memo:"Magni = lớn → lớn lao tuyệt vời",ex:"The Perfume Pagoda is magnificent."},
+  {u:5,w:"biodiversity",t:"n",ipa:"/ˌbaɪoʊdaɪˈvɜːrsɪti/",vi:"Đa dạng sinh học",memo:"Bio = sinh vật + diversity",ex:"Cuc Phuong has great biodiversity."},
+  {u:5,w:"scenic",t:"adj",ipa:"/ˈsiːnɪk/",vi:"Có cảnh đẹp",memo:"Scene = cảnh + ic",ex:"The coastal road offers scenic views."},
+  {u:5,w:"heritage site",t:"n",ipa:"/ˈherɪtɪdʒ saɪt/",vi:"Di sản (thế giới)",memo:"Heritage = di sản + site = địa điểm",ex:"Hoi An is a UNESCO Heritage Site."},
+  {u:5,w:"inscription",t:"n",ipa:"/ɪnˈskrɪpʃn/",vi:"Văn bia, chữ khắc",memo:"In + scribe = viết → khắc vào đá",ex:"Ancient inscriptions were found in caves."},
+  {u:5,w:"UNESCO",t:"n",ipa:"/juːˈneskəʊ/",vi:"Tổ chức GD, KH & Văn hoá LHQ",memo:"UN + ESCO → di sản thế giới",ex:"Several Vietnamese sites are UNESCO-listed."},
+  // Unit 6
+  {u:6,w:"innovation",t:"n",ipa:"/ˌɪnəˈveɪʃn/",vi:"Sự đổi mới, sáng tạo",memo:"Inno = mới (novus La-tinh)",ex:"Technology innovation changed our lives."},
+  {u:6,w:"renovation",t:"n",ipa:"/ˌrenəˈveɪʃn/",vi:"Cải tạo, sửa chữa lại",memo:"Re = lại + nova = mới → làm mới lại",ex:"The old house needs major renovation."},
+  {u:6,w:"economic growth",t:"n",ipa:"/ˌiːkəˈnɒmɪk ɡroʊθ/",vi:"Tăng trưởng kinh tế",memo:"Economy + growth",ex:"Vietnam achieved rapid economic growth."},
+  {u:6,w:"literacy rate",t:"n",ipa:"/ˈlɪtərəsi reɪt/",vi:"Tỷ lệ biết chữ",memo:"Literate = biết chữ + rate",ex:"Vietnam's literacy rate has increased."},
+  {u:6,w:"life expectancy",t:"n",ipa:"/laɪf ɪkˈspektənsi/",vi:"Tuổi thọ trung bình",memo:"Expect = kỳ vọng → tuổi thọ kỳ vọng",ex:"Life expectancy in Vietnam has risen."},
+  {u:6,w:"poverty",t:"n",ipa:"/ˈpɒvərti/",vi:"Đói nghèo",memo:"Poor → poverty",ex:"The government has reduced poverty."},
+  {u:6,w:"significant",t:"adj",ipa:"/sɪɡˈnɪfɪkənt/",vi:"Đáng kể, quan trọng",memo:"Sign = dấu hiệu → đủ lớn để chú ý",ex:"There has been significant progress."},
+  {u:6,w:"dramatically",t:"adv",ipa:"/drəˈmætɪkli/",vi:"Một cách ấn tượng, đáng kể",memo:"Drama = kịch tính → rất kịch tính",ex:"Living standards improved dramatically."},
+  {u:6,w:"sustainable",t:"adj",ipa:"/səˈsteɪnəbl/",vi:"Bền vững",memo:"Sustain = duy trì + able",ex:"We need sustainable development."},
+  {u:6,w:"emission",t:"n",ipa:"/ɪˈmɪʃn/",vi:"Sự phát thải (khí thải)",memo:"Emit = phát ra + sion",ex:"Carbon emissions cause climate change."},
+  {u:6,w:"modernise",t:"v",ipa:"/ˈmɒdərnaɪz/",vi:"Hiện đại hoá",memo:"Modern + ise → làm cho hiện đại",ex:"Vietnam is working to modernise its economy."},
+  {u:6,w:"industrialise",t:"v",ipa:"/ɪnˈdʌstriəlaɪz/",vi:"Công nghiệp hoá",memo:"Industry + alise",ex:"Asian countries industrialised quickly."},
+  {u:6,w:"doi moi",t:"n",ipa:"/dɔɪ mɔɪ/",vi:"Đổi Mới (cải cách 1986)",memo:"Đổi = change, Mới = new",ex:"Doi Moi transformed Vietnam's economy."},
+  {u:6,w:"urbanise",t:"v",ipa:"/ˈɜːrbənaɪz/",vi:"Đô thị hoá",memo:"Urban + ise → biến thành đô thị",ex:"Many villages have been rapidly urbanised."},
+  {u:6,w:"infrastructure",t:"n",ipa:"/ˈɪnfrəstrʌktʃər/",vi:"Cơ sở hạ tầng",memo:"Infra = bên dưới + structure",ex:"Modern infrastructure supports development."},
+  // Unit 7
+  {u:7,w:"ingredient",t:"n",ipa:"/ɪnˈɡriːdiənt/",vi:"Nguyên liệu nấu ăn",memo:"In + gredient → thứ cho vào món ăn",ex:"What are the main ingredients of pho?"},
+  {u:7,w:"recipe",t:"n",ipa:"/ˈresɪpi/",vi:"Công thức nấu ăn",memo:"Reci = receive → nhận công thức từ đầu bếp",ex:"My grandmother has a secret recipe."},
+  {u:7,w:"cuisine",t:"n",ipa:"/kwɪˈziːn/",vi:"Ẩm thực, phong cách nấu ăn",memo:"Tiếng Pháp 'kwi-zeen' = ẩm thực",ex:"Vietnamese cuisine uses fresh herbs."},
+  {u:7,w:"staple food",t:"n",ipa:"/ˈsteɪpl fuːd/",vi:"Lương thực chính",memo:"Staple = chính yếu → thức ăn không thể thiếu",ex:"Rice is the staple food in Vietnam."},
+  {u:7,w:"marinate",t:"v",ipa:"/ˈmærɪneɪt/",vi:"Ướp (thịt, cá với gia vị)",memo:"Marine = biển → ngâm trong nước",ex:"Marinate the chicken for 30 minutes."},
+  {u:7,w:"simmer",t:"v",ipa:"/ˈsɪmər/",vi:"Đun sôi nhỏ lửa",memo:"Simmer = nấu yên tĩnh nhỏ lửa",ex:"Simmer the broth for two hours."},
+  {u:7,w:"garnish",t:"v",ipa:"/ˈɡɑːrnɪʃ/",vi:"Trang trí món ăn",memo:"Garni tiếng Pháp = trang trí",ex:"Garnish the dish with fresh herbs."},
+  {u:7,w:"nutritious",t:"adj",ipa:"/njuːˈtrɪʃəs/",vi:"Bổ dưỡng, giàu dinh dưỡng",memo:"Nutri = dinh dưỡng + tious",ex:"Vegetables are nutritious and healthy."},
+  {u:7,w:"vegetarian",t:"n",ipa:"/ˌvedʒɪˈteəriən/",vi:"Người ăn chay",memo:"Vegeta = rau củ → người chỉ ăn rau",ex:"She has been a vegetarian for five years."},
+  {u:7,w:"appetite",t:"n",ipa:"/ˈæpɪtaɪt/",vi:"Sự thèm ăn, khẩu vị",memo:"Appe + tite → 'ăn tíu' → cảm giác thèm ăn",ex:"Fresh air gives you a healthy appetite."},
+  {u:7,w:"bland",t:"adj",ipa:"/blænd/",vi:"Nhạt nhẽo (không có vị)",memo:"Bland = vô vị, không ấn tượng",ex:"Western food can seem bland to Vietnamese."},
+  {u:7,w:"spicy",t:"adj",ipa:"/ˈspaɪsi/",vi:"Cay nồng",memo:"Spice = gia vị cay → spicy = đầy gia vị cay",ex:"Vietnamese food is often spicy."},
+  {u:7,w:"exotic",t:"adj",ipa:"/ɪɡˈzɒtɪk/",vi:"Kỳ lạ, xa lạ",memo:"Exo = từ bên ngoài → từ nơi xa lạ",ex:"Durian is an exotic fruit."},
+  {u:7,w:"culinary",t:"adj",ipa:"/ˈkʌlɪnəri/",vi:"Thuộc về nấu ăn",memo:"Culina La-tinh = nhà bếp",ex:"Vietnam has rich culinary traditions."},
+  {u:7,w:"portion",t:"n",ipa:"/ˈpɔːrʃn/",vi:"Khẩu phần, phần ăn",memo:"Port = phần → phần thức ăn được chia",ex:"A portion of pho is enough for lunch."},
+  // Unit 8
+  {u:8,w:"ecotourism",t:"n",ipa:"/ˈiːkoʊtʊərɪzəm/",vi:"Du lịch sinh thái",memo:"Eco = sinh thái + tourism",ex:"Ecotourism is growing in Vietnam."},
+  {u:8,w:"itinerary",t:"n",ipa:"/aɪˈtɪnəreri/",vi:"Lịch trình chuyến đi",memo:"Itiner = hành trình → lịch trình",ex:"Our tour itinerary includes three cities."},
+  {u:8,w:"sightseeing",t:"n",ipa:"/ˈsaɪtsiːɪŋ/",vi:"Tham quan, ngắm cảnh",memo:"Sight = cảnh + seeing = xem",ex:"We spent the whole day sightseeing."},
+  {u:8,w:"accommodation",t:"n",ipa:"/əˌkɒməˈdeɪʃn/",vi:"Chỗ ở, nơi lưu trú",memo:"Accommodate = cung cấp chỗ",ex:"The accommodation includes breakfast."},
+  {u:8,w:"tourist attraction",t:"n",ipa:"/ˈtʊərɪst əˈtrækʃn/",vi:"Điểm tham quan",memo:"Attract = thu hút → nơi thu hút khách",ex:"The Old Quarter is Hanoi's top attraction."},
+  {u:8,w:"souvenir",t:"n",ipa:"/ˌsuːvəˈnɪər/",vi:"Đồ lưu niệm",memo:"Tiếng Pháp 'souvenir' = ký ức",ex:"I bought silk souvenirs for my family."},
+  {u:8,w:"hospitality",t:"n",ipa:"/ˌhɒspɪˈtæləti/",vi:"Sự hiếu khách",memo:"Hospital = nơi tiếp đón → lòng hiếu khách",ex:"Vietnamese are known for their hospitality."},
+  {u:8,w:"sustainable tourism",t:"n",ipa:"/səˈsteɪnəbl ˈtʊərɪzəm/",vi:"Du lịch bền vững",memo:"Sustainable = lâu dài",ex:"Sustainable tourism protects nature."},
+  {u:8,w:"off the beaten track",t:"exp",ipa:"/ɒf ðə ˈbiːtən træk/",vi:"Nơi hẻo lánh, ít người biết",memo:"Beaten track = đường mòn → đi lối khác",ex:"We found a beautiful village off the beaten track."},
+  {u:8,w:"package tour",t:"n",ipa:"/ˈpækɪdʒ tʊər/",vi:"Tour trọn gói",memo:"Package = gói → tour đã gói sẵn",ex:"We booked a package tour to Da Nang."},
+  {u:8,w:"visa",t:"n",ipa:"/ˈviːzə/",vi:"Thị thực, visa",memo:"Visa La-tinh = đã nhìn thấy/cho phép",ex:"British tourists need a visa for Vietnam."},
+  {u:8,w:"currency",t:"n",ipa:"/ˈkʌrənsi/",vi:"Tiền tệ",memo:"Current = hiện tại → tiền đang lưu hành",ex:"The currency of Vietnam is the dong."},
+  {u:8,w:"brochure",t:"n",ipa:"/ˈbroʊʃər/",vi:"Tờ rơi, sách nhỏ quảng cáo",memo:"Bro + chure → tờ giới thiệu",ex:"I picked up a tourism brochure."},
+  {u:8,w:"heritage tourism",t:"n",ipa:"/ˈherɪtɪdʒ ˈtʊərɪzəm/",vi:"Du lịch di sản văn hoá",memo:"Heritage = di sản + tourism",ex:"Heritage tourism attracts millions."},
+  {u:8,w:"stunning scenery",t:"n",ipa:"/ˈstʌnɪŋ ˈsiːnəri/",vi:"Phong cảnh tuyệt đẹp",memo:"Scenery = toàn bộ cảnh quan (không đếm được)",ex:"Ha Long Bay has stunning scenery."},
+  // Unit 9
+  {u:9,w:"bilingual",t:"adj",ipa:"/baɪˈlɪŋɡwəl/",vi:"Biết 2 ngôn ngữ",memo:"Bi = 2 + lingual = ngôn ngữ",ex:"Canada has a bilingual policy."},
+  {u:9,w:"indigenous",t:"adj",ipa:"/ɪnˈdɪdʒɪnəs/",vi:"Bản địa",memo:"Indi = trong + genous = sinh ra → bản địa",ex:"Aboriginal people are indigenous Australians."},
+  {u:9,w:"dialect",t:"n",ipa:"/ˈdaɪəlekt/",vi:"Phương ngữ, tiếng địa phương",memo:"Di = khác + alect = nói",ex:"British and American have different dialects."},
+  {u:9,w:"accent",t:"n",ipa:"/ˈæksənt/",vi:"Giọng (phát âm)",memo:"Accent = nhấn mạnh → cách nhấn từ",ex:"She has a strong Scottish accent."},
+  {u:9,w:"folklore",t:"n",ipa:"/ˈfoʊklɔːr/",vi:"Văn hoá dân gian, truyện dân gian",memo:"Folk = dân gian + lore = tri thức",ex:"Each country has its own rich folklore."},
+  {u:9,w:"abbreviation",t:"n",ipa:"/əˌbriːviˈeɪʃn/",vi:"Từ viết tắt",memo:"Abbreviate = rút ngắn → USA, UK",ex:"FBI is an abbreviation."},
+  {u:9,w:"slang",t:"n",ipa:"/slæŋ/",vi:"Tiếng lóng",memo:"Slang = ngôn ngữ phi chính thức",ex:"Australian slang can be hard to understand."},
+  {u:9,w:"landmark",t:"n",ipa:"/ˈlændmɑːrk/",vi:"Địa danh, công trình nổi tiếng",memo:"Land + mark = điểm đánh dấu",ex:"Big Ben is London's most famous landmark."},
+  {u:9,w:"colony",t:"n",ipa:"/ˈkɒləni/",vi:"Thuộc địa",memo:"Col = canh tác → vùng đất khai hoang",ex:"Australia was once a British colony."},
+  {u:9,w:"immigrant",t:"n",ipa:"/ˈɪmɪɡrənt/",vi:"Người nhập cư",memo:"Im = vào + migrant = di cư",ex:"Many immigrants came to build the USA."},
+  {u:9,w:"official language",t:"n",ipa:"/əˈfɪʃl ˈlæŋɡwɪdʒ/",vi:"Ngôn ngữ chính thức",memo:"Official = chính thức",ex:"English is the official language of Australia."},
+  {u:9,w:"commonwealth",t:"n",ipa:"/ˈkɒmənwelθ/",vi:"Khối thịnh vượng chung",memo:"Common + wealth = giàu có chung",ex:"Many countries belong to the Commonwealth."},
+  {u:9,w:"peninsula",t:"n",ipa:"/pəˈnɪnsjʊlə/",vi:"Bán đảo",memo:"Peni = gần như + insula = đảo",ex:"Korea is a peninsula in East Asia."},
+  {u:9,w:"rugby",t:"n",ipa:"/ˈrʌɡbi/",vi:"Bóng bầu dục",memo:"Từ trường Rugby, nước Anh",ex:"Rugby is very popular in New Zealand."},
+  {u:9,w:"multicultural",t:"adj",ipa:"/ˌmʌltiˈkʌltʃərəl/",vi:"Đa văn hoá",memo:"Multi = nhiều + cultural",ex:"Australia is a multicultural nation."},
+  // Unit 10
+  {u:10,w:"astronaut",t:"n",ipa:"/ˈæstrənɔːt/",vi:"Phi hành gia",memo:"Astro = sao + naut = lái tàu",ex:"Neil Armstrong was the first astronaut on the Moon."},
+  {u:10,w:"spacecraft",t:"n",ipa:"/ˈspeɪskrɑːft/",vi:"Tàu vũ trụ",memo:"Space + craft = tàu thuyền",ex:"The spacecraft orbited Earth 16 times."},
+  {u:10,w:"orbit",t:"v",ipa:"/ˈɔːrbɪt/",vi:"Bay quanh quỹ đạo",memo:"Orbit = vòng bay quanh hành tinh",ex:"The satellite orbits Earth every 90 minutes."},
+  {u:10,w:"galaxy",t:"n",ipa:"/ˈɡæləksi/",vi:"Thiên hà",memo:"Galax Hy Lạp = sữa → Milky Way",ex:"Our solar system is in the Milky Way galaxy."},
+  {u:10,w:"gravity",t:"n",ipa:"/ˈɡrævɪti/",vi:"Lực hấp dẫn, trọng lực",memo:"Grave = nặng → lực kéo xuống",ex:"There is no gravity in outer space."},
+  {u:10,w:"launch",t:"v",ipa:"/lɔːntʃ/",vi:"Phóng (tên lửa), ra mắt",memo:"Launch → phóng lên",ex:"They launched the rocket at dawn."},
+  {u:10,w:"weightlessness",t:"n",ipa:"/ˈweɪtləsnəs/",vi:"Trạng thái không trọng lượng",memo:"Weight + less + ness",ex:"Astronauts experience weightlessness."},
+  {u:10,w:"atmosphere",t:"n",ipa:"/ˈætməsfɪər/",vi:"Bầu khí quyển",memo:"Atmo = hơi + sphere = hình cầu",ex:"The atmosphere protects us from radiation."},
+  {u:10,w:"telescope",t:"n",ipa:"/ˈtelɪskoʊp/",vi:"Kính thiên văn",memo:"Tele = xa + scope = xem",ex:"Galileo improved the telescope."},
+  {u:10,w:"satellite",t:"n",ipa:"/ˈsætəlaɪt/",vi:"Vệ tinh",memo:"Satell = bảo vệ La-tinh → vật bay quanh hành tinh",ex:"GPS uses a network of satellites."},
+  {u:10,w:"mission",t:"n",ipa:"/ˈmɪʃn/",vi:"Nhiệm vụ, sứ mệnh",memo:"Mission = được giao cho",ex:"The mission to Mars is planned for 2035."},
+  {u:10,w:"rover",t:"n",ipa:"/ˈroʊvər/",vi:"Xe thám hiểm tự động",memo:"Rove = lang thang → xe lang thang trên sao",ex:"The Mars rover sent back amazing photos."},
+  {u:10,w:"solar system",t:"n",ipa:"/ˈsoʊlər ˈsɪstəm/",vi:"Hệ Mặt Trời",memo:"Solar = Mặt Trời",ex:"There are eight planets in our solar system."},
+  {u:10,w:"alien",t:"n",ipa:"/ˈeɪliən/",vi:"Sinh vật ngoài vũ trụ",memo:"Alien = xa lạ → từ nơi xa lạ",ex:"Scientists search for signs of alien life."},
+  {u:10,w:"extraterrestrial",t:"adj",ipa:"/ˌekstrətəˈrestriəl/",vi:"Ngoài Trái Đất",memo:"Extra = ngoài + terrestrial = Trái Đất",ex:"Are there extraterrestrial beings?"},
+  // Unit 11
+  {u:11,w:"gender equality",t:"n",ipa:"/ˈdʒendər ɪˈkwɒlɪti/",vi:"Bình đẳng giới",memo:"Gender = giới tính + equality",ex:"We need to promote gender equality."},
+  {u:11,w:"breadwinner",t:"n",ipa:"/ˈbredwɪnər/",vi:"Người kiếm tiền chính",memo:"Bread = kiếm sống + winner = người thắng",ex:"In the past, men were usually breadwinners."},
+  {u:11,w:"homemaker",t:"n",ipa:"/ˈhoʊmmeɪkər/",vi:"Người nội trợ",memo:"Home + maker = người làm nhà",ex:"Many women choose to be homemakers."},
+  {u:11,w:"prejudice",t:"n",ipa:"/ˈpredʒʊdɪs/",vi:"Thành kiến, định kiến",memo:"Pre = trước + judge = phán xét trước",ex:"Gender prejudice still exists."},
+  {u:11,w:"discrimination",t:"n",ipa:"/dɪˌskrɪmɪˈneɪʃn/",vi:"Sự phân biệt đối xử",memo:"Dis + criminal → đối xử không công bằng",ex:"Discrimination based on gender is illegal."},
+  {u:11,w:"stereotype",t:"n",ipa:"/ˈsteriəˌtaɪp/",vi:"Khuôn mẫu, định kiến xã hội",memo:"Stereo = cứng + type = kiểu",ex:"We should avoid gender stereotypes."},
+  {u:11,w:"empowerment",t:"n",ipa:"/ɪmˈpaʊərmənt/",vi:"Sự trao quyền",memo:"Empower = trao quyền + ment",ex:"Women's empowerment leads to better societies."},
+  {u:11,w:"flexible",t:"adj",ipa:"/ˈfleksɪbl/",vi:"Linh hoạt",memo:"Flex = uốn dẻo + ible → linh hoạt",ex:"Flexible working hours help parents."},
+  {u:11,w:"maternity leave",t:"n",ipa:"/məˈtɜːrnɪti liːv/",vi:"Nghỉ thai sản",memo:"Maternity = tình mẹ + leave = nghỉ",ex:"Women are entitled to maternity leave."},
+  {u:11,w:"paternity leave",t:"n",ipa:"/pəˈtɜːrnɪti liːv/",vi:"Nghỉ phép của người cha",memo:"Paternity = tình cha",ex:"Some companies offer paternity leave."},
+  {u:11,w:"burden",t:"n",ipa:"/ˈbɜːrdən/",vi:"Gánh nặng",memo:"Burden → 'bơ đèn' nặng trên lưng",ex:"Household chores are often a burden."},
+  {u:11,w:"nurture",t:"v",ipa:"/ˈnɜːrtʃər/",vi:"Nuôi dưỡng, chăm sóc",memo:"Nature + ure → chăm sóc theo bản năng",ex:"Mothers traditionally nurture children."},
+  {u:11,w:"housework",t:"n",ipa:"/ˈhaʊswɜːrk/",vi:"Việc nhà",memo:"House + work → việc làm trong nhà",ex:"Both partners should share the housework."},
+  {u:11,w:"dual income",t:"n",ipa:"/ˈdjuːəl ˈɪŋkəm/",vi:"Thu nhập đôi (cả vợ và chồng đi làm)",memo:"Dual = đôi + income = thu nhập",ex:"Many families today rely on dual income."},
+  {u:11,w:"breadwinning",t:"adj",ipa:"/ˈbredwɪnɪŋ/",vi:"Liên quan đến kiếm tiền nuôi gia đình",memo:"Breadwinner + ing",ex:"Breadwinning is no longer just a man's role."},
+  // Unit 12
+  {u:12,w:"career",t:"n",ipa:"/kəˈrɪər/",vi:"Sự nghiệp, nghề nghiệp lâu dài",memo:"Car + eer → xe ô tô chạy suốt = con đường nghề",ex:"She wants a career in medicine."},
+  {u:12,w:"profession",t:"n",ipa:"/prəˈfeʃn/",vi:"Nghề nghiệp chuyên môn",memo:"Profess = tuyên bố → nghề chuyên nghiệp",ex:"Teaching is a noble profession."},
+  {u:12,w:"entrepreneur",t:"n",ipa:"/ˌɒntrəprəˈnɜːr/",vi:"Doanh nhân, người khởi nghiệp",memo:"Tiếng Pháp → 'ông ta pra nơ'",ex:"Steve Jobs was a famous entrepreneur."},
+  {u:12,w:"internship",t:"n",ipa:"/ˈɪntɜːrnʃɪp/",vi:"Kỳ thực tập",memo:"Intern = người thực tập + ship",ex:"I have an internship at a tech company."},
+  {u:12,w:"qualification",t:"n",ipa:"/ˌkwɒlɪfɪˈkeɪʃn/",vi:"Bằng cấp, năng lực chuyên môn",memo:"Qualify = đủ tiêu chuẩn + cation",ex:"You need good qualifications for this job."},
+  {u:12,w:"salary",t:"n",ipa:"/ˈsæləri/",vi:"Lương tháng",memo:"Sal = muối La-tinh → xưa trả lương bằng muối",ex:"The salary for this position is competitive."},
+  {u:12,w:"wages",t:"n",ipa:"/ˈweɪdʒɪz/",vi:"Tiền công (trả theo giờ/ngày)",memo:"Wage = trả công theo giờ",ex:"Construction workers earn daily wages."},
+  {u:12,w:"job market",t:"n",ipa:"/dʒɒb ˈmɑːrkɪt/",vi:"Thị trường lao động",memo:"Job + market → nơi tìm/mua bán việc",ex:"The job market is very competitive today."},
+  {u:12,w:"artificial intelligence",t:"n",ipa:"/ˌɑːtɪfɪʃl ɪnˈtelɪdʒəns/",vi:"Trí tuệ nhân tạo (AI)",memo:"Artificial = nhân tạo + intelligence",ex:"AI is changing many industries."},
+  {u:12,w:"résumé",t:"n",ipa:"/ˈrezjʊmeɪ/",vi:"Hồ sơ xin việc (CV)",memo:"Tiếng Pháp = tóm tắt kinh nghiệm",ex:"Submit your résumé and cover letter."},
+  {u:12,w:"promotion",t:"n",ipa:"/prəˈmoʊʃn/",vi:"Thăng chức, thăng tiến",memo:"Promote = đưa lên cao + tion",ex:"She got a promotion after two years."},
+  {u:12,w:"retire",t:"v",ipa:"/rɪˈtaɪər/",vi:"Nghỉ hưu",memo:"Re = lại + tire = mệt → mệt quá → nghỉ",ex:"He plans to retire at 60."},
+  {u:12,w:"freelancer",t:"n",ipa:"/ˈfriːlɑːnsər/",vi:"Người làm việc tự do",memo:"Free = tự do + lancer = chiến binh",ex:"She works as a freelancer from home."},
+  {u:12,w:"skill set",t:"n",ipa:"/skɪl set/",vi:"Bộ kỹ năng",memo:"Skills + set = tập hợp kỹ năng",ex:"Good communication is an essential skill set."},
+  {u:12,w:"application",t:"n",ipa:"/ˌæplɪˈkeɪʃn/",vi:"Đơn xin việc; ứng dụng",memo:"Apply = nộp đơn + cation",ex:"Please fill out the job application form."},
+];
+
+const GRAMMAR=[
+  {unit:1,title:"Although / In spite of / Despite (Dù, Mặc dù)",
+   formulas:["Although / Even though + S + V, S + V","In spite of / Despite + Noun / V-ing, S + V"],
+   exs:["✅ Although it rained, they visited the craft village.","✅ In spite of the rain, they enjoyed the trip.","❌ Although the heavy rain, they went. → Sai! Phải dùng 'Despite'"],
+   warn:"⚠️ Although + mệnh đề (S+V). Despite/In spite of + cụm danh từ hoặc V-ing.",
+   tip:"🧠 Sau Despite không có chủ ngữ + động từ. Sau Although thì có. Thử hỏi: 'Có S+V không?' → Yes → Although. No → Despite.",
+   errors:["Although + but → SAI (bỏ 'but')","Despite she was tired → SAI → Despite being tired ✓"],
+   quiz:{q:"_____ the bad weather, the match continued.",opts:["A. Although","B. Despite","C. Because","D. Even though"],ans:"B",ex:"'The bad weather' là cụm danh từ không có S+V → phải dùng 'Despite'."}},
+  {unit:2,title:"Câu hỏi gián tiếp (Reported / Embedded Questions)",
+   formulas:["Wh-word + S + V (trật tự khẳng định — không đảo ngữ)","Yes/No → if/whether + S + V"],
+   exs:["✅ She asked where he lived. (không phải 'where did he live')","✅ He asked if she was tired. (không phải 'if was she tired')","❌ Could you tell me what time does the museum close? → SAI"],
+   warn:"⚠️ Sau từ để hỏi trong câu gián tiếp: KHÔNG đảo trợ động từ lên trước. Trật tự = S + V bình thường.",
+   tip:"🧠 Nhớ: Câu hỏi gián tiếp = câu phụ → viết như câu khẳng định. 'what he wants' không phải 'what does he want'.",
+   errors:["She asked where did he go → SAI → where he went ✓","He asked what was her name → SAI → what her name was ✓"],
+   quiz:{q:"Could you tell me what time the museum _______?",opts:["A. does close","B. closes","C. close","D. closing"],ans:"B",ex:"Câu hỏi gián tiếp sau 'tell me': trật tự S+V khẳng định. 'the museum closes' (không đảo)."}},
+  {unit:3,title:"-ed và -ing Adjectives (Tính từ cảm xúc)",
+   formulas:["V-ing (adj): Sự VẬT gây ra cảm xúc → The film is boring","V-ed (adj): NGƯỜI bị tác động → I feel bored"],
+   exs:["✅ The news was shocking. / I was shocked by the news.","✅ The lesson is interesting. / She is interested in the lesson.","❌ I feel boring → SAI! Phải là 'I feel bored'."],
+   warn:"⚠️ Hay nhầm: 'I am very interesting' → Có nghĩa bạn LÀ người thú vị (gây thú vị cho người khác). Nếu bạn đang cảm thấy thú vị thì phải nói 'I am very interested'.",
+   tip:"🧠 Mẹo: Hỏi → Cái gì GÂY RA? → -ing. Ai BỊ TÁC ĐỘNG? → -ed. Người → -ed. Vật → -ing.",
+   errors:["I feel boring → SAI → I feel bored ✓","The documentary was bored → SAI → was boring ✓"],
+   quiz:{q:"The documentary about climate change was really _______. I was completely _______ by it.",opts:["A. fascinating / fascinated","B. fascinated / fascinating","C. fascinating / fascinating","D. fascinated / fascinated"],ans:"A",ex:"Phim (vật) gây hấp dẫn → fascinating. Tôi (người) bị tác động → fascinated."}},
+  {unit:4,title:"Used to / Would / Be used to (Thói quen quá khứ)",
+   formulas:["Used to + V: thói quen quá khứ đã CHẤM DỨT","Would + V: thói quen lặp lại quá khứ (chỉ dùng cho hành động, không dùng cho trạng thái)","Be/get used to + V-ing: ĐÃ QUEN với việc gì (hiện tại)"],
+   exs:["✅ I used to play chess. (Giờ không chơi nữa)","✅ We would go fishing on Sundays. (hành động lặp lại)","✅ I am used to waking up early. (Tôi quen dậy sớm rồi)","❌ I used to playing → SAI!"],
+   warn:"⚠️ Used to + V nguyên thể (KHÔNG phải V-ing). Be used to + V-ING. Would KHÔNG dùng cho trạng thái: 'I would know' → SAI.",
+   tip:"🧠 Used to = đã từng (quá khứ, nay không còn). Be used to = đã quen (hiện tại). Would = thường làm (quá khứ lặp đi lặp lại).",
+   errors:["Used to playing → SAI → used to play ✓","I am used to wake up → SAI → used to waking up ✓"],
+   quiz:{q:"When I was young, I _______ walk to school every day.",opts:["A. used to","B. am used to","C. would use to","D. get used to"],ans:"A",ex:"Thói quen quá khứ đã kết thúc → 'used to + V'. 'Would walk' cũng đúng nhưng không có trong đáp án."}},
+  {unit:5,title:"Câu điều kiện (Conditional Sentences)",
+   formulas:["Loại 1 (thực tế): If + S + V(HT đơn), S + will + V","Loại 2 (giả định HT): If + S + V-ed / were, S + would + V","Loại 3 (giả định QK): If + S + had + V3, S + would have + V3"],
+   exs:["✅ If it rains, we will stay home. (Loại 1)","✅ If I were you, I would study harder. (Loại 2 — 'were' cho mọi ngôi)","✅ If she had studied, she would have passed. (Loại 3)","❌ If it will rain → SAI!"],
+   warn:"⚠️ KHÔNG dùng 'will' trong mệnh đề If! 'If it will rain' → Sai hoàn toàn.",
+   tip:"🧠 Mẹo nhớ số: Loại 1 = 1+1 (HT/will). Loại 2 = 2+2 (QK đơn/would). Loại 3 = 3+3 (had V3/would have V3).",
+   errors:["If it will rain → SAI → If it rains ✓","If I were you, I will → SAI → I would ✓"],
+   quiz:{q:"If she _______ harder last night, she _______ the exam today.",opts:["A. studied / will pass","B. had studied / would have passed","C. studied / would pass","D. studies / would pass"],ans:"B",ex:"Điều kiện quá khứ không có thực → Loại 3: had studied + would have passed."}},
+  {unit:6,title:"Câu bị động (Passive Voice)",
+   formulas:["S + am/is/are + V3 (HT đơn)","S + was/were + V3 (QK đơn)","S + have/has been + V3 (HT hoàn thành)","S + will be + V3 (Tương lai)"],
+   exs:["✅ This bridge was built in 1990.","✅ English is spoken here.","✅ The report has been submitted.","❌ This house is build → SAI! Phải là 'is built'."],
+   warn:"⚠️ Động từ trong bị động PHẢI là V3 (Past Participle). 'is wrote' → SAI, phải là 'is written'.",
+   tip:"🧠 Mẹo: Chủ ngữ bị động = tân ngữ câu chủ động. 'by + agent' thường bỏ nếu không quan trọng.",
+   errors:["The book is wrote → SAI → is written ✓","English is speak here → SAI → is spoken ✓"],
+   quiz:{q:"This famous novel _______ by a Vietnamese author in 2010.",opts:["A. wrote","B. was written","C. has write","D. is wrote"],ans:"B",ex:"Bị động QK đơn: was + V3. 'Written' = V3 của 'write'. 'Wrote' là V2 — không dùng trong bị động."}},
+  {unit:7,title:"Câu ước (Wish Sentences)",
+   formulas:["Ước HT: S + wish + S + V-ed (QK đơn) / were","Ước QK: S + wish + S + had + V3","Ước TL: S + wish + S + would + V"],
+   exs:["✅ I wish I were taller. (Ước cao hơn — thực ra không cao)","✅ I wish I had studied harder. (Ước đã học chăm — nhưng đã không)","✅ I wish you would stop talking.","❌ I wish I can fly → SAI! Phải là 'could fly'"],
+   warn:"⚠️ Sau 'wish' KHÔNG dùng thì hiện tại hay 'can'. Phải lùi thì: can→could, am/is→were, have→had.",
+   tip:"🧠 Wish = 'trái ngược thực tế'. HT thực tế → ước thì QK. QK thực tế → ước had + V3.",
+   errors:["I wish I can → SAI → I wish I could ✓","I wish I am → SAI → I wish I were ✓"],
+   quiz:{q:"She failed the exam. She says: 'I wish I _______ harder last week!'",opts:["A. study","B. studied","C. had studied","D. would study"],ans:"C",ex:"Ước về quá khứ đã xảy ra → wish + had + V3: 'had studied'."}},
+  {unit:8,title:"Câu hỏi đuôi (Question Tags)",
+   formulas:["Câu (+), trợ ĐT(−) + đại từ?","Câu (−), trợ ĐT(+) + đại từ?"],
+   exs:["✅ She is a doctor, isn't she?","✅ They don't speak French, do they?","✅ You have been there, haven't you?","❌ She is happy, isn't it? → SAI! Phải là 'isn't she?'"],
+   warn:"⚠️ Đại từ trong question tag phải đúng với chủ ngữ câu đầu. Câu (+) → đuôi (−). Câu (−) → đuôi (+).",
+   tip:"🧠 Mẹo: Tìm trợ động từ trong câu chính → đảo phủ định/khẳng định → thêm đại từ. I am → aren't I (ngoại lệ).",
+   errors:["She is happy, isn't it → SAI → isn't she ✓","They came, didn't they ✓ (đúng)"],
+   quiz:{q:"Your brother plays football very well, _______ ?",opts:["A. doesn't he","B. does he","C. isn't he","D. don't he"],ans:"A",ex:"'plays' = HT đơn ngôi 3 số ít → trợ ĐT là 'does'. Câu (+) → đuôi (−): 'doesn't he'."}},
+  {unit:9,title:"So sánh (Comparatives & Superlatives)",
+   formulas:["SS hơn (ngắn): adj + -er + than","SS hơn (dài): more + adj + than","SS nhất (ngắn): the + adj + -est","SS nhất (dài): the most + adj","SS kép: The + comp, the + comp (Càng...càng...)"],
+   exs:["✅ London is bigger than Hanoi.","✅ Sydney is the most cosmopolitan city in Australia.","✅ The more you practise, the better you become.","❌ more taller → SAI! Chỉ chọn một cách."],
+   warn:"⚠️ KHÔNG dùng cả 2 cách cùng lúc: 'more taller', 'the most biggest' → SAI. Tính từ ngắn (1-2 âm tiết) → thêm -er/-est.",
+   tip:"🧠 Đặc biệt: good→better→best | bad→worse→worst | far→farther→farthest | many/much→more→most",
+   errors:["more taller → SAI → taller ✓","the most biggest → SAI → the biggest ✓","gooder → SAI → better ✓"],
+   quiz:{q:"The _______ you sleep, the _______ you will feel in the morning.",opts:["A. more/good","B. better/well","C. more/better","D. well/better"],ans:"C",ex:"SS kép: The + SS hơn, the + SS hơn. 'more' = SS hơn của 'much/many'. 'better' = SS hơn của 'well'."}},
+  {unit:10,title:"Câu tường thuật (Reported Speech)",
+   formulas:["Said: lùi thì 1 bậc (HT→QK, will→would, can→could...)","Told + Object: He told me that...","Thay từ chỉ nơi/thời gian: now→then, today→that day, tomorrow→the next day"],
+   exs:["✅ 'I am tired.' → She said she was tired.","✅ 'I will come.' → He said he would come.","❌ He told that he was happy → SAI! 'Tell' cần object."],
+   warn:"⚠️ Say + that (không có object). Tell + Object + that (BẮT BUỘC có object). 'He told that' → SAI. Phải là 'He told me that'.",
+   tip:"🧠 Bảng lùi thì: am/is→was | are→were | will→would | can→could | have/has→had | may→might",
+   errors:["He told that he was coming → SAI → told me that ✓","She said me → SAI → She told me ✓"],
+   quiz:{q:"'I can't attend the meeting tomorrow.' She said she _______ attend the meeting _______ day.",opts:["A. can't / the next","B. couldn't / the next","C. can't / tomorrow","D. couldn't / tomorrow"],ans:"B",ex:"Lùi thì: can't→couldn't. Thay từ: tomorrow→the next day."}},
+  {unit:11,title:"Danh từ ghép & Từ loại (Word Forms)",
+   formulas:["Danh từ: -tion/-sion/-ment/-ness/-ity/-er/-or","Tính từ: -ful/-less/-ous/-al/-ic/-ive/-ed/-ing","Trạng từ: -ly","Động từ: -ise/-ify/-en"],
+   exs:["✅ She is a beautiful girl. (Adj trước Noun)","✅ Employment opportunities are increasing. (Noun)","❌ a beauty woman → SAI! Phải là 'a beautiful woman'"],
+   warn:"⚠️ Hay nhầm từ loại khi điền vào chỗ trống. Luôn xác định: chỗ trống cần Danh từ / Tính từ / Trạng từ / Động từ?",
+   tip:"🧠 Nhận biết ngay: Sau mạo từ (a/an/the) hoặc tính từ sở hữu (my/her...) → cần DANH TỪ. Trước danh từ → cần TÍNH TỪ. Sau động từ → cần TRẠNG TỪ.",
+   errors:["a beauty woman → SAI → beautiful ✓","She runs quick → SAI → quickly ✓"],
+   quiz:{q:"The company offers many opportunities for personal _______.",opts:["A. develop","B. developing","C. development","D. developer"],ans:"C",ex:"Sau 'personal' (tính từ) cần DANH TỪ → 'development' (-ment = hậu tố danh từ)."}},
+  {unit:12,title:"Mệnh đề quan hệ (Relative Clauses)",
+   formulas:["Who: người — chủ ngữ","Whom: người — tân ngữ","Which: vật / sự việc","That: người hoặc vật (chỉ dùng trong MĐ xác định)","Whose: sở hữu (người/vật)"],
+   exs:["✅ The man who lives next door is a doctor.","✅ The book which I borrowed was interesting.","✅ She is the woman whose car was stolen.","❌ My sister, that is a nurse, ... → SAI! MĐ không xác định không dùng 'that'."],
+   warn:"⚠️ MĐ không xác định (có dấu phẩy) → KHÔNG dùng 'that'. Phải dùng who/which.",
+   tip:"🧠 Có dấu phẩy → Không xác định → Không that. Không dấu phẩy → Xác định → Có thể dùng that.",
+   errors:["The girl which I met → SAI → who/whom ✓","My father, that is a teacher → SAI → who ✓"],
+   quiz:{q:"The scientist _______ discovered penicillin was Alexander Fleming.",opts:["A. which","B. whom","C. who","D. whose"],ans:"C",ex:"'The scientist' = người, làm chủ ngữ mệnh đề quan hệ → dùng 'who'."}},
+];
+
+const EXAM=[
+  {t:"ph",q:"Choose the word with underlined part pronounced differently: <u>a</u>rtisan, <u>a</u>ncient, <u>a</u>dvantage, <u>a</u>mbitious",opts:["A. artisan","B. ancient","C. advantage","D. ambitious"],ans:"B",ex:"ancient /ˈeɪnʃənt/: 'a' đọc /eɪ/. Còn lại: artisan /ɑː/, advantage /æ/, ambitious /æ/."},
+  {t:"ph",q:"Choose the word with different stress: memorable, cosmopolitan, urbanisation, multicultural",opts:["A. memorable","B. cosmopolitan","C. urbanisation","D. multicultural"],ans:"A",ex:"memorable: /ˈmemərəbl/ — trọng âm âm tiết 1. Còn lại đều nhấn âm tiết 2 hoặc 3."},
+  {t:"ph",q:"Choose the word with underlined part pronounced /ʃ/: pre<u>ss</u>ure, plea<u>s</u>ure, trea<u>s</u>ure, expo<u>s</u>ure",opts:["A. pressure","B. pleasure","C. treasure","D. exposure"],ans:"A",ex:"pressure /ˈpreʃər/: '-ss-' đọc /ʃ/. Còn lại đọc /ʒ/ (âm rung hơn)."},
+  {t:"ph",q:"Choose the word with different stress: embroider, preserve, ceramics, communal",opts:["A. embroider","B. preserve","C. ceramics","D. communal"],ans:"D",ex:"communal /ˈkɒmjʊnl/: trọng âm âm tiết 1. Ba từ còn lại đều nhấn âm tiết 2."},
+  {t:"ph",q:"Choose the word with underlined part pronounced differently: artis<u>a</u>ns, <u>a</u>bundant, <u>a</u>ntique, <u>a</u>stronauts",opts:["A. artisans","B. abundant","C. antique","D. astronauts"],ans:"C",ex:"antique /ænˈtiːk/: 'a' đọc /æ/ và nhấn âm tiết 2. 'Abundant' /æ/, 'artisans' /ɑː/, 'astronauts' /æ/."},
+  {t:"v",q:"Local _______ create pottery, silk, and lacquerware by hand.",opts:["A. artisans","B. scientists","C. politicians","D. engineers"],ans:"A",ex:"artisans = thợ thủ công làm đồ truyền thống như gốm, lụa, sơn mài."},
+  {t:"v",q:"The government is working hard to _______ traditional crafts for future generations.",opts:["A. destroy","B. abandon","C. preserve","D. ignore"],ans:"C",ex:"preserve = bảo tồn. destroy/abandon/ignore đều có ý nghĩa tiêu cực, ngược lại."},
+  {t:"v",q:"Many students feel _______ before important exams.",opts:["A. anxious","B. generous","C. patient","D. reliable"],ans:"A",ex:"anxious = lo lắng — cảm xúc phổ biến trước kỳ thi."},
+  {t:"v",q:"Ha Long Bay is a _______ World Heritage Site with breathtaking limestone islands.",opts:["A. UNESCO","B. UNICEF","C. WHO","D. FAO"],ans:"A",ex:"UNESCO World Heritage Site = Di sản thế giới UNESCO. Ha Long Bay được công nhận năm 1994."},
+  {t:"v",q:"She followed the _______ carefully and made a delicious bowl of pho.",opts:["A. recipe","B. menu","C. ingredient","D. cuisine"],ans:"A",ex:"recipe = công thức nấu ăn hướng dẫn từng bước."},
+  {t:"v",q:"The first _______ to walk on the Moon was Neil Armstrong in 1969.",opts:["A. astronaut","B. pilot","C. sailor","D. athlete"],ans:"A",ex:"astronaut = phi hành gia — người đi vào không gian."},
+  {t:"v",q:"Vietnam has achieved remarkable _______ development since Doi Moi.",opts:["A. economic","B. romantic","C. scientific","D. historical"],ans:"A",ex:"economic development = phát triển kinh tế. Từ khoá 'Doi Moi' = cải cách kinh tế."},
+  {t:"v",q:"Australia is a very _______ country with people from over 200 nations.",opts:["A. bilingual","B. multicultural","C. rural","D. isolated"],ans:"B",ex:"multicultural = đa văn hoá — phù hợp với 'people from over 200 nations'."},
+  {t:"v",q:"The _______ of a city refers to roads, bridges, water supply, and electricity.",opts:["A. infrastructure","B. atmosphere","C. biodiversity","D. heritage"],ans:"A",ex:"infrastructure = cơ sở hạ tầng: đường, cầu, điện, nước."},
+  {t:"v",q:"Many women choose to be _______ and take care of their children full time.",opts:["A. breadwinners","B. homemakers","C. freelancers","D. entrepreneurs"],ans:"B",ex:"homemakers = người nội trợ — chăm sóc nhà cửa và con cái toàn thời gian."},
+  {t:"gr",q:"_______ the heavy traffic, she arrived on time.",opts:["A. Although","B. Despite","C. Because","D. Since"],ans:"B",ex:"'the heavy traffic' là cụm danh từ không có S+V → dùng 'Despite', không dùng 'Although'."},
+  {t:"gr",q:"I asked her _______ she had finished her homework.",opts:["A. that","B. if","C. what","D. which"],ans:"B",ex:"Câu hỏi Yes/No gián tiếp dùng 'if' hoặc 'whether'."},
+  {t:"gr",q:"The movie was so _______ that the children fell asleep.",opts:["A. boring","B. bored","C. bore","D. boringly"],ans:"A",ex:"Phim (sự vật gây cảm xúc) → -ing adjective: boring."},
+  {t:"gr",q:"My grandfather _______ smoke a pipe every evening, but he quit 10 years ago.",opts:["A. is used to","B. was used to","C. used to","D. would use to"],ans:"C",ex:"Thói quen quá khứ đã chấm dứt → 'used to + V'."},
+  {t:"gr",q:"If she _______ harder, she would get better results.",opts:["A. studies","B. will study","C. studied","D. had studied"],ans:"C",ex:"Điều kiện loại 2 (giả định hiện tại): If + S + V-ed, S + would + V."},
+  {t:"gr",q:"This cathedral _______ in the 15th century.",opts:["A. was built","B. built","C. is built","D. builds"],ans:"A",ex:"Bị động QK đơn: was + V3. 'built' là V3 của 'build'."},
+  {t:"gr",q:"I wish I _______ a famous singer!",opts:["A. am","B. was","C. were","D. have been"],ans:"C",ex:"Câu ước hiện tại với be-verb → 'were' cho mọi ngôi."},
+  {t:"gr",q:"She doesn't like spicy food, _______ she?",opts:["A. does","B. doesn't","C. is","D. isn't"],ans:"A",ex:"Câu đầu phủ định (doesn't) → question tag phải khẳng định (does)."},
+  {t:"gr",q:"The more exercise you do, _______ you will feel.",opts:["A. the healthier","B. the more healthy","C. the most healthy","D. healthier"],ans:"A",ex:"So sánh kép: The + comparative, the + comparative. 'healthier' là dạng so sánh hơn đúng."},
+  {t:"gr",q:"He told me that he _______ the city for 5 years.",opts:["A. has left","B. had left","C. left","D. was leaving"],ans:"B",ex:"Câu tường thuật lùi thì: has left → had left."},
+  {t:"gr",q:"The woman _______ I met at the conference is a famous researcher.",opts:["A. who","B. which","C. whose","D. whom"],ans:"D",ex:"'I met' cần tân ngữ → dùng 'whom' (người, tân ngữ)."},
+  {t:"gr",q:"Despite _______ hard all year, she didn't pass the final exam.",opts:["A. studying","B. study","C. studied","D. she studied"],ans:"A",ex:"Despite + Noun/V-ing. Sau 'despite' không được là mệnh đề. 'studying' (V-ing) là đúng."},
+  {t:"gr",q:"Could you tell me what time the museum _______?",opts:["A. does close","B. closes","C. close","D. is close"],ans:"B",ex:"Câu hỏi gián tiếp: S + V khẳng định. 'the museum closes' — không đảo trợ ĐT."},
+  {t:"gr",q:"These crafts _______ from generation to generation.",opts:["A. have passed down","B. have been passed down","C. passed down","D. are passing down"],ans:"B",ex:"Bị động HT hoàn thành: have/has been + V3. 'passed down' là V3 của 'pass down'."},
+  {t:"gr",q:"If I had more time, I _______ visit all the craft villages in Vietnam.",opts:["A. will","B. would","C. had","D. have"],ans:"B",ex:"Câu điều kiện loại 2: If + V-ed, S + would + V."},
+  {t:"er",q:"<u>Although</u> (A) he worked hard, <u>but</u> (B) he didn't <u>get</u> (C) the <u>promotion</u> (D).",opts:["A","B","C","D"],ans:"B",ex:"Không dùng 'although' và 'but' cùng lúc. Bỏ 'but' đi vì đã có 'Although'."},
+  {t:"er",q:"She asked me where <u>did I buy</u> (A) that <u>beautiful</u> (B) <u>silk</u> (C) <u>scarf</u> (D).",opts:["A","B","C","D"],ans:"A",ex:"Câu hỏi gián tiếp: trật tự S+V khẳng định. 'did I buy' → sửa thành 'I had bought'."},
+  {t:"er",q:"The documentary <u>was</u> (A) very <u>bored</u> (B) so most <u>viewers</u> (C) turned <u>it</u> (D) off.",opts:["A","B","C","D"],ans:"B",ex:"Phim tài liệu (sự vật gây cảm xúc) → -ing adjective: 'boring'."},
+  {t:"er",q:"I <u>wish</u> (A) I <u>can</u> (B) travel <u>to</u> (C) all the wonders <u>of</u> (D) the world.",opts:["A","B","C","D"],ans:"B",ex:"Câu ước HT: wish + could. 'can' → 'could'."},
+  {t:"er",q:"<u>The more taller</u> (A) a building is, <u>the more</u> (B) impressive <u>it</u> (C) looks <u>to</u> (D) visitors.",opts:["A","B","C","D"],ans:"A",ex:"'Tall' ngắn → so sánh hơn là 'taller', không dùng 'more taller'. Chỉ chọn một cách."},
+  {t:"er",q:"He <u>used to</u> (A) <u>playing</u> (B) video games instead of <u>doing</u> (C) his <u>homework</u> (D).",opts:["A","B","C","D"],ans:"B",ex:"Used to + V nguyên thể. 'playing' → sửa thành 'play'."},
+  {t:"er",q:"The <u>news</u> (A) about the earthquake <u>were</u> (B) very <u>shocking</u> (C) to <u>everyone</u> (D).",opts:["A","B","C","D"],ans:"B",ex:"'News' là danh từ không đếm được → ĐT số ít: 'was'."},
+  {t:"er",q:"My sister, <u>that</u> (A) is a nurse, <u>works</u> (B) at <u>the</u> (C) local <u>hospital</u> (D).",opts:["A","B","C","D"],ans:"A",ex:"MĐ quan hệ không xác định (có dấu phẩy) → không dùng 'that'. Sửa thành 'who'."},
+  {t:"er",q:"<u>Because of</u> (A) she was sick, she <u>didn't</u> (B) attend <u>the</u> (C) <u>meeting</u> (D).",opts:["A","B","C","D"],ans:"A",ex:"Sau 'because of' phải là cụm danh từ. 'she was sick' là mệnh đề → phải dùng 'Because'."},
+  {t:"er",q:"If we <u>don't</u> (A) take action now, we <u>would</u> (B) face serious <u>environmental</u> (C) <u>problems</u> (D).",opts:["A","B","C","D"],ans:"B",ex:"Vế If dùng HT đơn 'don't' → Loại 1 → vế sau phải là 'will', không phải 'would'."},
+  {t:"v",q:"Visiting Sapa, tourists are amazed by the _______ of the terraced fields.",opts:["A. beauty","B. beautiful","C. beautifully","D. beautify"],ans:"A",ex:"Sau 'the' cần DANH TỪ → 'beauty'. 'beautiful' = tính từ, 'beautifully' = trạng từ."},
+  {t:"v",q:"She is very _______ in learning new languages — she already speaks four!",opts:["A. interested","B. interesting","C. interest","D. interestingly"],ans:"A",ex:"Người bị thu hút → -ed adjective: 'interested'. 'interesting' mô tả thứ gây hứng thú."},
+  {t:"v",q:"The Mekong Delta is _______ in fruits, fish, and vegetables.",opts:["A. abundant","B. shortage","C. lacking","D. empty"],ans:"A",ex:"'abundant in' = phong phú, dồi dào. Đây là collocation quan trọng."},
+  {t:"v",q:"To work as a nurse, you need _______ qualifications and a caring personality.",opts:["A. medicine","B. medical","C. medically","D. medicate"],ans:"B",ex:"Trước danh từ 'qualifications' cần TÍNH TỪ → 'medical'."},
+  {t:"v",q:"The charity organization works to _______ children in remote areas.",opts:["A. support","B. supportive","C. supporter","D. supportfully"],ans:"A",ex:"Sau 'to' cần ĐỘNG TỪ nguyên thể → 'support'."},
+  {t:"gr",q:"She said she _______ meet us the following day.",opts:["A. will","B. would","C. can","D. shall"],ans:"B",ex:"Câu tường thuật lùi thì: will → would."},
+  {t:"gr",q:"The students _______ project won the competition are from Class 9A.",opts:["A. who","B. which","C. whose","D. whom"],ans:"C",ex:"'project' là sở hữu của 'students' → dùng 'whose'."},
+  {t:"gr",q:"I used to _______ chess with my grandfather every Sunday.",opts:["A. play","B. playing","C. played","D. plays"],ans:"A",ex:"Used to + V nguyên thể (bare infinitive)."},
+  {t:"gr",q:"This famous craft _______ from generation to generation in our village.",opts:["A. has passed","B. has been passed","C. passed","D. is passing"],ans:"B",ex:"Bị động HT hoàn thành: has been + V3. Chuỗi phản ứng bị động với 'pass down'."},
+  {t:"gr",q:"If we _______ more trees, the city would be much greener.",opts:["A. plant","B. planted","C. will plant","D. had planted"],ans:"B",ex:"Câu điều kiện loại 2 (giả định hiện tại): If + V-ed, would + V. Vế sau có 'would be' → Loại 2."},
+];
+
+const ERRORS=[
+  {err:"Although ... but ...",fix:"Bỏ 'but'. Không dùng 2 liên từ tương phản.",ex:"❌ Although it rained, but we went. ✅ Although it rained, we went."},
+  {err:"Despite/In spite of + S + V",fix:"Despite + Noun/V-ing (không phải mệnh đề).",ex:"❌ Despite she was tired. ✅ Despite being tired / Despite her tiredness."},
+  {err:"Because of + S + V",fix:"Because of + Noun. Có S+V → dùng 'Because'.",ex:"❌ Because of she was late. ✅ Because she was late."},
+  {err:"Câu hỏi gián tiếp đảo ngữ",fix:"Wh + S + V (không đảo trợ ĐT).",ex:"❌ She asked where did he go. ✅ She asked where he went."},
+  {err:"I feel boring / The film is bored",fix:"-ing: vật gây cảm xúc. -ed: người bị tác động.",ex:"❌ I feel boring. ✅ I feel bored. ✅ The film is boring."},
+  {err:"I wish I can / I wish I am",fix:"Sau wish lùi thì: can→could, am/is→were.",ex:"❌ I wish I can fly. ✅ I wish I could fly."},
+  {err:"More taller / The most biggest",fix:"Không dùng cả 2 cách so sánh cùng lúc.",ex:"❌ She is more taller. ✅ She is taller."},
+  {err:"He told that ... (thiếu object)",fix:"Tell + Object + that (BẮT BUỘC).",ex:"❌ He told that he was coming. ✅ He told me that he was coming."},
+  {err:"Used to + V-ing",fix:"Used to + V nguyên thể.",ex:"❌ I used to playing. ✅ I used to play."},
+  {err:"The news were ...",fix:"News = danh từ không đếm được → was.",ex:"❌ The news were bad. ✅ The news was bad."},
+  {err:"Mệnh đề quan hệ không xác định + 'that'",fix:"Có dấu phẩy → dùng who/which, không dùng that.",ex:"❌ My mum, that is a teacher. ✅ My mum, who is a teacher."},
+  {err:"If + will ...",fix:"Vế If không dùng will.",ex:"❌ If it will rain. ✅ If it rains."},
+  {err:"Passive: is build / was wrote",fix:"Bị động luôn dùng V3.",ex:"❌ The house was build. ✅ The house was built."},
+  {err:"Say me / Tell that",fix:"Say không có object trực tiếp. Tell cần object.",ex:"❌ She said me. ✅ She told me. ❌ He told that. ✅ He said that."},
+  {err:"a beauty woman / runs quick",fix:"Tính từ trước danh từ. Trạng từ bổ nghĩa ĐT.",ex:"❌ a beauty woman. ✅ a beautiful woman. ❌ runs quick. ✅ runs quickly."},
+];
+
+// ════════════════════════════════════════════════
+// CONSTANTS & HELPERS
+// ════════════════════════════════════════════════
+const BMAP={n:"bn",v:"bv",adj:"badj",adv:"badv",phr:"bphr",exp:"bexp"};
+const TMAP={n:"Danh từ",v:"Động từ",adj:"Tính từ",adv:"Trạng từ",phr:"Cụm ĐT",exp:"Thành ngữ"};
+
+let curUnit="all";
+let fcCards=[],fcIdx=0,fcKnow=new Set(),fcUnk=new Set();
+let drillCards=[],drillIdx=0,drillCur=null,dCor=0,dWro=0,dTot=0;
+let examAns={},examCor=0;
+
+// ════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════
+function showTab(id,el){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("tab-"+id).classList.add("active");
+  if(el) el.classList.add("active");
+}
+
+// ════════════════════════════════════════════════
+// VOCAB
+// ════════════════════════════════════════════════
+function buildUnitBar(){
+  const bar=document.getElementById("unit-bar");
+  bar.innerHTML=`<button class="unit-pill active" onclick="selUnit('all',this)">📚 Tất cả</button>`+
+    UNITS.map(u=>`<button class="unit-pill" onclick="selUnit(${u.id},this)">U${u.id}</button>`).join("");
+}
+function selUnit(id,el){
+  curUnit=id;
+  document.querySelectorAll(".unit-pill").forEach(p=>p.classList.remove("active"));
+  el.classList.add("active");
+  document.getElementById("s-inp").value="";
+  renderVocab();
+}
+function filterVocab(){renderVocab(document.getElementById("s-inp").value.trim().toLowerCase());}
+function renderVocab(q=""){
+  let list=curUnit==="all"?VOCAB:VOCAB.filter(v=>v.u===curUnit);
+  if(q) list=list.filter(v=>v.w.toLowerCase().includes(q)||v.vi.toLowerCase().includes(q));
+  const tb=document.getElementById("vtbody");
+  const em=document.getElementById("v-empty");
+  if(!list.length){tb.innerHTML="";em.style.display="block";return;}
+  em.style.display="none";
+  let html="",lastU=null;
+  list.forEach(v=>{
+    if(curUnit==="all"&&v.u!==lastU){
+      lastU=v.u;
+      html+=`<tr><td colspan="6" style="background:#1e3a8a;color:#fff;font-weight:700;padding:.5rem .75rem;font-size:.88rem">Unit ${v.u}: ${UNITS[v.u-1].name}</td></tr>`;
+    }
+    const w=v.w.replace(/'/g,"\\'");
+    html+=`<tr>
+      <td class="word">${v.w}</td>
+      <td><span class="badge ${BMAP[v.t]||"bn"}">${TMAP[v.t]||v.t}</span></td>
+      <td class="ipa">${v.ipa}</td>
+      <td class="vi">${v.vi}</td>
+      <td class="memo">${v.memo}</td>
+      <td><button class="speak-btn" onclick="speak('${w}')">🔊</button></td>
+    </tr>`;
+  });
+  tb.innerHTML=html;
+}
+
+// ════════════════════════════════════════════════
+// GRAMMAR
+// ════════════════════════════════════════════════
+function buildGrammar(){
+  document.getElementById("gram-list").innerHTML=GRAMMAR.map((g,i)=>`
+    <div class="gram-acc">
+      <div class="gram-head" onclick="toggleG(${i})">
+        <span>📘 Unit ${g.unit}: ${g.title}</span><span id="gch-${i}">▼</span>
+      </div>
+      <div class="gram-body" id="gb-${i}">
+        <div class="formula-box">${g.formulas.map(f=>`<div>📐 ${f}</div>`).join("")}</div>
+        ${g.exs.map(e=>`<div class="${e.startsWith("❌")?"err-box":"ex-ok"}" style="margin:.3rem 0">${e}</div>`).join("")}
+        <div class="warn-box">${g.warn}</div>
+        <div class="tip-box-g">${g.tip}</div>
+        <div class="err-box"><strong>❌ Lỗi hay gặp:</strong><ul style="padding-left:1.1rem;margin-top:.25rem">${g.errors.map(e=>`<li style="margin-bottom:.2rem;font-size:.84rem">${e}</li>`).join("")}</ul></div>
+        <div class="quiz-area">
+          <div class="qlabel">✏️ Thử ngay: ${g.quiz.q}</div>
+          <div class="opt-row">${g.quiz.opts.map(o=>`<button class="g-opt" onclick="chkG(${i},'${o[0]}',this)">${o}</button>`).join("")}</div>
+          <div id="gfb-${i}" style="margin-top:.4rem;font-size:.84rem;min-height:1.1rem"></div>
+        </div>
+      </div>
+    </div>`).join("");
+}
+function toggleG(i){
+  const b=document.getElementById("gb-"+i),c=document.getElementById("gch-"+i);
+  b.classList.toggle("open");c.textContent=b.classList.contains("open")?"▲":"▼";
+}
+function chkG(i,sel,btn){
+  const g=GRAMMAR[i];
+  btn.parentElement.querySelectorAll(".g-opt").forEach(b=>{b.disabled=true;b.style.opacity=".7";});
+  const fb=document.getElementById("gfb-"+i);
+  if(sel===g.quiz.ans){
+    btn.style.cssText="background:var(--green);color:#fff;border-color:var(--green)";
+    fb.innerHTML=`<span style="color:var(--green);font-weight:700">✅ Đúng!</span> ${g.quiz.ex}`;
+  } else {
+    btn.style.cssText="background:var(--red);color:#fff;border-color:var(--red)";
+    btn.parentElement.querySelectorAll(".g-opt").forEach(b=>{if(b.textContent.trim()[0]===g.quiz.ans)b.style.cssText="background:var(--green);color:#fff;border-color:var(--green)";});
+    fb.innerHTML=`<span style="color:var(--red);font-weight:700">❌ Sai.</span> Đáp án đúng: <strong>${g.quiz.ans}</strong>. ${g.quiz.ex}`;
+  }
+}
+
+// ════════════════════════════════════════════════
+// FLASHCARD
+// ════════════════════════════════════════════════
+function buildFCSel(){
+  const s=document.getElementById("fc-sel");
+  s.innerHTML=`<option value="all">📚 Tất cả Unit</option>`+UNITS.map(u=>`<option value="${u.id}">Unit ${u.id}: ${u.name}</option>`).join("");
+}
+function fcLoad(){
+  const v=document.getElementById("fc-sel").value;
+  fcCards=v==="all"?[...VOCAB]:VOCAB.filter(x=>x.u==v);
+  fcIdx=0;fcKnow.clear();fcUnk.clear();
+  fcShow();fcCounts();
+}
+function fcShow(){
+  if(!fcCards.length)return;
+  const v=fcCards[fcIdx];
+  document.getElementById("fc-word").textContent=v.w;
+  document.getElementById("fc-ipa").textContent=v.ipa;
+  document.getElementById("fc-type").innerHTML=`<span class="badge ${BMAP[v.t]||"bn"}" style="font-size:.7rem">${TMAP[v.t]||v.t}</span>`;
+  document.getElementById("fc-vi").textContent=v.vi;
+  document.getElementById("fc-memo").textContent="💡 "+v.memo;
+  document.getElementById("fc-ex").textContent=v.ex||"";
+  document.getElementById("fc-counter").textContent=`${fcIdx+1} / ${fcCards.length}`;
+  document.getElementById("fc-bar").style.width=`${(fcIdx+1)/fcCards.length*100}%`;
+  document.getElementById("fc-inner").classList.remove("flipped");
+}
+function fcFlip(){document.getElementById("fc-inner").classList.toggle("flipped");}
+function fcNext(){if(fcIdx<fcCards.length-1){fcIdx++;fcShow();}}
+function fcPrev(){if(fcIdx>0){fcIdx--;fcShow();}}
+function fcShuffle(){fcCards.sort(()=>Math.random()-.5);fcIdx=0;fcShow();}
+function fcReset(){fcIdx=0;fcKnow.clear();fcUnk.clear();fcShow();fcCounts();}
+function fcMark(t){
+  const id=fcCards[fcIdx]?.w;if(!id)return;
+  if(t==="know"){fcKnow.add(id);fcUnk.delete(id);}else{fcUnk.add(id);fcKnow.delete(id);}
+  fcCounts();if(fcIdx<fcCards.length-1)setTimeout(fcNext,300);
+}
+function fcFilterUnknown(){
+  const u=VOCAB.filter(v=>fcUnk.has(v.w));
+  if(!u.length){alert("Chưa đánh dấu từ nào là 'Chưa nhớ'!");return;}
+  fcCards=[...u];fcIdx=0;fcShow();
+}
+function fcCounts(){
+  document.getElementById("fc-k").textContent=fcKnow.size;
+  document.getElementById("fc-u").textContent=fcUnk.size;
+  document.getElementById("fc-unseen").textContent=Math.max(0,fcCards.length-fcKnow.size-fcUnk.size);
+}
+
+// ════════════════════════════════════════════════
+// DRILL
+// ════════════════════════════════════════════════
+function buildDrillSel(){
+  const s=document.getElementById("dr-sel");
+  s.innerHTML=`<option value="all">📚 Tất cả</option>`+UNITS.map(u=>`<option value="${u.id}">Unit ${u.id}: ${u.name}</option>`).join("");
+}
+function drillLoad(){
+  const v=document.getElementById("dr-sel").value;
+  drillCards=(v==="all"?[...VOCAB]:VOCAB.filter(x=>x.u==v)).sort(()=>Math.random()-.5);
+  drillIdx=0;drillNext();
+}
+function drillNext(){
+  if(!drillCards.length){drillLoad();return;}
+  drillCur=drillCards[drillIdx%drillCards.length];drillIdx++;
+  const inp=document.getElementById("d-inp");
+  inp.value="";inp.className="drill-input";inp.disabled=false;inp.placeholder="Nhập từ tiếng Anh...";
+  document.getElementById("d-q").textContent=`Nghĩa: "${drillCur.vi}"`;
+  document.getElementById("d-hint").textContent=`[${TMAP[drillCur.t]||drillCur.t}] · ${drillCur.ipa}`;
+  document.getElementById("d-fb").innerHTML="";
+  document.getElementById("d-next").style.display="none";
+  inp.focus();
+}
+function drillCheck(){
+  if(!drillCur||document.getElementById("d-inp").disabled)return;
+  const inp=document.getElementById("d-inp");
+  const ans=inp.value.trim().toLowerCase();
+  const cor=drillCur.w.toLowerCase();
+  const fb=document.getElementById("d-fb");
+  inp.disabled=true;
+  document.getElementById("d-next").style.display="inline-block";
+  dTot++;document.getElementById("d-tot").textContent=dTot;
+  if(ans===cor||ans===cor.replace(/-/g," ")){
+    inp.className="drill-input correct";
+    fb.innerHTML=`<span style="color:var(--green)">✅ Xuất sắc!</span>`;
+    dCor++;document.getElementById("d-cor").textContent=dCor;
+  } else {
+    inp.className="drill-input wrong";inp.value=drillCur.w;
+    fb.innerHTML=`<span style="color:var(--red)">❌ Sai.</span> Đúng: <strong>${drillCur.w}</strong> — ${drillCur.vi}<br><em style="color:var(--purple);font-size:.84rem">💡 ${drillCur.memo}</em>`;
+    dWro++;document.getElementById("d-wro").textContent=dWro;
+  }
+}
+function drillHint(){
+  if(!drillCur)return;
+  const inp=document.getElementById("d-inp");
+  inp.placeholder=`Bắt đầu bằng "${drillCur.w[0].toUpperCase()}"`;
+  inp.value=drillCur.w[0];
+  inp.focus();
+}
+function drillReset(){dCor=0;dWro=0;dTot=0;["d-cor","d-wro","d-tot"].forEach(id=>document.getElementById(id).textContent=0);drillLoad();}
+
+// ════════════════════════════════════════════════
+// EXAM
+// ════════════════════════════════════════════════
+function buildExam(){
+  examAns={};examCor=0;
+  document.getElementById("e-tot").textContent=EXAM.length;
+  const TL={ph:"🔊 Phát âm",v:"📖 Từ vựng",gr:"📐 Ngữ pháp",er:"🎯 Sửa lỗi"};
+  document.getElementById("e-qs").innerHTML=EXAM.map((q,i)=>`
+    <div class="q-card" id="qc-${i}">
+      <div class="q-num">${TL[q.t]||"📝"} — Câu ${i+1}/${EXAM.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="opts-grid">${q.opts.map(o=>`<button class="opt-btn" data-l="${o.trim()[0]}" onclick="examSel(${i},'${o.trim()[0]}',this)">${o}</button>`).join("")}</div>
+      <div class="expl" id="ex-${i}">💡 <strong>Đáp án: ${q.ans}</strong> — ${q.ex}</div>
+    </div>`).join("");
+}
+function examSel(i,letter,btn){
+  if(examAns[i]!==undefined)return;
+  examAns[i]=letter;
+  document.getElementById("qc-"+i).querySelectorAll(".opt-btn").forEach(b=>{
+    if(b.getAttribute("data-l")===EXAM[i].ans)b.classList.add("correct");
+    else if(b.getAttribute("data-l")===letter&&letter!==EXAM[i].ans)b.classList.add("wrong");
+  });
+  document.getElementById("ex-"+i).classList.add("show");
+  if(letter===EXAM[i].ans)examCor++;
+  document.getElementById("e-cor").textContent=examCor;
+  const done=Object.keys(examAns).length;
+  document.getElementById("e-pct").textContent=Math.round(examCor/done*100)+"%";
+}
+
+// ════════════════════════════════════════════════
+// TIPS
+// ════════════════════════════════════════════════
+function buildErrors(){
+  document.getElementById("err-list").innerHTML=ERRORS.map(e=>`
+    <li><strong style="color:var(--red)">${e.err}</strong> → <em style="color:var(--green)">${e.fix}</em><br>
+    <span style="font-size:.8rem;color:#64748b">${e.ex}</span></li>`).join("");
+}
+
+// ════════════════════════════════════════════════
+// TTS
+// ════════════════════════════════════════════════
+function speak(text){
+  if(!("speechSynthesis"in window)){alert("Trình duyệt không hỗ trợ đọc âm.");return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="en-US";u.rate=0.82;u.pitch=1;
+  speechSynthesis.speak(u);
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+buildUnitBar();
+renderVocab();
+buildGrammar();
+buildFCSel();
+buildDrillSel();
+buildExam();
+buildErrors();
+fcLoad();
+drillLoad();
+</script>
+</body>
+</html>

@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý Lớp 9 — Học Thông Minh</title>
+<style>
+  :root {
+    --pri: #1565C0; --pri-light: #E3F2FD; --pri-dark: #0D3B66;
+    --orange: #E67E22; --orange-light: #FDF2E9; --orange-dark: #7E4A12;
+    --green: #27AE60; --green-light: #E8F8F0; --green-dark: #0E5C2F;
+    --red: #E74C3C; --red-light: #FDEDEC; --red-dark: #641E16;
+    --purple: #8E44AD; --purple-light: #F4ECF7; --purple-dark: #3C1361;
+    --teal: #16A085; --teal-light: #E8F6F3; --teal-dark: #0B5345;
+    --gray: #7F8C8D; --gray-light: #F2F3F4; --gray-dark: #2C3E50;
+    --bg: #f8f9fa; --card: #fff; --text: #1a1a1a; --text2: #666;
+    --border: rgba(0,0,0,0.1); --radius: 12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.7}
+
+  /* SUBJECT BAR */
+  .subject-bar{display:flex;justify-content:center;gap:0;background:#0D3B66;padding:0}
+  .subject-btn{padding:0.6rem 1.5rem;font-size:0.88rem;font-weight:700;border:none;cursor:pointer;color:rgba(255,255,255,0.5);background:transparent;transition:all 0.2s;border-bottom:3px solid transparent}
+  .subject-btn:hover{color:rgba(255,255,255,0.8)}
+  .subject-btn.active{color:#fff;background:rgba(255,255,255,0.1);border-bottom-color:#F39C12}
+
+  /* NAV */
+  nav{background:var(--pri-dark);color:#fff;padding:0 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+  .nav-logo{font-size:1.3rem;font-weight:700;padding:1rem 0;white-space:nowrap}
+  .nav-logo span{color:#F39C12}
+  .nav-tabs{display:flex;gap:0;flex:1;overflow-x:auto}
+  .nav-tab{padding:1rem 1rem;cursor:pointer;white-space:nowrap;font-size:0.85rem;border-bottom:3px solid transparent;color:rgba(255,255,255,0.7);transition:all 0.2s}
+  .nav-tab:hover{color:#fff;background:rgba(255,255,255,0.08)}
+  .nav-tab.active{color:#fff;border-bottom-color:#F39C12}
+
+  /* PAGES */
+  .page{display:none;padding:1.5rem;max-width:900px;margin:0 auto}
+  .page.active{display:block}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--pri-dark) 0%,var(--pri) 100%);color:#fff;border-radius:var(--radius);padding:2.5rem 2rem;margin-bottom:1.5rem}
+  .hero h1{font-size:2rem;margin-bottom:0.5rem}
+  .hero p{opacity:0.85;font-size:1rem}
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem;margin:1.5rem 0}
+  .stat-card{background:rgba(255,255,255,0.15);border-radius:10px;padding:0.85rem;text-align:center}
+  .stat-card .num{font-size:1.8rem;font-weight:700}
+  .stat-card .lbl{font-size:0.75rem;opacity:0.8}
+
+  /* CARDS */
+  .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:1.25rem 1.5rem;margin-bottom:1rem}
+  .card-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;cursor:pointer}
+  .card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+  .card-title{font-size:1rem;font-weight:600}
+  .card-subtitle{font-size:0.82rem;color:var(--text2)}
+  .badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;margin-left:0.5rem}
+  .badge-pri{background:var(--pri-light);color:var(--pri-dark)}
+  .badge-orange{background:var(--orange-light);color:var(--orange-dark)}
+  .badge-green{background:var(--green-light);color:var(--green-dark)}
+  .badge-red{background:var(--red-light);color:var(--red-dark)}
+  .badge-purple{background:var(--purple-light);color:var(--purple-dark)}
+  .tip-box{background:var(--orange-light);border-left:4px solid var(--orange);border-radius:8px;padding:0.75rem 1rem;margin-bottom:1rem}
+  .tip-box strong{color:var(--orange-dark)}
+
+  /* THEORY */
+  .theory-body{display:none;padding-top:0.75rem;border-top:1px solid var(--border);margin-top:0.5rem}
+  .theory-body.open{display:block}
+  .formula-box{background:var(--pri-light);border:1px solid rgba(21,101,192,0.3);border-radius:8px;padding:0.75rem 1rem;margin:0.75rem 0;font-family:'Courier New',monospace;font-size:1.05rem}
+  .formula-box .label{font-size:0.78rem;color:var(--pri-dark);font-family:sans-serif;font-weight:600;margin-bottom:0.25rem}
+  .memory-trick{background:var(--purple-light);border-left:4px solid var(--purple);border-radius:8px;padding:0.75rem 1rem;margin:0.75rem 0}
+  .memory-trick .trick-title{font-size:0.78rem;color:var(--purple-dark);font-weight:700;margin-bottom:0.25rem}
+  .example-box{background:var(--green-light);border-left:4px solid var(--green);border-radius:8px;padding:0.75rem 1rem;margin:0.75rem 0}
+  .example-box .ex-title{font-size:0.78rem;color:var(--green-dark);font-weight:700;margin-bottom:0.25rem}
+  .trap-box{background:var(--red-light);border-left:4px solid var(--red);border-radius:8px;padding:0.75rem 1rem;margin:0.75rem 0}
+  .trap-box .trap-title{font-size:0.78rem;color:var(--red-dark);font-weight:700;margin-bottom:0.25rem}
+  .reallife-box{background:var(--teal-light);border-left:4px solid var(--teal);border-radius:8px;padding:0.75rem 1rem;margin:0.75rem 0}
+  .reallife-box .rl-title{font-size:0.78rem;color:var(--teal-dark);font-weight:700;margin-bottom:0.25rem}
+  .prop-table{width:100%;border-collapse:collapse;margin:0.75rem 0;font-size:0.88rem}
+  .prop-table th{background:var(--pri-light);color:var(--pri-dark);padding:0.5rem 0.75rem;text-align:left}
+  .prop-table td{padding:0.4rem 0.75rem;border-bottom:1px solid var(--border)}
+  .prop-table tr:hover td{background:var(--gray-light)}
+  ul.clean{padding-left:1.2rem}
+  ul.clean li{margin-bottom:0.35rem}
+  h3{font-size:1rem;color:var(--pri-dark);margin:1rem 0 0.5rem}
+
+  /* FLASHCARD */
+  .fc-controls{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap}
+  .fc-controls select{padding:0.5rem 0.75rem;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:0.9rem}
+  .btn{padding:0.5rem 1.25rem;border-radius:8px;border:none;cursor:pointer;font-size:0.9rem;font-weight:600;transition:all 0.15s}
+  .btn-primary{background:var(--pri);color:#fff}
+  .btn-primary:hover{background:var(--pri-dark)}
+  .btn-outline{background:transparent;border:1.5px solid var(--pri);color:var(--pri-dark)}
+  .btn-outline:hover{background:var(--pri-light)}
+  .btn-sm{padding:0.35rem 0.85rem;font-size:0.82rem}
+  .fc-scene{perspective:1000px;margin:0 auto 1.5rem;width:100%;max-width:520px;height:260px;cursor:pointer}
+  .fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.5s}
+  .fc-inner.flipped{transform:rotateY(180deg)}
+  .fc-front,.fc-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;text-align:center}
+  .fc-front{background:linear-gradient(135deg,var(--pri-dark),var(--pri));color:#fff}
+  .fc-back{background:linear-gradient(135deg,var(--orange-dark),var(--orange));color:#fff;transform:rotateY(180deg)}
+  .fc-q{font-size:1.1rem;font-weight:600}
+  .fc-a{font-size:0.95rem;line-height:1.6}
+  .fc-hint{font-size:0.78rem;opacity:0.7;margin-top:1rem}
+  .fc-nav{display:flex;align-items:center;justify-content:center;gap:1rem}
+  .fc-counter{font-size:0.88rem;color:var(--text2);min-width:80px;text-align:center}
+  .fc-progress{height:5px;background:var(--border);border-radius:3px;margin-bottom:1rem}
+  .fc-progress-bar{height:100%;background:var(--pri);border-radius:3px;transition:width 0.3s}
+
+  /* QUIZ */
+  .quiz-chapter{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+  .chapter-btn{padding:0.4rem 1rem;border-radius:20px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:0.85rem;transition:all 0.15s}
+  .chapter-btn.active{background:var(--pri);color:#fff;border-color:var(--pri)}
+  .q-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:1.25rem 1.5rem;margin-bottom:0.75rem}
+  .q-num{font-size:0.78rem;color:var(--text2);margin-bottom:0.5rem;font-weight:600}
+  .q-text{font-weight:600;margin-bottom:1rem;line-height:1.5}
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+  .opt{padding:0.6rem 0.9rem;border-radius:8px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:0.88rem;transition:all 0.15s;text-align:left}
+  .opt:hover{border-color:var(--pri);background:var(--pri-light)}
+  .opt.selected{border-color:var(--pri);background:var(--pri-light)}
+  .opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark);font-weight:600}
+  .opt.wrong{border-color:var(--red);background:var(--red-light);color:var(--red-dark)}
+  .explain-box{display:none;background:var(--orange-light);border-left:3px solid var(--orange);border-radius:8px;padding:0.7rem 1rem;margin-top:0.75rem;font-size:0.88rem}
+  .explain-box.show{display:block}
+  .score-box{background:linear-gradient(135deg,var(--pri-dark),var(--pri));color:#fff;border-radius:var(--radius);padding:2rem;text-align:center}
+  .score-big{font-size:3rem;font-weight:700}
+  .score-label{font-size:1rem;opacity:0.85;margin-bottom:1rem}
+  .score-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1.25rem}
+  .score-item{background:rgba(255,255,255,0.15);border-radius:8px;padding:0.75rem}
+  .score-item .n{font-size:1.5rem;font-weight:700}
+  .score-item .l{font-size:0.78rem;opacity:0.8}
+  .quiz-timer{background:var(--orange-light);color:var(--orange-dark);padding:0.3rem 0.8rem;border-radius:20px;font-weight:700;font-size:0.9rem}
+
+  /* TIPS */
+  .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:1.5rem}
+  .tip-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:1.25rem}
+  .tip-card .icon{font-size:2rem;margin-bottom:0.75rem}
+  .tip-card h3{font-size:0.95rem;color:var(--text);margin-bottom:0.5rem}
+  .tip-card p,.tip-card ul{font-size:0.88rem;color:var(--text2)}
+  .tip-card ul{padding-left:1.1rem}
+  .tip-card ul li{margin-bottom:0.3rem}
+  .roadmap-step{display:flex;gap:1rem;margin-bottom:1rem}
+  .step-num{width:36px;height:36px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:0.9rem}
+  .step-body{flex:1}
+  .step-body h4{font-size:0.95rem;margin-bottom:0.25rem}
+  .step-body p{font-size:0.85rem;color:var(--text2)}
+
+  /* FORMULA SHEET */
+  .formula-card{background:var(--card);border-radius:var(--radius);border:2px solid var(--pri);padding:1rem 1.25rem;margin-bottom:0.75rem}
+  .formula-card .f-chapter{font-size:0.75rem;font-weight:700;color:var(--pri);text-transform:uppercase;margin-bottom:0.35rem}
+  .formula-card .f-eq{font-family:'Courier New',monospace;font-size:1.15rem;font-weight:700;color:var(--pri-dark);margin-bottom:0.25rem}
+  .formula-card .f-explain{font-size:0.82rem;color:var(--text2)}
+  .formula-card .f-unit{font-size:0.78rem;color:var(--orange-dark);background:var(--orange-light);display:inline-block;padding:1px 8px;border-radius:10px;margin-top:0.25rem}
+
+  /* COMPARE TABLE */
+  .compare-table{width:100%;border-collapse:collapse;font-size:0.88rem;margin:0.75rem 0}
+  .compare-table th{background:var(--pri);color:#fff;padding:0.5rem 0.75rem;text-align:center}
+  .compare-table td{padding:0.5rem 0.75rem;border:1px solid var(--border);text-align:center}
+  .compare-table tr:nth-child(even) td{background:var(--gray-light)}
+
+  /* MINDMAP */
+  .mm-tabs{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+  .mm-tab{padding:0.4rem 1rem;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:0.85rem;font-weight:600;background:var(--card)}
+  .mm-tab.active{color:#fff;border-color:transparent}
+  .mm-canvas{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;overflow-x:auto;min-height:400px}
+  .mm-root{display:flex;flex-direction:column;align-items:center}
+  .mm-center{padding:0.75rem 1.5rem;border-radius:30px;font-weight:700;font-size:1rem;color:#fff;text-align:center;margin-bottom:1.5rem}
+  .mm-branches{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;width:100%}
+  .mm-branch{display:flex;flex-direction:column;align-items:center;min-width:160px;max-width:200px}
+  .mm-node{padding:0.5rem 1rem;border-radius:20px;font-weight:700;font-size:0.85rem;color:#fff;text-align:center;width:100%}
+  .mm-leaves{display:flex;flex-direction:column;gap:0.4rem;margin-top:0.5rem;width:100%}
+  .mm-leaf{padding:0.35rem 0.75rem;border-radius:8px;font-size:0.78rem;text-align:left;border:1.5px solid;white-space:pre-wrap;line-height:1.5}
+  .mm-connector{width:2px;height:1rem;background:#ccc;margin:0 auto}
+
+  /* EXAM */
+  .exam-select-row{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem}
+  .exam-card-btn{padding:0.5rem 1.1rem;border-radius:20px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:0.88rem;font-weight:600;transition:all 0.15s}
+  .exam-card-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+
+  .chevron{transition:transform 0.2s}
+  .chevron.open{transform:rotate(180deg)}
+  @media(max-width:600px){.options{grid-template-columns:1fr}.hero h1{font-size:1.5rem}.nav-tab{padding:0.8rem 0.7rem;font-size:0.78rem}}
+</style>
+</head>
+<body>
+
+<!-- SUBJECT BAR -->
+<div class="subject-bar">
+  <button class="subject-btn" onclick="window.open('hoa9_hoc_tap.html','_self')">⚗️ Hoá Học</button>
+  <button class="subject-btn active">⚡ Vật Lý</button>
+  <button class="subject-btn" disabled style="opacity:0.4;cursor:not-allowed">🧬 Sinh Học <span style="font-size:0.7rem">(sắp có)</span></button>
+</div>
+
+<nav>
+  <div class="nav-logo">⚡ Vật Lý <span>9</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('home')">🏠 Trang chủ</div>
+    <div class="nav-tab" onclick="showPage('theory')">📖 Lý thuyết</div>
+    <div class="nav-tab" onclick="showPage('formulas')">📐 Công thức</div>
+    <div class="nav-tab" onclick="showPage('flashcard')">🃏 Flashcard</div>
+    <div class="nav-tab" onclick="showPage('quiz')">📝 Bài tập</div>
+    <div class="nav-tab" onclick="showPage('mindmap')">🗺️ Sơ đồ</div>
+    <div class="nav-tab" onclick="showPage('tips')">💡 Bí kíp</div>
+  </div>
+</nav>
+
+<!-- ============ HOME ============ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>Vật Lý Lớp 9 ⚡</h1>
+    <p>Học thông minh — công thức rõ — nhớ lâu. Dành cho học sinh trung bình.</p>
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">5</div><div class="lbl">Chương lý thuyết</div></div>
+      <div class="stat-card"><div class="num">45+</div><div class="lbl">Flashcard</div></div>
+      <div class="stat-card"><div class="num">30+</div><div class="lbl">Câu trắc nghiệm</div></div>
+      <div class="stat-card"><div class="num">5</div><div class="lbl">Sơ đồ tư duy</div></div>
+      <div class="stat-card"><div class="num">20+</div><div class="lbl">Công thức nhanh</div></div>
+    </div>
+  </div>
+  <div class="tip-box">💡 <strong>Mẹo học Vật Lý:</strong> Mỗi chương chỉ có 3-4 công thức chính. Thuộc công thức → hiểu ý nghĩa từng ký hiệu → làm bài tập = NHỚN LÂU!</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--pri);" onclick="showPage('theory')"><div style="font-size:2rem;margin-bottom:0.5rem;">📖</div><div style="font-weight:700;margin-bottom:0.25rem;">Lý Thuyết</div><div style="font-size:0.85rem;color:var(--text2);">Điện học, Từ trường, Quang học — giải thích đơn giản</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--orange);" onclick="showPage('formulas')"><div style="font-size:2rem;margin-bottom:0.5rem;">📐</div><div style="font-weight:700;margin-bottom:0.25rem;">Công Thức Nhanh</div><div style="font-size:0.85rem;color:var(--text2);">Tất cả công thức 1 trang, kèm đơn vị và giải thích</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--green);" onclick="showPage('flashcard')"><div style="font-size:2rem;margin-bottom:0.5rem;">🃏</div><div style="font-weight:700;margin-bottom:0.25rem;">Flashcard</div><div style="font-size:0.85rem;color:var(--text2);">Ôn nhanh công thức, khái niệm, mẹo nhớ</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--red);" onclick="showPage('quiz')"><div style="font-size:2rem;margin-bottom:0.5rem;">📝</div><div style="font-weight:700;margin-bottom:0.25rem;">Bài Tập</div><div style="font-size:0.85rem;color:var(--text2);">Trắc nghiệm tự chấm có giải thích chi tiết</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--purple);" onclick="showPage('mindmap')"><div style="font-size:2rem;margin-bottom:0.5rem;">🗺️</div><div style="font-weight:700;margin-bottom:0.25rem;">Sơ Đồ Tư Duy</div><div style="font-size:0.85rem;color:var(--text2);">Nhìn là nhớ — tổng hợp từng chương trực quan</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--teal);" onclick="showPage('tips')"><div style="font-size:2rem;margin-bottom:0.5rem;">💡</div><div style="font-weight:700;margin-bottom:0.25rem;">Bí Kíp + Bẫy Hay Sai</div><div style="font-size:0.85rem;color:var(--text2);">Lỗi sai phổ biến, mẹo làm bài, liên hệ đời sống</div></div>
+  </div>
+  <div class="card" style="margin-top:1rem;">
+    <div style="font-weight:700;margin-bottom:0.75rem;">🗺️ Toàn bộ chương trình Vật Lý 9</div>
+    <div style="display:grid;gap:0.5rem;">
+      <div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--border);"><span style="background:var(--pri);color:#fff;border-radius:6px;padding:2px 10px;font-size:0.8rem;font-weight:700;">C1</span><span>Điện trở — Định luật Ohm — Đoạn mạch nối tiếp & song song</span></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--border);"><span style="background:var(--orange);color:#fff;border-radius:6px;padding:2px 10px;font-size:0.8rem;font-weight:700;">C2</span><span>Công suất điện — Điện năng — Tính tiền điện</span></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--border);"><span style="background:var(--green);color:#fff;border-radius:6px;padding:2px 10px;font-size:0.8rem;font-weight:700;">C3</span><span>Từ trường — Lực từ — Động cơ điện</span></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--border);"><span style="background:var(--purple);color:#fff;border-radius:6px;padding:2px 10px;font-size:0.8rem;font-weight:700;">C4</span><span>Cảm ứng điện từ — Dòng xoay chiều — Máy biến thế</span></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;"><span style="background:var(--teal);color:#fff;border-radius:6px;padding:2px 10px;font-size:0.8rem;font-weight:700;">C5</span><span>Quang học — Khúc xạ — Thấu kính — Mắt & Kính</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ THEORY ============ -->
+<div class="page" id="page-theory">
+  <h2 style="font-size:1.3rem;margin-bottom:1rem;">📖 Lý Thuyết Vật Lý 9</h2>
+
+  <!-- C1: ĐIỆN TRỞ - ĐỊNH LUẬT OHM -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('c1')">
+      <div class="card-icon" style="background:var(--pri-light);font-size:1.5rem;">⚡</div>
+      <div style="flex:1"><div class="card-title">Chương 1 — Điện trở & Định luật Ohm <span class="badge badge-pri">Trọng tâm</span></div><div class="card-subtitle">I = U/R, mạch nối tiếp & song song, điện trở dây dẫn</div></div>
+      <span id="chevron-c1" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-c1">
+      <h3>📌 Điện trở là gì?</h3>
+      <p><strong>Điện trở (R)</strong> là đại lượng đặc trưng cho sự <strong>cản trở dòng điện</strong> của vật dẫn. Điện trở càng lớn → dòng điện chạy qua càng yếu.</p>
+      <div class="formula-box"><div class="label">Định luật Ohm — Công thức vàng!</div>I = U / R &nbsp;&nbsp;⟹&nbsp;&nbsp; U = I × R &nbsp;&nbsp;⟹&nbsp;&nbsp; R = U / I</div>
+      <div class="memory-trick"><div class="trick-title">🧠 Mẹo nhớ tam giác URI</div>Vẽ tam giác, ghi <strong>U</strong> ở trên, <strong>I</strong> và <strong>R</strong> ở dưới. Bịt chữ cần tìm:<br>• Bịt U → thấy I × R → <strong>U = I.R</strong><br>• Bịt I → thấy U/R → <strong>I = U/R</strong><br>• Bịt R → thấy U/I → <strong>R = U/I</strong><br><em>🎵 Câu vần: "U bằng I nhân R — Phố phường sáng điện ta nhớ ngay!"</em></div>
+
+      <h3>🔗 Đoạn mạch nối tiếp</h3>
+      <p>Các điện trở mắc <strong>liền nhau</strong>, chỉ có <strong>1 đường</strong> cho dòng điện chạy.</p>
+      <table class="prop-table">
+        <tr><th>Đại lượng</th><th>Công thức</th><th>Ghi nhớ</th></tr>
+        <tr><td><strong>Cường độ I</strong></td><td>I = I₁ = I₂</td><td>Dòng chạy bằng nhau ở mọi nơi</td></tr>
+        <tr><td><strong>Hiệu điện thế U</strong></td><td>U = U₁ + U₂</td><td>Chia sẻ U cho từng đèn</td></tr>
+        <tr><td><strong>Điện trở tđ</strong></td><td>R = R₁ + R₂</td><td>Càng mắc nhiều → R càng lớn</td></tr>
+      </table>
+      <div class="memory-trick"><div class="trick-title">🧠 Mẹo: "Nối tiếp = Xếp hàng"</div>Hình dung các đèn <strong>xếp hàng 1 đường</strong>. Cùng dòng nước (I) chảy qua → I bằng nhau. Nhưng "sức ép" (U) phải chia ra.</div>
+
+      <h3>🔀 Đoạn mạch song song</h3>
+      <table class="prop-table">
+        <tr><th>Đại lượng</th><th>Công thức</th><th>Ghi nhớ</th></tr>
+        <tr><td><strong>Hiệu điện thế U</strong></td><td>U = U₁ = U₂</td><td>Cùng "sức ép" (vì nối cùng 2 điểm)</td></tr>
+        <tr><td><strong>Cường độ I</strong></td><td>I = I₁ + I₂</td><td>Dòng chia nhánh</td></tr>
+        <tr><td><strong>Điện trở tđ</strong></td><td>1/R = 1/R₁ + 1/R₂</td><td>Càng mắc nhiều → R càng nhỏ!</td></tr>
+      </table>
+      <div class="memory-trick"><div class="trick-title">🧠 Mẹo: "Song song = Đường song song"</div>2 đường song song → cùng xuất phát cùng điểm → U bằng nhau. Nhưng dòng nước chia 2 nhánh → I cộng lại.<br><em>🎵 "Nối tiếp I bằng, U cộng thêm — Song song U bằng, I cộng liền"</em></div>
+
+      <h3>📏 Điện trở dây dẫn</h3>
+      <div class="formula-box"><div class="label">Điện trở phụ thuộc 3 yếu tố</div>R = ρ × l / S<br><span style="font-size:0.82rem;font-family:sans-serif">ρ: điện trở suất (Ω.m) · l: chiều dài (m) · S: tiết diện (m²)</span></div>
+      <div class="example-box"><div class="ex-title">📎 Ví dụ</div>Dây đồng dài 10m, tiết diện 0,5mm² = 0,5×10⁻⁶ m², ρ = 1,7×10⁻⁸ Ω.m<br>R = 1,7×10⁻⁸ × 10 / (0,5×10⁻⁶) = 0,34 Ω</div>
+      <div class="trap-box"><div class="trap-title">⚠️ Bẫy hay sai</div>• Quên đổi đơn vị S: mm² → m² (chia 10⁶) <br>• Nhầm nối tiếp vs song song: nối tiếp R <strong>CỘNG</strong>, song song R <strong>nghịch đảo cộng</strong><br>• Nhầm I bằng nhau (nối tiếp) với U bằng nhau (song song)</div>
+      <div class="reallife-box"><div class="rl-title">🏠 Khoa học quanh ta</div>Tại sao dây điện trong nhà dùng dây <strong>đồng</strong> (Cu) mà không dùng dây <strong>sắt</strong> (Fe)? Vì đồng có ρ nhỏ hơn sắt → ít cản trở dòng điện → ít nóng, an toàn hơn!</div>
+    </div>
+  </div>
+
+  <!-- C2: CÔNG SUẤT ĐIỆN -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('c2')">
+      <div class="card-icon" style="background:var(--orange-light);font-size:1.5rem;">💡</div>
+      <div style="flex:1"><div class="card-title">Chương 2 — Công suất & Điện năng <span class="badge badge-orange">Hay thi</span></div><div class="card-subtitle">P = UI, A = Pt, tính tiền điện, an toàn điện</div></div>
+      <span id="chevron-c2" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-c2">
+      <h3>📌 Công suất điện (P)</h3>
+      <p><strong>Công suất</strong> cho biết đồ dùng điện "ngốn điện" nhanh hay chậm. P càng lớn → càng tốn điện.</p>
+      <div class="formula-box"><div class="label">4 công thức Công suất</div>P = U × I &nbsp;&nbsp;|&nbsp;&nbsp; P = I² × R &nbsp;&nbsp;|&nbsp;&nbsp; P = U² / R &nbsp;&nbsp;|&nbsp;&nbsp; P = A / t</div>
+      <div class="memory-trick"><div class="trick-title">🧠 Mẹo nhớ</div>🎵 <strong>"P bằng U nhân I — Bóng đèn sáng, tiền bay đi"</strong><br>P = UI là công thức GỐC. Từ I = U/R, thay vào → ra 3 công thức còn lại!</div>
+
+      <h3>⚡ Điện năng (A)</h3>
+      <div class="formula-box"><div class="label">Điện năng tiêu thụ</div>A = P × t = U × I × t<br><span style="font-size:0.82rem;font-family:sans-serif">A: điện năng (J hoặc Wh) · P: công suất (W) · t: thời gian (s hoặc h)</span></div>
+
+      <h3>💰 Tính tiền điện</h3>
+      <div class="formula-box"><div class="label">Số "số điện" (kWh) trong 1 tháng</div>Số kWh = P(kW) × t(h) × 30 ngày<br>Tiền = Số kWh × Đơn giá</div>
+      <div class="example-box"><div class="ex-title">📎 Ví dụ thực tế</div>Bình nóng lạnh 2500W, dùng 1h/ngày:<br>• Mỗi ngày: 2,5 kW × 1h = 2,5 kWh<br>• Mỗi tháng: 2,5 × 30 = 75 kWh<br>• Tiền (~2.000đ/kWh): 75 × 2.000 = <strong>150.000 đ/tháng</strong></div>
+      <div class="reallife-box"><div class="rl-title">🏠 Khoa học quanh ta</div>Tại sao hoá đơn điện tháng hè đắt hơn? Vì điều hoà (1.000-2.000W) chạy liên tục 8-10h/ngày → ngốn 240-600 kWh/tháng, gấp 3-5 lần mùa lạnh!</div>
+      <div class="trap-box"><div class="trap-title">⚠️ Bẫy hay sai</div>• Nhầm đơn vị: kWh ≠ kW. <strong>kW</strong> = công suất, <strong>kWh</strong> = năng lượng đã dùng<br>• Quên đổi W → kW (chia 1000) khi tính tiền<br>• Quên đổi phút → giờ khi tính kWh</div>
+    </div>
+  </div>
+
+  <!-- C3: TỪ TRƯỜNG -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('c3')">
+      <div class="card-icon" style="background:var(--green-light);font-size:1.5rem;">🧲</div>
+      <div style="flex:1"><div class="card-title">Chương 3 — Từ trường & Lực từ <span class="badge badge-green">Quan trọng</span></div><div class="card-subtitle">Nam châm, đường sức từ, quy tắc bàn tay trái, động cơ điện</div></div>
+      <span id="chevron-c3" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-c3">
+      <h3>📌 Từ trường</h3>
+      <p>Xung quanh nam châm và dây dẫn có dòng điện đều có <strong>từ trường</strong>. Từ trường tác dụng lực lên kim nam châm.</p>
+      <ul class="clean">
+        <li><strong>Đường sức từ</strong>: Các đường cong khép kín, đi ra từ cực <strong>Bắc (N)</strong>, đi vào cực <strong>Nam (S)</strong></li>
+        <li><strong>Từ trường đều</strong>: Đường sức từ song song, cách đều nhau (giữa 2 cực nam châm chữ U)</li>
+      </ul>
+      <div class="memory-trick"><div class="trick-title">🧠 Mẹo nhớ: "Bắc RA — Nam VÀO"</div>Đường sức từ: <strong>RA</strong> từ Bắc, <strong>VÀO</strong> ở Nam.<br>🎵 <em>"Bắc ra Nam vào, nhớ cho kỹ nào — Kim nam châm quay, theo hướng không sai!"</em></div>
+
+      <h3>✋ Quy tắc bàn tay trái</h3>
+      <p>Dùng để xác định <strong>chiều lực điện từ (F)</strong> tác dụng lên dây dẫn mang dòng điện đặt trong từ trường.</p>
+      <div class="formula-box"><div class="label">Cách dùng bàn tay trái</div>1. Đặt bàn tay trái SẤP xuống<br>2. Đường sức từ (B) đâm XUYÊN vào lòng bàn tay<br>3. 4 ngón tay chỉ chiều dòng điện (I)<br>4. Ngón cái choãi ra 90° → chiều của LỰC (F)</div>
+      <div class="trap-box"><div class="trap-title">⚠️ Bẫy hay sai</div>• Nhầm bàn tay TRÁI (lực từ) với bàn tay PHẢI (cảm ứng điện từ — chương 4)<br>• Quên: đường sức từ đâm vào <strong>LÒNG</strong> bàn tay, không phải mu bàn tay</div>
+
+      <h3>🔌 Động cơ điện</h3>
+      <p>Ứng dụng lực từ: Khung dây mang dòng điện đặt trong từ trường → lực từ làm khung dây <strong>quay</strong> → biến điện năng thành cơ năng.</p>
+      <div class="reallife-box"><div class="rl-title">🏠 Khoa học quanh ta</div>Quạt điện, máy giặt, máy bơm nước — tất cả đều dùng <strong>động cơ điện</strong>. Bên trong là cuộn dây + nam châm, lực từ làm trục quay!</div>
+    </div>
+  </div>
+
+  <!-- C4: CẢM ỨNG ĐIỆN TỪ -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('c4')">
+      <div class="card-icon" style="background:var(--purple-light);font-size:1.5rem;">🌀</div>
+      <div style="flex:1"><div class="card-title">Chương 4 — Cảm ứng điện từ <span class="badge badge-purple">Nâng cao</span></div><div class="card-subtitle">Dòng điện cảm ứng, máy phát điện, máy biến thế</div></div>
+      <span id="chevron-c4" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-c4">
+      <h3>📌 Dòng điện cảm ứng</h3>
+      <p>Khi số đường sức từ xuyên qua cuộn dây <strong>biến thiên (thay đổi)</strong> → xuất hiện dòng điện trong cuộn dây, gọi là <strong>dòng điện cảm ứng</strong>.</p>
+      <ul class="clean">
+        <li>Di chuyển nam châm lại gần/ra xa cuộn dây → dòng cảm ứng</li>
+        <li>Nam châm đứng yên + cuộn dây di chuyển → cũng có dòng cảm ứng</li>
+        <li>Cả hai đứng yên → <strong>KHÔNG có</strong> dòng cảm ứng (vì số đường sức từ không đổi)</li>
+      </ul>
+      <div class="memory-trick"><div class="trick-title">🧠 Mẹo nhớ</div>🎵 <em>"Muốn có điện, phải THAY ĐỔI — Nam châm đứng yên thì ĐỔI chi!"</em><br>Chỉ cần nhớ: <strong>BIẾN THIÊN</strong> = thay đổi số đường sức → có dòng điện.</div>
+
+      <h3>⚡ Dòng điện xoay chiều</h3>
+      <p>Dòng điện liên tục <strong>đổi chiều</strong> theo thời gian. Trong nhà dùng dòng xoay chiều 220V, tần số 50Hz (đổi chiều 100 lần/giây).</p>
+
+      <h3>🔄 Máy biến thế</h3>
+      <div class="formula-box"><div class="label">Công thức máy biến thế</div>U₁/U₂ = n₁/n₂<br><span style="font-size:0.82rem;font-family:sans-serif">U: hiệu điện thế (V) · n: số vòng dây</span></div>
+      <table class="prop-table">
+        <tr><th>Loại</th><th>Điều kiện</th><th>Ứng dụng</th></tr>
+        <tr><td><strong>Tăng thế</strong></td><td>n₂ > n₁ → U₂ > U₁</td><td>Truyền tải điện xa (lên 500kV)</td></tr>
+        <tr><td><strong>Hạ thế</strong></td><td>n₂ < n₁ → U₂ < U₁</td><td>Sạc điện thoại (220V → 5V)</td></tr>
+      </table>
+      <div class="reallife-box"><div class="rl-title">🏠 Khoa học quanh ta</div>Cục sạc điện thoại là 1 máy biến thế mini! Nó hạ từ 220V (điện nhà) xuống 5V (pin điện thoại). Nếu không có nó, điện thoại sẽ... nổ tung 💥</div>
+      <div class="trap-box"><div class="trap-title">⚠️ Bẫy hay sai</div>• Máy biến thế CHỈ hoạt động với dòng <strong>xoay chiều</strong>, không hoạt động với dòng 1 chiều (pin)<br>• Nhầm: U tăng thì n tăng (đúng), nhưng I lại GIẢM (vì P = UI không đổi)</div>
+    </div>
+  </div>
+
+  <!-- C5: QUANG HỌC -->
+  <div class="card">
+    <div class="card-header" onclick="toggleTheory('c5')">
+      <div class="card-icon" style="background:var(--teal-light);font-size:1.5rem;">🔍</div>
+      <div style="flex:1"><div class="card-title">Chương 5 — Quang học <span class="badge badge-green">Hay thi</span></div><div class="card-subtitle">Khúc xạ, thấu kính hội tụ & phân kỳ, mắt, kính</div></div>
+      <span id="chevron-c5" class="chevron">▼</span>
+    </div>
+    <div class="theory-body" id="body-c5">
+      <h3>📌 Khúc xạ ánh sáng</h3>
+      <p>Khi ánh sáng đi từ môi trường này sang môi trường khác (VD: từ không khí vào nước), tia sáng bị <strong>gãy khúc</strong> tại mặt phân cách.</p>
+      <ul class="clean">
+        <li>Từ KK → nước (KK → chất rắn): tia khúc xạ <strong>lệch gần pháp tuyến</strong> hơn</li>
+        <li>Từ nước → KK: tia khúc xạ <strong>lệch xa pháp tuyến</strong> hơn</li>
+      </ul>
+      <div class="reallife-box"><div class="rl-title">🏠 Khoa học quanh ta</div>Tại sao cắm ống hút vào ly nước, thấy ống hút bị "gãy"? Vì ánh sáng từ ống hút dưới nước bị khúc xạ khi ra không khí → mắt ta thấy "gãy"!</div>
+
+      <h3>🔎 Thấu kính hội tụ</h3>
+      <p>Thấu kính hội tụ: phần giữa <strong>DÀY</strong> hơn rìa (lồi). Tia sáng song song qua thấu kính → hội tụ tại 1 điểm gọi là <strong>tiêu điểm (F)</strong>.</p>
+      <table class="prop-table">
+        <tr><th>Vị trí vật</th><th>Ảnh</th><th>Tính chất ảnh</th></tr>
+        <tr><td>d > 2f</td><td>f < d' < 2f</td><td>Ảnh thật, ngược chiều, nhỏ hơn vật</td></tr>
+        <tr><td>d = 2f</td><td>d' = 2f</td><td>Ảnh thật, ngược chiều, bằng vật</td></tr>
+        <tr><td>f < d < 2f</td><td>d' > 2f</td><td>Ảnh thật, ngược chiều, lớn hơn vật</td></tr>
+        <tr><td>d < f</td><td>|d'| > d</td><td>Ảnh ảo, cùng chiều, lớn hơn vật</td></tr>
+      </table>
+      <div class="formula-box"><div class="label">Công thức thấu kính</div>1/f = 1/d + 1/d'<br><span style="font-size:0.82rem;font-family:sans-serif">f: tiêu cự (m) · d: khoảng cách vật → TK · d': khoảng cách ảnh → TK</span></div>
+
+      <h3>🔍 Thấu kính phân kỳ</h3>
+      <p>Phần giữa <strong>MỎNG</strong> hơn rìa (lõm). Tia sáng song song qua thấu kính → phân kỳ ra (như toả ra từ tiêu điểm ảo).</p>
+      <p>Thấu kính phân kỳ <strong>LUÔN</strong> cho ảnh ảo, cùng chiều, nhỏ hơn vật.</p>
+
+      <div class="memory-trick"><div class="trick-title">🧠 Mẹo phân biệt 2 loại thấu kính</div>
+        🎵 <em>"Hội tụ DÀY giữa — gom ánh sáng lại"</em><br>
+        🎵 <em>"Phân kỳ MỎNG giữa — toả ánh sáng ra"</em><br>
+        <strong>Thấu kính hội tụ</strong> = kính lúp (phóng to chữ). <strong>Phân kỳ</strong> = kính cận (thu nhỏ ảnh).
+      </div>
+
+      <h3>👁️ Mắt & Tật khúc xạ</h3>
+      <table class="prop-table">
+        <tr><th>Tật</th><th>Nguyên nhân</th><th>Cách khắc phục</th></tr>
+        <tr><td><strong>Cận thị</strong></td><td>Mắt dài hơn bình thường, ảnh nằm trước võng mạc</td><td>Đeo kính <strong>phân kỳ</strong></td></tr>
+        <tr><td><strong>Viễn thị</strong></td><td>Mắt ngắn hơn, ảnh nằm sau võng mạc</td><td>Đeo kính <strong>hội tụ</strong></td></tr>
+      </table>
+      <div class="trap-box"><div class="trap-title">⚠️ Bẫy hay sai</div>• Nhầm: cận thị đeo kính phân kỳ (KHÔNG phải hội tụ!)<br>• Nhầm: thấu kính phân kỳ luôn cho ảnh ảo (đúng), nhưng TK hội tụ thì CÓ THỂ cho ảnh ảo (khi d < f)<br>• Quên quy ước dấu: d' < 0 = ảnh ảo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FORMULA SHEET ============ -->
+<div class="page" id="page-formulas">
+  <h2 style="font-size:1.3rem;margin-bottom:0.5rem;">📐 Bảng Công Thức Nhanh</h2>
+  <div class="tip-box">💡 <strong>In ra 1 tờ A4</strong>, dán lên bàn học. Mỗi ngày nhìn 2 phút → 1 tuần nhớ hết!</div>
+  <div id="formula-list"></div>
+
+  <div class="card" style="margin-top:1rem;">
+    <div style="font-weight:700;margin-bottom:0.75rem;">⚖️ So sánh Nối tiếp vs Song song</div>
+    <table class="compare-table">
+      <tr><th style="width:30%">Đại lượng</th><th>Nối tiếp</th><th>Song song</th></tr>
+      <tr><td><strong>Cường độ I</strong></td><td>I = I₁ = I₂ (bằng nhau)</td><td>I = I₁ + I₂ (chia nhánh)</td></tr>
+      <tr><td><strong>Hiệu điện thế U</strong></td><td>U = U₁ + U₂ (cộng lại)</td><td>U = U₁ = U₂ (bằng nhau)</td></tr>
+      <tr><td><strong>Điện trở Rtđ</strong></td><td>R = R₁ + R₂ (cộng)</td><td>1/R = 1/R₁ + 1/R₂ (nghịch đảo)</td></tr>
+      <tr><td><strong>Hình dung</strong></td><td>🚶‍♂️🚶‍♂️ Xếp hàng 1</td><td>🚶‍♂️<br>🚶‍♂️ Đi 2 đường</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:0.75rem;">🔎 So sánh TK Hội tụ vs Phân kỳ</div>
+    <table class="compare-table">
+      <tr><th style="width:30%">Đặc điểm</th><th>Hội tụ</th><th>Phân kỳ</th></tr>
+      <tr><td><strong>Hình dạng</strong></td><td>Giữa DÀY, rìa mỏng</td><td>Giữa MỎNG, rìa dày</td></tr>
+      <tr><td><strong>Tia sáng SS</strong></td><td>Hội tụ → 1 điểm (F)</td><td>Phân kỳ (toả ra)</td></tr>
+      <tr><td><strong>Ảnh</strong></td><td>Thật hoặc Ảo (tuỳ d)</td><td>Luôn Ảo, nhỏ hơn</td></tr>
+      <tr><td><strong>Ứng dụng</strong></td><td>Kính lúp, viễn thị</td><td>Kính cận thị</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============ FLASHCARD ============ -->
+<div class="page" id="page-flashcard">
+  <h2 style="font-size:1.3rem;margin-bottom:1rem;">🃏 Flashcard Ôn Tập</h2>
+  <div class="fc-controls">
+    <select id="fc-chapter" onchange="loadFlashcards()">
+      <option value="all">📚 Tất cả chương</option>
+      <option value="c1">C1 — Điện trở & Ohm</option>
+      <option value="c2">C2 — Công suất & Điện năng</option>
+      <option value="c3">C3 — Từ trường</option>
+      <option value="c4">C4 — Cảm ứng điện từ</option>
+      <option value="c5">C5 — Quang học</option>
+    </select>
+    <button class="btn btn-sm btn-outline" onclick="shuffleCards()">🔀 Xáo trộn</button>
+    <button class="btn btn-sm btn-outline" onclick="resetCards()">🔄 Học lại</button>
+  </div>
+  <div class="fc-progress"><div class="fc-progress-bar" id="fc-bar" style="width:0%"></div></div>
+  <div class="fc-scene" onclick="flipCard()">
+    <div class="fc-inner" id="fc-inner">
+      <div class="fc-front"><div class="fc-q" id="fc-q">Đang tải...</div><div class="fc-hint">Nhấp để lật</div></div>
+      <div class="fc-back"><div class="fc-a" id="fc-a">Đáp án</div></div>
+    </div>
+  </div>
+  <div class="fc-nav">
+    <button class="btn btn-outline" onclick="prevCard()">← Trước</button>
+    <span class="fc-counter" id="fc-counter">1/45</span>
+    <button class="btn btn-primary" onclick="nextCard()">Tiếp →</button>
+  </div>
+  <div style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
+    <button class="btn btn-sm" style="background:var(--green-light);color:var(--green-dark);border:none;" onclick="markCard('know')">✅ Đã biết</button>
+    <button class="btn btn-sm" style="background:var(--red-light);color:var(--red-dark);border:none;" onclick="markCard('learn')">🔁 Cần học thêm</button>
+  </div>
+  <div class="card" style="margin-top:1rem;">
+    <div style="display:flex;gap:1rem;font-size:0.88rem;">
+      <span>✅ Đã biết: <strong id="fc-know">0</strong></span>
+      <span>🔁 Cần học: <strong id="fc-learn">0</strong></span>
+      <span>⬜ Chưa xem: <strong id="fc-unseen">45</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ QUIZ ============ -->
+<div class="page" id="page-quiz">
+  <h2 style="font-size:1.3rem;margin-bottom:0.5rem;">📝 Bài Tập Trắc Nghiệm</h2>
+  <div id="quiz-setup">
+    <div class="quiz-chapter" id="qchapters">
+      <div class="chapter-btn active" onclick="selectChapter(this,'all')">📚 Tất cả</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c1')">C1 — Điện trở</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c2')">C2 — Công suất</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c3')">C3 — Từ trường</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c4')">C4 — Cảm ứng</div>
+      <div class="chapter-btn" onclick="selectChapter(this,'c5')">C5 — Quang học</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+      <label style="font-size:0.88rem;color:var(--text2);">Số câu:</label>
+      <select id="q-count" style="padding:0.4rem 0.75rem;border-radius:8px;border:1px solid var(--border);">
+        <option value="5">5 câu (nhanh)</option>
+        <option value="10" selected>10 câu (vừa)</option>
+        <option value="20">20 câu (ôn tập)</option>
+      </select>
+      <button class="btn btn-primary" onclick="startQuiz()">▶️ Bắt đầu thi</button>
+    </div>
+  </div>
+  <div id="quiz-area" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+      <span id="q-progress" style="font-size:0.88rem;color:var(--text2);"></span>
+      <span class="quiz-timer" id="q-timer">⏱ 00:00</span>
+      <button class="btn btn-outline btn-sm" onclick="submitQuiz()">Nộp bài</button>
+    </div>
+    <div id="q-list"></div>
+  </div>
+  <div id="quiz-result" style="display:none;">
+    <div class="score-box">
+      <div class="score-big" id="r-score">0/10</div>
+      <div class="score-label" id="r-pct">Điểm: 0%</div>
+      <div class="score-breakdown">
+        <div class="score-item"><div class="n" id="r-correct">0</div><div class="l">✅ Đúng</div></div>
+        <div class="score-item"><div class="n" id="r-wrong">0</div><div class="l">❌ Sai</div></div>
+        <div class="score-item"><div class="n" id="r-time">0s</div><div class="l">⏱ Thời gian</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1rem;display:flex;gap:0.75rem;justify-content:center;">
+      <button class="btn btn-primary" onclick="startQuiz()">🔁 Thi lại</button>
+      <button class="btn btn-outline" onclick="showReview()">📋 Xem đáp án</button>
+    </div>
+    <div id="q-review" style="margin-top:1rem;"></div>
+  </div>
+</div>
+
+<!-- ============ MINDMAP ============ -->
+<div class="page" id="page-mindmap">
+  <h2 style="font-size:1.3rem;margin-bottom:0.75rem;">🗺️ Sơ Đồ Tư Duy</h2>
+  <div class="tip-box">💡 Xem sơ đồ → che lại → tự vẽ lại. Làm 3 lần sẽ nhớ rất lâu!</div>
+  <div class="mm-tabs">
+    <div class="mm-tab active" id="mm-tab-c1" onclick="renderMindmap('c1')" style="background:var(--pri);color:#fff;">Điện trở & Ohm</div>
+    <div class="mm-tab" id="mm-tab-c2" onclick="renderMindmap('c2')">Công suất</div>
+    <div class="mm-tab" id="mm-tab-c3" onclick="renderMindmap('c3')">Từ trường</div>
+    <div class="mm-tab" id="mm-tab-c4" onclick="renderMindmap('c4')">Cảm ứng ĐT</div>
+    <div class="mm-tab" id="mm-tab-c5" onclick="renderMindmap('c5')">Quang học</div>
+  </div>
+  <div class="mm-canvas" id="mm-canvas"></div>
+</div>
+
+<!-- ============ TIPS ============ -->
+<div class="page" id="page-tips">
+  <h2 style="font-size:1.3rem;margin-bottom:1rem;">💡 Bí Kíp Học Vật Lý + Bẫy Hay Sai</h2>
+
+  <div class="tips-grid">
+    <div class="tip-card"><div class="icon">🧠</div><h3>Cách nhớ công thức</h3><ul><li>Vẽ tam giác URI, PUI cho mỗi chương</li><li>Mỗi ngày ôn 3 công thức cũ + học 1 mới</li><li>Viết công thức lên giấy note dán bàn học</li><li>Đọc thành thơ/vần: "U bằng I nhân R"</li></ul></div>
+    <div class="tip-card"><div class="icon">📝</div><h3>Làm bài thi</h3><ul><li>Bước 1: Tóm tắt đề (ghi Cho/Tìm)</li><li>Bước 2: Đổi đơn vị TRƯỚC khi tính</li><li>Bước 3: Chọn công thức phù hợp</li><li>Bước 4: Thế số, tính toán, ghi đơn vị đáp án</li></ul></div>
+    <div class="tip-card"><div class="icon">⚠️</div><h3>Top 5 lỗi sai phổ biến</h3><ul><li>❌ Quên đổi đơn vị (mm²→m², phút→giờ)</li><li>❌ Nhầm nối tiếp và song song</li><li>❌ Nhầm bàn tay trái (lực) vs phải (cảm ứng)</li><li>❌ Nhầm kính cận = phân kỳ, kính viễn = hội tụ</li><li>❌ Quên: kW ≠ kWh</li></ul></div>
+    <div class="tip-card"><div class="icon">🎵</div><h3>Câu vần nhớ lâu</h3><ul><li>"U bằng I nhân R — nhớ mãi sáng nhà ta"</li><li>"P bằng U nhân I — tiền điện bay cao quá trời"</li><li>"Bắc ra Nam vào — đường sức từ nhớ cho kỹ nào"</li><li>"Hội tụ DÀY giữa — kính lúp đó — phân kỳ MỎNG giữa — kính cận thôi"</li></ul></div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:1rem;">🏠 Khoa Học Quanh Ta — Vật Lý Trong Đời Sống</div>
+    <div class="reallife-box" style="margin:0 0 0.75rem"><div class="rl-title">💡 Tại sao bóng đèn sáng?</div>Dòng điện chạy qua dây tóc bóng đèn (điện trở rất lớn) → toả nhiệt → nóng đến 2500°C → phát sáng. Đó là lý do bóng đèn sợi đốt rất NÓNG khi sờ vào!</div>
+    <div class="reallife-box" style="margin:0 0 0.75rem"><div class="rl-title">🔌 Tại sao ổ cắm điện ghi 220V?</div>220V là hiệu điện thế chuẩn điện nhà Việt Nam. Mỗi thiết bị phải phù hợp 220V. Nếu dùng thiết bị 110V (Mỹ/Nhật) cắm thẳng → cháy thiết bị!</div>
+    <div class="reallife-box" style="margin:0 0 0.75rem"><div class="rl-title">🧲 Tại sao nam châm hút tủ lạnh?</div>Cửa tủ lạnh có gioăng cao su chứa bột sắt từ (nam châm mềm). Khi đóng cửa, từ trường hút cửa dính chặt → giữ lạnh bên trong.</div>
+    <div class="reallife-box" style="margin:0"><div class="rl-title">👓 Tại sao đeo kính cận lại nhìn rõ?</div>Mắt cận → ảnh rơi trước võng mạc. Kính phân kỳ làm tia sáng "toả ra" → ảnh lùi ra đúng võng mạc → nhìn rõ!</div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:1rem;">🗓️ Lộ trình ôn tập 30 ngày</div>
+    <div class="roadmap-step"><div class="step-num">1-6</div><div class="step-body"><h4>Tuần 1 — Điện trở & Ohm</h4><p>Thuộc tam giác URI, phân biệt nối tiếp vs song song. Làm 5 flashcard + 5 trắc nghiệm/ngày.</p></div></div>
+    <div class="roadmap-step"><div class="step-num">7-12</div><div class="step-body"><h4>Tuần 2 — Công suất & Điện năng</h4><p>Thuộc P=UI, tính tiền điện thực tế nhà em. Ôn lại C1.</p></div></div>
+    <div class="roadmap-step"><div class="step-num">13-18</div><div class="step-body"><h4>Tuần 3 — Từ trường & Cảm ứng</h4><p>Học quy tắc bàn tay trái + phải. Vẽ sơ đồ tư duy. Ôn C1-C2.</p></div></div>
+    <div class="roadmap-step"><div class="step-num">19-24</div><div class="step-body"><h4>Tuần 4 — Quang học</h4><p>Phân biệt 2 thấu kính, vẽ ảnh, công thức 1/f = 1/d + 1/d'.</p></div></div>
+    <div class="roadmap-step"><div class="step-num">25-30</div><div class="step-body"><h4>Tuần 5 — Ôn tổng hợp</h4><p>Làm bài thi 20 câu tổng hợp. Xem lại phần sai. Ôn flashcard mỗi ngày.</p></div></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const flashcards = [
+  // C1
+  {chapter:'c1', q:'Định luật Ohm phát biểu thế nào?', a:'Cường độ dòng điện (I) tỉ lệ thuận với hiệu điện thế (U) và tỉ lệ nghịch với điện trở (R).\nI = U/R'},
+  {chapter:'c1', q:'Đoạn mạch nối tiếp: I, U, R có quan hệ thế nào?', a:'I = I₁ = I₂ (bằng nhau)\nU = U₁ + U₂ (cộng)\nR = R₁ + R₂ (cộng)'},
+  {chapter:'c1', q:'Đoạn mạch song song: I, U, R thế nào?', a:'U = U₁ = U₂ (bằng nhau)\nI = I₁ + I₂ (cộng)\n1/R = 1/R₁ + 1/R₂'},
+  {chapter:'c1', q:'Điện trở dây dẫn phụ thuộc vào gì?', a:'R = ρ × l / S\nPhụ thuộc 3 yếu tố:\n1. ρ (chất liệu)\n2. l (chiều dài)\n3. S (tiết diện)'},
+  {chapter:'c1', q:'R₁=6Ω, R₂=12Ω mắc song song. Rtđ = ?', a:'1/R = 1/6 + 1/12 = 2/12 + 1/12 = 3/12\nR = 12/3 = 4Ω\nMẹo nhanh: R₁×R₂/(R₁+R₂) = 72/18 = 4Ω'},
+  {chapter:'c1', q:'Đổi đơn vị: 1 mm² = ? m²', a:'1 mm² = 10⁻⁶ m²\n(1mm = 10⁻³m → 1mm² = 10⁻⁶m²)\nBẫy hay sai: quên đổi mm² → m² khi tính R = ρl/S'},
+  {chapter:'c1', q:'R₁=4Ω mắc nối tiếp R₂=6Ω. U=20V. Tìm I, U₁, U₂.', a:'Rtđ = 4+6 = 10Ω\nI = U/R = 20/10 = 2A\nU₁ = I×R₁ = 2×4 = 8V\nU₂ = I×R₂ = 2×6 = 12V'},
+  {chapter:'c1', q:'Biến trở là gì? Dùng để làm gì?', a:'Biến trở = điện trở có thể thay đổi giá trị\nDùng để điều chỉnh cường độ dòng điện (VD: chỉnh độ sáng đèn, âm lượng)'},
+  {chapter:'c1', q:'Vật liệu nào dẫn điện tốt nhất?', a:'Bạc (Ag) > Đồng (Cu) > Nhôm (Al) > Sắt (Fe)\nTrong thực tế dùng Cu vì rẻ hơn Ag, dẫn điện tốt'},
+  // C2
+  {chapter:'c2', q:'Công suất điện P tính thế nào?', a:'P = U × I = I²R = U²/R\nĐơn vị: Oát (W)\n1 kW = 1000W'},
+  {chapter:'c2', q:'Điện năng A tính thế nào?', a:'A = P × t = U × I × t\nĐơn vị: Jun (J) hoặc kWh\n1 kWh = 3.600.000 J'},
+  {chapter:'c2', q:'1 "số điện" = bao nhiêu?', a:'1 số điện = 1 kWh\n= Công suất 1kW × thời gian 1h\n= 1000W × 3600s = 3.600.000 J'},
+  {chapter:'c2', q:'Bóng đèn 100W dùng 5h. Tiêu thụ bao nhiêu kWh?', a:'P = 100W = 0,1kW\nA = 0,1 × 5 = 0,5 kWh\nTiền (~2000đ/kWh) = 1.000đ'},
+  {chapter:'c2', q:'Định luật Jun-Lenxơ: Q = ?', a:'Q = I² × R × t\nNhiệt lượng toả ra trên điện trở\nĐơn vị: Jun (J)'},
+  {chapter:'c2', q:'Phân biệt kW và kWh?', a:'kW = công suất (đang ngốn bao nhiêu điện)\nkWh = năng lượng đã dùng (tổng đã ngốn)\nVD: đèn 1kW bật 2h = 2kWh'},
+  {chapter:'c2', q:'Cầu chì có tác dụng gì?', a:'Bảo vệ mạch điện khi quá tải.\nKhi I quá lớn → dây chì nóng chảy → ngắt mạch → tránh cháy dây, hỏng thiết bị'},
+  {chapter:'c2', q:'Tại sao truyền tải điện xa phải dùng hiệu điện thế cao?', a:'Công suất hao phí: P_hp = I²R = P²R/U²\nU tăng 10 lần → P hao phí giảm 100 lần!\nVì vậy đường dây cao thế dùng 500.000V'},
+  // C3
+  {chapter:'c3', q:'Từ trường tồn tại ở đâu?', a:'Xung quanh nam châm VÀ xung quanh dây dẫn có dòng điện chạy qua.\nNhận biết: đặt kim NC → quay'},
+  {chapter:'c3', q:'Đường sức từ đi từ đâu đến đâu?', a:'Đi RA từ cực BẮC (N) → vào cực NAM (S)\nBên ngoài: N → S\nBên trong NC: S → N (tạo đường kín)'},
+  {chapter:'c3', q:'Quy tắc bàn tay trái dùng để làm gì?', a:'Xác định CHIỀU LỰC ĐIỆN TỪ (F)\n• Đường sức đâm vào lòng bàn tay\n• 4 ngón = chiều I\n• Ngón cái = chiều F'},
+  {chapter:'c3', q:'Quy tắc nắm tay phải dùng khi nào?', a:'Xác định chiều đường sức từ CỦA CUỘN DÂY có dòng điện.\n• Nắm tay phải, 4 ngón = chiều I\n• Ngón cái = cực Bắc (N)'},
+  {chapter:'c3', q:'Động cơ điện hoạt động dựa trên nguyên tắc gì?', a:'Tác dụng của từ trường lên khung dây mang dòng điện.\nĐiện năng → Cơ năng (quay)\nVD: quạt, máy giặt, máy bơm'},
+  {chapter:'c3', q:'Lực điện từ phụ thuộc vào yếu tố nào?', a:'1. Cường độ dòng điện (I)\n2. Cường độ từ trường (B)\n3. Chiều dài dây dẫn trong từ trường\nI hoặc B tăng → lực tăng'},
+  // C4
+  {chapter:'c4', q:'Khi nào xuất hiện dòng điện cảm ứng?', a:'Khi số đường sức từ xuyên qua cuộn dây BIẾN THIÊN (thay đổi).\n• Di chuyển NC lại gần/xa → có dòng\n• Cả hai đứng yên → KHÔNG có dòng'},
+  {chapter:'c4', q:'Máy phát điện xoay chiều gồm gì?', a:'2 bộ phận chính:\n• Nam châm (tạo từ trường)\n• Cuộn dây (quay hoặc NC quay)\nQuay → số đường sức thay đổi → dòng cảm ứng'},
+  {chapter:'c4', q:'Công thức máy biến thế?', a:'U₁/U₂ = n₁/n₂\nn₁ > n₂ → U₁ > U₂ (hạ thế)\nn₂ > n₁ → U₂ > U₁ (tăng thế)'},
+  {chapter:'c4', q:'Máy biến thế chỉ hoạt động với dòng gì?', a:'Chỉ dòng XOAY CHIỀU!\nVì dòng xoay chiều → từ trường biến thiên → cảm ứng ĐT ở cuộn thứ cấp.\nDòng 1 chiều (pin) → KHÔNG hoạt động'},
+  {chapter:'c4', q:'Dòng xoay chiều 50Hz nghĩa là gì?', a:'Đổi chiều 100 lần/giây\n(50 chu kỳ/giây, mỗi chu kỳ đổi chiều 2 lần)\nĐây là tiêu chuẩn điện Việt Nam: 220V, 50Hz'},
+  {chapter:'c4', q:'Cuộn sơ cấp 4400 vòng, thứ cấp 200 vòng, U₁=220V. U₂=?', a:'U₂ = U₁ × n₂/n₁ = 220 × 200/4400 = 10V\nĐây là máy hạ thế (hạ từ 220V xuống 10V)'},
+  // C5
+  {chapter:'c5', q:'Khúc xạ ánh sáng là gì?', a:'Tia sáng bị gãy khúc khi đi từ môi trường này sang môi trường khác.\n• KK → nước: lệch gần pháp tuyến\n• Nước → KK: lệch xa pháp tuyến'},
+  {chapter:'c5', q:'Thấu kính hội tụ có hình dạng thế nào?', a:'Giữa DÀY hơn rìa (phồng ra 2 bên)\nTia sáng song song → hội tụ tại tiêu điểm F\nVD: kính lúp'},
+  {chapter:'c5', q:'Thấu kính phân kỳ cho ảnh như thế nào?', a:'LUÔN cho ảnh ảo, cùng chiều, nhỏ hơn vật.\nGiữa MỎNG hơn rìa (lõm vào)\nVD: kính cận thị'},
+  {chapter:'c5', q:'Công thức thấu kính?', a:'1/f = 1/d + 1/d\'\nf: tiêu cự | d: KC vật→TK | d\': KC ảnh→TK\nd\' > 0: ảnh thật | d\' < 0: ảnh ảo'},
+  {chapter:'c5', q:'Mắt cận thị đeo kính gì? Viễn thị?', a:'Cận thị → kính PHÂN KỲ\nViễn thị → kính HỘI TỤ\nMẹo: "Cận=Phân kỳ" (C-P cùng vần)'},
+  {chapter:'c5', q:'TK hội tụ f=10cm, d=15cm. Tìm d\'.', a:'1/d\' = 1/f - 1/d = 1/10 - 1/15\n= 3/30 - 2/30 = 1/30\nd\' = 30cm (ảnh thật, ngược chiều, lớn hơn vật)'},
+  {chapter:'c5', q:'3 tia đặc biệt qua TK hội tụ?', a:'1. Tia song song trục → qua F\'\n2. Tia qua F → song song trục\n3. Tia qua quang tâm O → thẳng'},
+  {chapter:'c5', q:'Kính lúp dùng thấu kính gì? Đặt vật ở đâu?', a:'Dùng TK HỘI TỤ\nĐặt vật trong khoảng tiêu cự (d < f)\n→ Ảnh ảo, cùng chiều, lớn hơn vật'},
+];
+
+const questions = [
+  // C1
+  {chapter:'c1', q:'R₁=4Ω, R₂=6Ω mắc nối tiếp. Điện trở tương đương = ?', opts:['2,4Ω','10Ω','24Ω','1,5Ω'], ans:1, ex:'Nối tiếp: Rtđ = R₁ + R₂ = 4 + 6 = 10Ω. Nhớ: nối tiếp thì CỘNG!'},
+  {chapter:'c1', q:'R₁=6Ω, R₂=3Ω mắc song song. Rtđ = ?', opts:['9Ω','2Ω','4,5Ω','3Ω'], ans:1, ex:'Song song: 1/R = 1/6 + 1/3 = 1/6 + 2/6 = 3/6 → R = 2Ω. Hoặc: 6×3/(6+3) = 18/9 = 2Ω'},
+  {chapter:'c1', q:'U=12V, R=6Ω. Cường độ dòng điện I = ?', opts:['72A','2A','0,5A','18A'], ans:1, ex:'Định luật Ohm: I = U/R = 12/6 = 2A'},
+  {chapter:'c1', q:'Hai đèn mắc song song vào nguồn 12V. Phát biểu đúng là:', opts:['I qua 2 đèn bằng nhau','U trên 2 đèn bằng nhau','R tổng bằng R1+R2','U trên 2 đèn khác nhau'], ans:1, ex:'Song song → U bằng nhau (cùng 12V). I thì chia nhánh (khác nhau nếu R khác nhau)'},
+  {chapter:'c1', q:'Dây dẫn dài hơn thì điện trở:', opts:['Nhỏ hơn','Lớn hơn','Không đổi','Bằng 0'], ans:1, ex:'R = ρl/S. l tăng → R tăng. Dây càng dài → càng cản trở dòng điện'},
+  {chapter:'c1', q:'Đồng (Cu) và Sắt (Fe) cùng l, cùng S. Dây nào R lớn hơn?', opts:['Cu','Fe','Bằng nhau','Không xác định'], ans:1, ex:'ρ(Fe) > ρ(Cu) → R(Fe) > R(Cu). Vì vậy dây điện trong nhà dùng đồng, không dùng sắt'},
+  // C2
+  {chapter:'c2', q:'Bóng đèn ghi 220V-100W. Số 100W cho biết gì?', opts:['Điện năng tiêu thụ','Điện trở bóng đèn','Công suất định mức','Cường độ dòng điện'], ans:2, ex:'100W = công suất định mức. Nghĩa là khi cắm đúng 220V, đèn tiêu thụ 100W'},
+  {chapter:'c2', q:'Điều hoà 1500W dùng 8h/ngày, 30 ngày. Tiêu thụ bao nhiêu kWh?', opts:['360','3600','36','120'], ans:0, ex:'1500W = 1,5kW. A = 1,5 × 8 × 30 = 360 kWh = 360 số điện'},
+  {chapter:'c2', q:'Truyền tải điện xa, muốn giảm hao phí thì:', opts:['Giảm U','Tăng R dây','Tăng U','Giảm I và tăng R'], ans:2, ex:'P_hp = P²R/U². Tăng U → giảm hao phí. Vì vậy đường dây cao thế dùng 500kV'},
+  {chapter:'c2', q:'Định luật Jun-Lenxơ: Q = ?', opts:['I²Rt','UIt','U²/R','IRt'], ans:0, ex:'Q = I²Rt (nhiệt lượng toả ra). Dùng khi tính nhiệt toả ra trên dây dẫn, bếp điện'},
+  {chapter:'c2', q:'Bóng đèn 60W dùng 5 giờ. Điện năng tiêu thụ = ?', opts:['300 J','300 Wh','0,3 kWh','1080 kJ'], ans:2, ex:'A = 60W × 5h = 300Wh = 0,3kWh. Nhớ đổi W→kW: chia 1000'},
+  // C3
+  {chapter:'c3', q:'Đường sức từ đi từ:', opts:['Nam → Bắc','Bắc → Nam','Trên → Dưới','Trong → Ngoài'], ans:1, ex:'Bên ngoài NC: Bắc (N) → Nam (S). Mẹo: "Bắc RA — Nam VÀO"'},
+  {chapter:'c3', q:'Quy tắc bàn tay trái xác định:', opts:['Chiều dòng điện','Chiều đường sức từ','Chiều lực điện từ','Chiều dòng cảm ứng'], ans:2, ex:'Bàn tay TRÁI → lực điện từ (F). Bàn tay PHẢI → dòng cảm ứng (C4)'},
+  {chapter:'c3', q:'Động cơ điện biến đổi năng lượng nào?', opts:['Cơ → Điện','Điện → Nhiệt','Điện → Cơ','Nhiệt → Điện'], ans:2, ex:'Động cơ: Điện năng → Cơ năng (quay). Ngược lại: Máy phát điện: Cơ → Điện'},
+  {chapter:'c3', q:'Lực từ tác dụng lên dây dẫn mang dòng điện khi:', opts:['Dây song song đường sức','Dây vuông góc đường sức','Mọi trường hợp','Không bao giờ'], ans:1, ex:'Lực từ lớn nhất khi dây dẫn VUÔNG GÓC với đường sức từ. Song song → F = 0'},
+  {chapter:'c3', q:'Tăng cường độ dòng điện qua cuộn dây thì từ trường:', opts:['Giảm','Không đổi','Mạnh hơn','Biến mất'], ans:2, ex:'I tăng → từ trường cuộn dây mạnh hơn. Đây là nguyên lý nam châm điện'},
+  // C4
+  {chapter:'c4', q:'Dòng điện cảm ứng xuất hiện khi:', opts:['Nam châm đứng yên bên cuộn dây','Số đường sức từ qua cuộn dây thay đổi','Cuộn dây không có nam châm','Dòng điện chạy qua cuộn dây'], ans:1, ex:'BIẾN THIÊN số đường sức từ → dòng cảm ứng. Đứng yên → không đổi → không có dòng'},
+  {chapter:'c4', q:'Máy biến thế CHỈ dùng được với:', opts:['Dòng 1 chiều','Dòng xoay chiều','Cả hai','Không dòng nào'], ans:1, ex:'Chỉ dòng xoay chiều (vì cần từ trường biến thiên). Pin (1 chiều) → máy biến thế không hoạt động'},
+  {chapter:'c4', q:'n₁=1000 vòng, n₂=100 vòng, U₁=220V. U₂ = ?', opts:['22V','220V','2200V','2,2V'], ans:0, ex:'U₂ = U₁ × n₂/n₁ = 220 × 100/1000 = 22V. Đây là máy HẠ THẾ (n₂ < n₁)'},
+  {chapter:'c4', q:'Máy phát điện biến đổi:', opts:['Điện → Cơ','Cơ → Điện','Nhiệt → Điện','Điện → Nhiệt'], ans:1, ex:'Máy phát: Cơ năng → Điện năng. Ngược với Động cơ (Điện → Cơ)'},
+  {chapter:'c4', q:'Tần số 50Hz nghĩa là dòng điện:', opts:['Đổi chiều 50 lần/giây','Đổi chiều 100 lần/giây','Chạy 50 giây','Cường độ 50A'], ans:1, ex:'50Hz = 50 chu kỳ/giây. Mỗi chu kỳ đổi chiều 2 lần → 100 lần đổi chiều/giây'},
+  // C5
+  {chapter:'c5', q:'Thấu kính hội tụ có đặc điểm:', opts:['Giữa mỏng, rìa dày','Giữa dày, rìa mỏng','Phẳng 2 mặt','Lõm 2 mặt'], ans:1, ex:'Hội tụ = giữa DÀY (lồi). Mẹo: "Hội tụ DÀY giữa — gom ánh sáng"'},
+  {chapter:'c5', q:'Mắt cận thị phải đeo kính gì?', opts:['Hội tụ','Phân kỳ','Phẳng','Lăng kính'], ans:1, ex:'Cận thị → kính PHÂN KỲ. Viễn thị → kính hội tụ. Mẹo: "Cận-Phân" (C-P cùng nhóm)'},
+  {chapter:'c5', q:'TK phân kỳ LUÔN cho ảnh:', opts:['Thật, ngược chiều','Thật, cùng chiều','Ảo, ngược chiều','Ảo, cùng chiều, nhỏ hơn'], ans:3, ex:'TK phân kỳ LUÔN cho ảnh ảo, cùng chiều, nhỏ hơn vật. Không bao giờ cho ảnh thật'},
+  {chapter:'c5', q:'Khi nào TK hội tụ cho ảnh ảo?', opts:['d > 2f','d = 2f','d < f','d > f'], ans:2, ex:'Khi vật đặt TRONG khoảng tiêu cự (d < f) → ảnh ảo, cùng chiều, lớn hơn vật. Đó là kính lúp!'},
+  {chapter:'c5', q:'Ánh sáng từ không khí vào nước, tia khúc xạ:', opts:['Lệch xa pháp tuyến','Lệch gần pháp tuyến','Không đổi','Phản xạ lại'], ans:1, ex:'KK → nước (môi trường chiết quang hơn) → tia khúc xạ lệch GẦN pháp tuyến hơn'},
+  {chapter:'c5', q:'f=20cm, d=30cm. d\' = ?', opts:['60cm','12cm','10cm','15cm'], ans:0, ex:'1/d\' = 1/f - 1/d = 1/20 - 1/30 = 3/60 - 2/60 = 1/60 → d\'=60cm. Ảnh thật (d\'>0)'},
+];
+
+const formulaData = [
+  {ch:'C1', eq:'I = U / R', explain:'I: cường độ dòng điện (A), U: hiệu điện thế (V), R: điện trở (Ω)', unit:'A = V / Ω'},
+  {ch:'C1', eq:'R = ρ × l / S', explain:'ρ: điện trở suất (Ω.m), l: chiều dài (m), S: tiết diện (m²)', unit:'Ω = Ω.m × m / m²'},
+  {ch:'C1', eq:'Rtđ = R₁ + R₂ (nối tiếp)', explain:'Nối tiếp: I bằng nhau, U cộng, R cộng', unit:'Ω'},
+  {ch:'C1', eq:'1/Rtđ = 1/R₁ + 1/R₂ (song song)', explain:'Song song: U bằng nhau, I cộng, R nghịch đảo cộng', unit:'Ω'},
+  {ch:'C2', eq:'P = U × I', explain:'P: công suất (W), U: hiệu điện thế (V), I: cường độ (A)', unit:'W = V × A'},
+  {ch:'C2', eq:'P = I² × R = U² / R', explain:'Biến thể từ P=UI kết hợp U=IR', unit:'W'},
+  {ch:'C2', eq:'A = P × t', explain:'A: điện năng (J hoặc Wh), t: thời gian (s hoặc h)', unit:'J = W × s hoặc kWh'},
+  {ch:'C2', eq:'Q = I² × R × t', explain:'Định luật Jun-Lenxơ: nhiệt lượng toả ra', unit:'J'},
+  {ch:'C2', eq:'P_hp = P²R / U²', explain:'Công suất hao phí khi truyền tải. U tăng 10× → hao phí giảm 100×', unit:'W'},
+  {ch:'C4', eq:'U₁/U₂ = n₁/n₂', explain:'Máy biến thế: U tỉ lệ thuận với số vòng dây', unit:'V, vòng'},
+  {ch:'C5', eq:'1/f = 1/d + 1/d\'', explain:'f: tiêu cự, d: KC vật→TK, d\': KC ảnh→TK', unit:'m hoặc cm'},
+];
+
+const mindmaps = {
+  c1: {
+    title:'Điện trở & Ohm', color:'#1565C0',
+    center:'ĐIỆN TRỞ\n& ĐỊNH LUẬT OHM',
+    branches:[
+      {label:'Định luật Ohm', color:'#0D3B66', leaves:[
+        {text:'I = U / R\n(tam giác URI)', bg:'#E3F2FD', border:'#1565C0'},
+        {text:'U = I × R', bg:'#E3F2FD', border:'#1565C0'},
+        {text:'R = U / I', bg:'#E3F2FD', border:'#1565C0'},
+      ]},
+      {label:'Nối tiếp\n(xếp hàng)', color:'#E67E22', leaves:[
+        {text:'I = I₁ = I₂\n(dòng bằng nhau)', bg:'#FDF2E9', border:'#E67E22'},
+        {text:'U = U₁ + U₂\n(chia sẻ U)', bg:'#FDF2E9', border:'#E67E22'},
+        {text:'R = R₁ + R₂\n(cộng lại)', bg:'#FDF2E9', border:'#E67E22'},
+      ]},
+      {label:'Song song\n(2 đường)', color:'#27AE60', leaves:[
+        {text:'U = U₁ = U₂\n(cùng U)', bg:'#E8F8F0', border:'#27AE60'},
+        {text:'I = I₁ + I₂\n(chia nhánh)', bg:'#E8F8F0', border:'#27AE60'},
+        {text:'1/R = 1/R₁ + 1/R₂\n(nghịch đảo cộng)', bg:'#E8F8F0', border:'#27AE60'},
+      ]},
+      {label:'Điện trở\ndây dẫn', color:'#8E44AD', leaves:[
+        {text:'R = ρ × l / S', bg:'#F4ECF7', border:'#8E44AD'},
+        {text:'ρ: chất liệu\nl: chiều dài\nS: tiết diện', bg:'#F4ECF7', border:'#8E44AD'},
+        {text:'Cu tốt nhất (rẻ)\nAg tốt nhất (đắt)', bg:'#F4ECF7', border:'#8E44AD'},
+      ]},
+    ]
+  },
+  c2: {
+    title:'Công suất điện', color:'#E67E22',
+    center:'CÔNG SUẤT\n& ĐIỆN NĂNG',
+    branches:[
+      {label:'Công suất P', color:'#7E4A12', leaves:[
+        {text:'P = U × I\n(công thức gốc)', bg:'#FDF2E9', border:'#E67E22'},
+        {text:'P = I²R\nP = U²/R\n(biến thể)', bg:'#FDF2E9', border:'#E67E22'},
+        {text:'Đơn vị: Oát (W)\n1kW = 1000W', bg:'#FDF2E9', border:'#E67E22'},
+      ]},
+      {label:'Điện năng A', color:'#1565C0', leaves:[
+        {text:'A = P × t\nA = U × I × t', bg:'#E3F2FD', border:'#1565C0'},
+        {text:'Đơn vị: J hoặc kWh\n1kWh = 3.600.000J', bg:'#E3F2FD', border:'#1565C0'},
+        {text:'1 "số điện" = 1 kWh', bg:'#E3F2FD', border:'#1565C0'},
+      ]},
+      {label:'Jun-Lenxơ', color:'#E74C3C', leaves:[
+        {text:'Q = I² × R × t\n(nhiệt lượng toả ra)', bg:'#FDEDEC', border:'#E74C3C'},
+        {text:'Ứng dụng: bàn là,\nbếp điện, ấm nước', bg:'#FDEDEC', border:'#E74C3C'},
+      ]},
+      {label:'Truyền tải', color:'#27AE60', leaves:[
+        {text:'P_hp = P²R/U²\nU↑ → P_hp↓↓', bg:'#E8F8F0', border:'#27AE60'},
+        {text:'Đường dây 500kV\ngiảm hao phí xa', bg:'#E8F8F0', border:'#27AE60'},
+      ]},
+    ]
+  },
+  c3: {
+    title:'Từ trường', color:'#27AE60',
+    center:'TỪ TRƯỜNG\n& LỰC TỪ',
+    branches:[
+      {label:'Nam châm', color:'#0E5C2F', leaves:[
+        {text:'2 cực: Bắc (N) — Nam (S)\nCùng cực: đẩy\nKhác cực: hút', bg:'#E8F8F0', border:'#27AE60'},
+        {text:'Đường sức từ:\nN → S (ngoài)\nS → N (trong)', bg:'#E8F8F0', border:'#27AE60'},
+      ]},
+      {label:'Lực điện từ\n(bàn tay TRÁI)', color:'#E74C3C', leaves:[
+        {text:'B → lòng bàn tay\n4 ngón → chiều I\nNgón cái → chiều F', bg:'#FDEDEC', border:'#E74C3C'},
+        {text:'F lớn nhất khi\ndây ⊥ đường sức', bg:'#FDEDEC', border:'#E74C3C'},
+      ]},
+      {label:'Động cơ điện', color:'#1565C0', leaves:[
+        {text:'Điện → Cơ (quay)\nLực từ làm quay\nkhung dây', bg:'#E3F2FD', border:'#1565C0'},
+        {text:'VD: quạt, máy giặt\nmáy bơm, máy khoan', bg:'#E3F2FD', border:'#1565C0'},
+      ]},
+      {label:'Nam châm điện', color:'#8E44AD', leaves:[
+        {text:'Cuộn dây + dòng điện\n= nam châm\nTắt điện → mất từ tính', bg:'#F4ECF7', border:'#8E44AD'},
+        {text:'VD: cần cẩu\nchuông điện, rơle', bg:'#F4ECF7', border:'#8E44AD'},
+      ]},
+    ]
+  },
+  c4: {
+    title:'Cảm ứng điện từ', color:'#8E44AD',
+    center:'CẢM ỨNG\nĐIỆN TỪ',
+    branches:[
+      {label:'Dòng điện\ncảm ứng', color:'#3C1361', leaves:[
+        {text:'Số đường sức từ\nBIẾN THIÊN\n→ dòng cảm ứng', bg:'#F4ECF7', border:'#8E44AD'},
+        {text:'Di chuyển NC\n↔ cuộn dây\n→ có dòng', bg:'#F4ECF7', border:'#8E44AD'},
+        {text:'Cả 2 đứng yên\n→ KHÔNG có dòng', bg:'#F4ECF7', border:'#8E44AD'},
+      ]},
+      {label:'Dòng xoay chiều', color:'#E67E22', leaves:[
+        {text:'Đổi chiều liên tục\n220V, 50Hz\n(VN tiêu chuẩn)', bg:'#FDF2E9', border:'#E67E22'},
+        {text:'50Hz = đổi chiều\n100 lần/giây', bg:'#FDF2E9', border:'#E67E22'},
+      ]},
+      {label:'Máy phát điện', color:'#27AE60', leaves:[
+        {text:'Cơ năng → Điện năng\nQuay cuộn dây/NC\n→ dòng xoay chiều', bg:'#E8F8F0', border:'#27AE60'},
+      ]},
+      {label:'Máy biến thế', color:'#1565C0', leaves:[
+        {text:'U₁/U₂ = n₁/n₂\nChỉ dùng AC!\n(xoay chiều)', bg:'#E3F2FD', border:'#1565C0'},
+        {text:'Tăng thế: n₂>n₁\nHạ thế: n₂<n₁', bg:'#E3F2FD', border:'#1565C0'},
+      ]},
+    ]
+  },
+  c5: {
+    title:'Quang học', color:'#16A085',
+    center:'QUANG HỌC\nÁnh sáng & Thấu kính',
+    branches:[
+      {label:'Khúc xạ\nánh sáng', color:'#0B5345', leaves:[
+        {text:'Tia sáng gãy khúc\nkhi đổi môi trường', bg:'#E8F6F3', border:'#16A085'},
+        {text:'KK→nước: gần PT\nNước→KK: xa PT', bg:'#E8F6F3', border:'#16A085'},
+      ]},
+      {label:'TK Hội tụ\n(giữa DÀY)', color:'#1565C0', leaves:[
+        {text:'Gom tia sáng SS\nvào tiêu điểm F', bg:'#E3F2FD', border:'#1565C0'},
+        {text:'d>2f: ảnh thật nhỏ\nd=2f: ảnh thật bằng\nf<d<2f: ảnh thật lớn\nd<f: ảnh ảo lớn', bg:'#E3F2FD', border:'#1565C0'},
+      ]},
+      {label:'TK Phân kỳ\n(giữa MỎNG)', color:'#E74C3C', leaves:[
+        {text:'Toả tia sáng ra\nLUÔN cho ảnh ảo\ncùng chiều, nhỏ hơn', bg:'#FDEDEC', border:'#E74C3C'},
+      ]},
+      {label:'Mắt & Kính', color:'#E67E22', leaves:[
+        {text:'Cận thị → kính\nPHÂN KỲ', bg:'#FDF2E9', border:'#E67E22'},
+        {text:'Viễn thị → kính\nHỘI TỤ', bg:'#FDF2E9', border:'#E67E22'},
+        {text:'1/f = 1/d + 1/d\'', bg:'#FDF2E9', border:'#E67E22'},
+      ]},
+    ]
+  }
+};
+
+// ===== FUNCTIONS =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => { if(t.textContent.toLowerCase().includes(id==='home'?'trang':id==='formulas'?'công':id==='theory'?'lý thuyết':id==='flashcard'?'flash':id==='quiz'?'bài':id==='mindmap'?'sơ':id==='tips'?'bí':'x')) t.classList.add('active'); });
+  // Simple active tab matching
+  const tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  const map = {home:0,theory:1,formulas:2,flashcard:3,quiz:4,mindmap:5,tips:6};
+  if(map[id]!==undefined) tabs[map[id]].classList.add('active');
+}
+
+function toggleTheory(id) {
+  const body = document.getElementById('body-'+id);
+  const chev = document.getElementById('chevron-'+id);
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+// FLASHCARD
+let fcCards=[], fcIdx=0, fcKnow=new Set(), fcLearn=new Set();
+function loadFlashcards() {
+  const ch = document.getElementById('fc-chapter').value;
+  fcCards = ch==='all' ? [...flashcards] : flashcards.filter(c=>c.chapter===ch);
+  fcIdx=0; fcKnow.clear(); fcLearn.clear(); updateFC();
+}
+function updateFC() {
+  if(!fcCards.length) return;
+  const c=fcCards[fcIdx];
+  document.getElementById('fc-q').textContent=c.q;
+  document.getElementById('fc-a').textContent=c.a;
+  document.getElementById('fc-counter').textContent=`${fcIdx+1} / ${fcCards.length}`;
+  document.getElementById('fc-bar').style.width=`${((fcIdx+1)/fcCards.length)*100}%`;
+  document.getElementById('fc-know').textContent=fcKnow.size;
+  document.getElementById('fc-learn').textContent=fcLearn.size;
+  document.getElementById('fc-unseen').textContent=fcCards.length-fcKnow.size-fcLearn.size;
+  document.getElementById('fc-inner').classList.remove('flipped');
+}
+function flipCard(){document.getElementById('fc-inner').classList.toggle('flipped')}
+function nextCard(){if(fcIdx<fcCards.length-1){fcIdx++;updateFC()}}
+function prevCard(){if(fcIdx>0){fcIdx--;updateFC()}}
+function shuffleCards(){fcCards.sort(()=>Math.random()-0.5);fcIdx=0;updateFC()}
+function resetCards(){fcIdx=0;fcKnow.clear();fcLearn.clear();updateFC()}
+function markCard(type){
+  if(type==='know'){fcKnow.add(fcIdx);fcLearn.delete(fcIdx)}else{fcLearn.add(fcIdx);fcKnow.delete(fcIdx)}
+  updateFC(); if(fcIdx<fcCards.length-1) setTimeout(nextCard,300);
+}
+
+// QUIZ
+let quizChapter='all', quizQs=[], quizAnswers={}, timerInterval, timerSec=0;
+function selectChapter(el,ch){
+  document.querySelectorAll('.chapter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); quizChapter=ch;
+}
+function startQuiz(){
+  const pool=quizChapter==='all'?questions:questions.filter(q=>q.chapter===quizChapter);
+  const count=parseInt(document.getElementById('q-count').value);
+  quizQs=pool.sort(()=>Math.random()-0.5).slice(0,Math.min(count,pool.length));
+  quizAnswers={}; timerSec=0;
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    timerSec++;
+    const m=String(Math.floor(timerSec/60)).padStart(2,'0');
+    const s=String(timerSec%60).padStart(2,'0');
+    document.getElementById('q-timer').textContent=`⏱ ${m}:${s}`;
+  },1000);
+  document.getElementById('quiz-setup').style.display='none';
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('quiz-result').style.display='none';
+  let html='';
+  quizQs.forEach((q,i)=>{
+    html+=`<div class="q-card" id="qc-${i}"><div class="q-num">Câu ${i+1}/${quizQs.length}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,j)=>`<div class="opt" onclick="pickOpt(${i},${j},this)">${String.fromCharCode(65+j)}. ${o}</div>`).join('')}</div><div class="explain-box" id="ex-${i}">💡 ${q.ex}</div></div>`;
+  });
+  document.getElementById('q-list').innerHTML=html;
+  document.getElementById('q-progress').textContent=`0/${quizQs.length} đã chọn`;
+}
+function pickOpt(qi,oi,el){
+  if(quizAnswers[qi]!==undefined) return;
+  document.querySelectorAll(`#qc-${qi} .opt`).forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected'); quizAnswers[qi]=oi;
+  document.getElementById('q-progress').textContent=`${Object.keys(quizAnswers).length}/${quizQs.length} đã chọn`;
+}
+function submitQuiz(){
+  clearInterval(timerInterval);
+  let correct=0;
+  quizQs.forEach((q,i)=>{
+    const opts=document.querySelectorAll(`#qc-${i} .opt`);
+    opts.forEach(o=>o.style.pointerEvents='none');
+    if(quizAnswers[i]===q.ans){correct++;opts[q.ans].classList.add('correct')}
+    else{if(quizAnswers[i]!==undefined)opts[quizAnswers[i]].classList.add('wrong');opts[q.ans].classList.add('correct')}
+    document.getElementById('ex-'+i).classList.add('show');
+  });
+  const pct=Math.round(correct/quizQs.length*100);
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('quiz-result').style.display='block';
+  document.getElementById('r-score').textContent=`${correct}/${quizQs.length}`;
+  document.getElementById('r-pct').textContent=`Điểm: ${pct}% — ${pct>=80?'Xuất sắc! 🎉':pct>=50?'Khá tốt! 💪':'Cần ôn lại! 📚'}`;
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=quizQs.length-correct;
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  document.getElementById('r-time').textContent=`${m}:${String(s).padStart(2,'0')}`;
+}
+function showReview(){
+  document.getElementById('quiz-area').style.display='block';
+}
+
+// FORMULA SHEET
+function buildFormulas(){
+  document.getElementById('formula-list').innerHTML=formulaData.map(f=>`
+    <div class="formula-card">
+      <div class="f-chapter">${f.ch}</div>
+      <div class="f-eq">${f.eq}</div>
+      <div class="f-explain">${f.explain}</div>
+      <div class="f-unit">${f.unit}</div>
+    </div>
+  `).join('');
+}
+
+// MINDMAP
+let currentMM='c1';
+function renderMindmap(key){
+  currentMM=key;
+  document.querySelectorAll('.mm-tab').forEach(t=>{t.classList.remove('active');t.style.background='';t.style.color=''});
+  const tab=document.getElementById('mm-tab-'+key);
+  tab.classList.add('active');tab.style.background=mindmaps[key].color;tab.style.color='#fff';
+  const mm=mindmaps[key];
+  let html=`<div class="mm-root"><div class="mm-center" style="background:${mm.color}">${mm.center}</div><div class="mm-branches">`;
+  mm.branches.forEach(b=>{
+    html+=`<div class="mm-branch"><div class="mm-node" style="background:${b.color}">${b.label}</div><div class="mm-connector"></div><div class="mm-leaves">`;
+    b.leaves.forEach(l=>{html+=`<div class="mm-leaf" style="background:${l.bg};border-color:${l.border}">${l.text}</div>`});
+    html+=`</div></div>`;
+  });
+  html+=`</div></div><div class="tip-box" style="margin-top:1rem">💡 <strong>Mẹo học:</strong> Nhìn sơ đồ → che lại → tự vẽ lại từ trí nhớ. Làm 3 lần sẽ nhớ rất lâu!</div>`;
+  document.getElementById('mm-canvas').innerHTML=html;
+}
+
+// INIT
+buildFormulas();
+loadFlashcards();
+renderMindmap('c1');
+</script>
+</body>
+</html>

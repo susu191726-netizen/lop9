@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Học Thông Minh — Lớp 9</title>
+<style>
+  :root {
+    --primary: #185FA5; --primary-light: #E6F1FB; --primary-dark: #042C53; --primary-accent: #85B7EB;
+    --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
+    --amber: #BA7517; --amber-light: #FAEEDA; --amber-dark: #633806;
+    --coral: #D85A30; --coral-light: #FAECE7; --coral-dark: #4A1B0C;
+    --purple: #7F77DD; --purple-light: #EEEDFE; --purple-dark: #26215C;
+    --gray: #888780; --gray-light: #F1EFE8; --gray-dark: #2C2C2A;
+    --red: #E24B4A; --red-light: #FCEBEB;
+    --bg: #f5f7fa; --card: #ffffff; --text: #1a1a1a; --text2: #555;
+    --border: rgba(0,0,0,0.09); --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+  /* NAV */
+  nav { background: var(--nav-bg, #042C53); color: #fff; padding: 0 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+  .nav-logo { font-size: 1.2rem; font-weight: 700; padding: 0.85rem 0; white-space: nowrap; cursor: pointer; }
+  .nav-logo span { opacity: 0.7; }
+  .nav-tabs { display: flex; gap: 0; flex: 1; overflow-x: auto; scrollbar-width: none; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab { padding: 0.9rem 1.1rem; cursor: pointer; white-space: nowrap; font-size: 0.85rem; border-bottom: 3px solid transparent; color: rgba(255,255,255,0.7); transition: all 0.2s; }
+  .nav-tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .nav-tab.active { color: #fff; border-bottom-color: var(--primary-accent, #85B7EB); }
+
+  /* PAGES */
+  .page { display: none; padding: 1.5rem; max-width: 960px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero { background: var(--hero-grad, linear-gradient(135deg,#042C53 0%,#185FA5 100%)); color: #fff; border-radius: var(--radius); padding: 2.5rem 2rem; margin-bottom: 1.5rem; }
+  .hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .hero p { opacity: 0.85; font-size: 1rem; }
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.6rem; margin: 1.25rem 0; }
+  .stat-card { background: rgba(255,255,255,0.13); border-radius: 10px; padding: 0.85rem; text-align: center; }
+  .stat-card .num { font-size: 1.7rem; font-weight: 700; }
+  .stat-card .lbl { font-size: 0.75rem; opacity: 0.8; }
+  .tip-box { background: var(--amber-light); border-left: 4px solid var(--amber); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; }
+  .tip-box strong { color: var(--amber-dark); }
+
+  /* CARDS */
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; cursor: pointer; }
+  .card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .card-title { font-size: 1rem; font-weight: 600; }
+  .card-subtitle { font-size: 0.82rem; color: var(--text2); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem; }
+  .badge-green { background: var(--green-light); color: var(--green-dark); }
+  .badge-blue { background: var(--primary-light); color: var(--primary-dark); }
+  .badge-amber { background: var(--amber-light); color: var(--amber-dark); }
+  .badge-coral { background: var(--coral-light); color: var(--coral-dark); }
+  .badge-purple { background: var(--purple-light); color: var(--purple-dark); }
+
+  /* THEORY */
+  .theory-body { display: none; padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
+  .theory-body.open { display: block; }
+  .formula-box { background: var(--primary-light); border: 1px solid rgba(55,138,221,0.3); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; font-family: monospace; font-size: 1rem; }
+  .formula-box .label { font-size: 0.78rem; color: var(--primary-dark); font-family: sans-serif; font-weight: 600; margin-bottom: 0.25rem; }
+  .memory-trick { background: var(--purple-light); border-left: 4px solid var(--purple); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; }
+  .memory-trick .trick-title { font-size: 0.78rem; color: var(--purple-dark); font-weight: 700; margin-bottom: 0.25rem; }
+  .reaction-visual { background: var(--gray-light); border-radius: 10px; padding: 1rem; margin: 0.75rem 0; font-size: 0.9rem; overflow-x: auto; }
+  .chem { background: #fff; border: 1.5px solid #ccc; border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.9rem; display: inline-block; margin: 2px; }
+  .chem.react { border-color: var(--coral); color: var(--coral-dark); background: var(--coral-light); }
+  .chem.prod { border-color: var(--green); color: var(--green-dark); background: var(--green-light); }
+  .prop-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.88rem; }
+  .prop-table th { background: var(--primary-light); color: var(--primary-dark); padding: 0.5rem 0.75rem; text-align: left; }
+  .prop-table td { padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .prop-table tr:hover td { background: var(--gray-light); }
+  .example-box { background: var(--green-light); border-left: 4px solid var(--green); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; }
+  .example-box .ex-title { font-size: 0.78rem; color: var(--green-dark); font-weight: 700; margin-bottom: 0.25rem; }
+  ul.clean { padding-left: 1.2rem; }
+  ul.clean li { margin-bottom: 0.35rem; }
+  h3 { font-size: 1rem; color: var(--primary-dark); margin: 1rem 0 0.5rem; }
+
+  /* FLASHCARD */
+  .fc-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .fc-controls select { padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--card); font-size: 0.9rem; }
+  .btn { padding: 0.5rem 1.25rem; border-radius: 8px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.15s; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary-dark); }
+  .btn-outline:hover { background: var(--primary-light); }
+  .btn-sm { padding: 0.35rem 0.85rem; font-size: 0.82rem; }
+  .fc-progress { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 1rem; }
+  .fc-progress-bar { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.3s; }
+  .fc-scene { perspective: 1000px; margin: 0 auto 1.5rem; width: 100%; max-width: 560px; height: 240px; cursor: pointer; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
+  .fc-front { background: var(--hero-grad, linear-gradient(135deg,#042C53,#185FA5)); color: #fff; }
+  .fc-back { background: linear-gradient(135deg, #085041, #1D9E75); color: #fff; transform: rotateY(180deg); }
+  .fc-q { font-size: 1.05rem; font-weight: 600; }
+  .fc-a { font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; }
+  .fc-hint { font-size: 0.78rem; opacity: 0.7; margin-top: 0.75rem; }
+  .fc-nav { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+  .fc-counter { font-size: 0.88rem; color: var(--text2); min-width: 80px; text-align: center; }
+
+  /* QUIZ */
+  .chapter-btn { padding: 0.4rem 1rem; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.85rem; transition: all 0.15s; }
+  .chapter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .q-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; }
+  .q-num { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.5rem; font-weight: 600; }
+  .q-text { font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  @media (max-width: 520px) { .options { grid-template-columns: 1fr; } }
+  .opt { padding: 0.6rem 0.9rem; border-radius: 8px; border: 1.5px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.88rem; transition: all 0.15s; text-align: left; }
+  .opt:hover { border-color: var(--primary); background: var(--primary-light); }
+  .opt.selected { border-color: var(--primary); background: var(--primary-light); }
+  .opt.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 600; }
+  .opt.wrong { border-color: var(--red); background: var(--red-light); color: #A32D2D; }
+  .explain-box { display: none; background: var(--amber-light); border-left: 3px solid var(--amber); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; font-size: 0.88rem; }
+  .explain-box.show { display: block; }
+  .score-box { background: var(--hero-grad, linear-gradient(135deg,#042C53,#185FA5)); color: #fff; border-radius: var(--radius); padding: 2rem; text-align: center; }
+  .score-big { font-size: 3rem; font-weight: 700; }
+  .score-breakdown { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-top: 1.25rem; }
+  .score-item { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 0.75rem; }
+  .score-item .n { font-size: 1.5rem; font-weight: 700; }
+  .score-item .l { font-size: 0.78rem; opacity: 0.8; }
+
+  /* EXAM */
+  .exam-card-btn { padding: 0.5rem 1.1rem; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.88rem; font-weight: 600; transition: all 0.15s; }
+  .exam-card-btn.active { background: var(--coral); color: #fff; border-color: var(--coral); }
+  .exam-section-title { font-weight: 700; font-size: 1rem; background: var(--gray-light); padding: 0.6rem 1rem; border-radius: 8px; margin: 1rem 0 0.75rem; }
+  .result-summary { background: var(--hero-grad); color: #fff; border-radius: var(--radius); padding: 1.5rem; text-align: center; }
+  .result-summary .big { font-size: 2.5rem; font-weight: 700; }
+  .exam-score-bar { height: 8px; background: var(--border); border-radius: 4px; margin: 0.5rem 0; }
+  .exam-score-bar-fill { height: 100%; border-radius: 4px; background: var(--green); transition: width 0.5s; }
+
+  /* MINDMAP */
+  .mm-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .mm-tab { padding: 0.4rem 1rem; border-radius: 20px; border: 1.5px solid var(--border); cursor: pointer; font-size: 0.85rem; font-weight: 600; background: var(--card); transition: all 0.2s; }
+  .mm-tab.active { color: #fff; border-color: transparent; }
+  .mm-canvas { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; overflow-x: auto; }
+  .mm-root { display: flex; flex-direction: column; align-items: center; }
+  .mm-center { padding: 0.85rem 2rem; border-radius: 30px; font-weight: 700; font-size: 1rem; color: #fff; text-align: center; margin-bottom: 1.5rem; white-space: pre-line; }
+  .mm-branches { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; width: 100%; }
+  .mm-branch { display: flex; flex-direction: column; align-items: center; min-width: 155px; max-width: 200px; }
+  .mm-connector { width: 2px; height: 10px; background: #ccc; margin: 0 auto; }
+  .mm-node { padding: 0.5rem 0.9rem; border-radius: 20px; font-weight: 700; font-size: 0.82rem; color: #fff; text-align: center; width: 100%; white-space: pre-line; }
+  .mm-leaves { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; width: 100%; }
+  .mm-leaf { padding: 0.4rem 0.75rem; border-radius: 8px; font-size: 0.78rem; text-align: left; border: 1.5px solid; white-space: pre-wrap; line-height: 1.5; }
+
+  /* CALCULATOR */
+  .calc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+  .calc-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.1rem 1.25rem; }
+  .calc-card-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem; }
+  .calc-icon { font-size: 1.4rem; }
+  .calc-title { font-weight: 700; font-size: 0.95rem; }
+  .calc-desc { font-size: 0.8rem; color: var(--text2); margin-bottom: 0.75rem; font-family: monospace; }
+  .calc-field { margin-bottom: 0.5rem; }
+  .calc-field label { font-size: 0.8rem; color: var(--text2); display: block; margin-bottom: 3px; }
+  .calc-field input { width: 100%; padding: 0.45rem 0.75rem; border-radius: 7px; border: 1.5px solid var(--border); font-size: 0.9rem; background: var(--bg); transition: border-color 0.15s; }
+  .calc-field input:focus { outline: none; border-color: var(--primary); }
+  .calc-field input.result { background: var(--primary-light); border-color: var(--primary); font-weight: 600; color: var(--primary-dark); }
+  .calc-btn { width: 100%; margin-top: 0.5rem; padding: 0.5rem; border-radius: 8px; border: none; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+  .calc-btn:hover { opacity: 0.9; }
+  .calc-result-box { display: none; background: var(--green-light); border-left: 3px solid var(--green); border-radius: 8px; padding: 0.6rem 0.9rem; margin-top: 0.6rem; font-size: 0.85rem; color: var(--green-dark); }
+  .calc-result-box.show { display: block; }
+
+  /* TIPS */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .tip-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.25rem; }
+  .tip-card .icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .tip-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--primary-dark); }
+  .tip-card ul { font-size: 0.86rem; color: var(--text2); padding-left: 1.1rem; }
+  .tip-card ul li { margin-bottom: 0.3rem; }
+  .roadmap-step { display: flex; gap: 1rem; margin-bottom: 0.85rem; }
+  .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.85rem; }
+  .step-body h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .step-body p { font-size: 0.84rem; color: var(--text2); }
+  .formula-ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.5rem; }
+  .formula-ref { background: var(--primary-light); border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.82rem; }
+  .formula-ref strong { font-size: 0.85rem; color: var(--primary-dark); display: block; margin-bottom: 2px; }
+  .formula-ref span { font-family: monospace; color: var(--primary-dark); }
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-logo" onclick="showPage('home')" id="nav-logo">⚡ <span>Vật Lý 9</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('home')">🏠 Trang chủ</div>
+    <div class="nav-tab" onclick="showPage('theory')">📖 Lý thuyết</div>
+    <div class="nav-tab" onclick="showPage('flashcard')">🃏 Flashcard</div>
+    <div class="nav-tab" onclick="showPage('quiz')">📝 Bài tập</div>
+    <div class="nav-tab" onclick="showPage('exam')">📋 Đề thi</div>
+    <div class="nav-tab" onclick="showPage('mindmap')">🗺️ Sơ đồ</div>
+    <div class="nav-tab" onclick="showPage('calc')">🧮 Máy tính</div>
+    <div class="nav-tab" onclick="showPage('tips')">💡 Bí kíp</div>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero" id="hero-box">
+    <h1 id="hero-title">⚡ Vật Lý 9</h1>
+    <p>Học thông minh — hiểu nhanh — nhớ lâu. Dành cho học sinh trung bình.</p>
+    <div class="stats-row" id="stats-row"></div>
+  </div>
+  <div class="tip-box">💡 <strong>Mẹo học nhanh:</strong> Mỗi ngày học 1 thẻ flashcard + làm 5 câu trắc nghiệm + thử 1 máy tính công thức là đủ nhớ lâu!</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1rem;">
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--primary);" onclick="showPage('theory')"><div style="font-size:1.8rem;margin-bottom:0.4rem">📖</div><div style="font-weight:700;margin-bottom:0.2rem">Lý Thuyết</div><div style="font-size:0.84rem;color:var(--text2)">Kiến thức từng chương, phương trình, mẹo nhớ</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid #378ADD;" onclick="showPage('flashcard')"><div style="font-size:1.8rem;margin-bottom:0.4rem">🃏</div><div style="font-weight:700;margin-bottom:0.2rem">Flashcard</div><div style="font-size:0.84rem;color:var(--text2)">Ôn nhanh công thức, định nghĩa, quy tắc</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--amber);" onclick="showPage('quiz')"><div style="font-size:1.8rem;margin-bottom:0.4rem">📝</div><div style="font-weight:700;margin-bottom:0.2rem">Bài Tập</div><div style="font-size:0.84rem;color:var(--text2)">Trắc nghiệm tự chấm có giải thích</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--coral);" onclick="showPage('exam')"><div style="font-size:1.8rem;margin-bottom:0.4rem">📋</div><div style="font-weight:700;margin-bottom:0.2rem">Đề Thi</div><div style="font-size:0.84rem;color:var(--text2)">Đề thi thật, tự chấm điểm, đếm giờ</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--green);" onclick="showPage('calc')"><div style="font-size:1.8rem;margin-bottom:0.4rem">🧮</div><div style="font-weight:700;margin-bottom:0.2rem">Máy Tính CT</div><div style="font-size:0.84rem;color:var(--text2)">Nhập số → ra đáp án ngay, kèm công thức</div></div>
+    <div class="card" style="cursor:pointer;border-left:4px solid var(--purple);" onclick="showPage('mindmap')"><div style="font-size:1.8rem;margin-bottom:0.4rem">🗺️</div><div style="font-weight:700;margin-bottom:0.2rem">Sơ Đồ</div><div style="font-size:0.84rem;color:var(--text2)">Nhìn là nhớ, tổng hợp từng chương</div></div>
+  </div>
+  <div class="card" style="margin-top:1rem;" id="chapter-map"></div>
+</div>
+
+<!-- THEORY -->
+<div class="page" id="page-theory">
+  <h2 style="font-size:1.3rem;margin-bottom:1rem;">📖 Lý Thuyết</h2>
+  <div id="theory-list"></div>
+</div>
+
+<!-- FLASHCARD -->
+<div class="page" id="page-flashcard">
+  <h2 style="font-size:1.3rem;margin-bottom:1rem;">🃏 Flashcard Ôn Tập</h2>
+  <div class="fc-controls">
+    <select id="fc-chapter" onchange="loadFlashcards()"><option value="all">📚 Tất cả</option></select>
+    <button class="btn btn-outline btn-sm" onclick="shuffleCards()">🔀 Trộn</button>
+    <button class="btn btn-outline btn-sm" onclick="resetCards()">↩️ Lại từ đầu</button>
+  </div>
+  <div class="fc-progress"><div class="fc-progress-bar" id="fc-bar" style="width:0%"></div></div>
+  <div class="fc-scene" onclick="flipCard()">
+    <div class="fc-inner" id="fc-inner">
+      <div class="fc-front"><div class="fc-q" id="fc-q">Nhấp để bắt đầu</div><div class="fc-hint">👆 Nhấp để lật xem đáp án</div></div>
+      <div class="fc-back"><div class="fc-a" id="fc-a"></div></div>
+    </div>
+  </div>
+  <div class="fc-nav">
+    <button class="btn btn-outline" onclick="prevCard()">← Trước</button>
+    <span class="fc-counter" id="fc-counter">0 / 0</span>
+    <button class="btn btn-primary" onclick="nextCard()">Tiếp →</button>
+  </div>
+  <div style="margin-top:0.75rem;display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
+    <button class="btn btn-sm" style="background:var(--green-light);color:var(--green-dark);border:none;" onclick="markCard('know')">✅ Đã biết</button>
+    <button class="btn btn-sm" style="background:var(--coral-light);color:var(--coral-dark);border:none;" onclick="markCard('learn')">🔁 Cần học thêm</button>
+  </div>
+  <div class="card" style="margin-top:0.75rem;">
+    <div style="display:flex;gap:1.5rem;font-size:0.88rem;flex-wrap:wrap;">
+      <span>✅ Đã biết: <strong id="fc-know">0</strong></span>
+      <span>🔁 Cần học: <strong id="fc-learn">0</strong></span>
+      <span>⬜ Chưa xem: <strong id="fc-unseen">0</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="page" id="page-quiz">
+  <h2 style="font-size:1.3rem;margin-bottom:0.75rem;">📝 Bài Tập Trắc Nghiệm</h2>
+  <div id="quiz-setup">
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;" id="quiz-chapter-btns"></div>
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+      <select id="q-count" style="padding:0.4rem 0.75rem;border-radius:8px;border:1px solid var(--border);">
+        <option value="5">5 câu (nhanh)</option>
+        <option value="10" selected>10 câu (vừa)</option>
+        <option value="20">20 câu (ôn tập)</option>
+      </select>
+      <button class="btn btn-primary" onclick="startQuiz()">▶️ Bắt đầu</button>
+    </div>
+  </div>
+  <div id="quiz-area" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+      <span id="q-progress" style="font-size:0.88rem;color:var(--text2);"></span>
+      <span style="background:var(--amber-light);color:var(--amber-dark);padding:0.3rem 0.8rem;border-radius:20px;font-weight:700;font-size:0.9rem;" id="q-timer">⏱ 00:00</span>
+      <button class="btn btn-outline btn-sm" onclick="submitQuiz()">Nộp bài</button>
+    </div>
+    <div id="q-list"></div>
+  </div>
+  <div id="quiz-result" style="display:none;">
+    <div class="score-box">
+      <div class="score-big" id="r-score"></div>
+      <div style="font-size:1rem;opacity:0.85;margin-bottom:0.5rem;" id="r-pct"></div>
+      <div class="score-breakdown">
+        <div class="score-item"><div class="n" id="r-correct">0</div><div class="l">✅ Đúng</div></div>
+        <div class="score-item"><div class="n" id="r-wrong">0</div><div class="l">❌ Sai</div></div>
+        <div class="score-item"><div class="n" id="r-time">0s</div><div class="l">⏱ Thời gian</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1rem;display:flex;gap:0.75rem;justify-content:center;">
+      <button class="btn btn-primary" onclick="startQuiz()">🔁 Thi lại</button>
+      <button class="btn btn-outline" onclick="showReview()">📋 Xem đáp án</button>
+    </div>
+    <div id="q-review" style="margin-top:1rem;"></div>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div class="page" id="page-exam">
+  <h2 style="font-size:1.3rem;margin-bottom:0.75rem;">📋 Đề Thi Học Kỳ 1</h2>
+  <div class="tip-box">⚠️ <strong>Hướng dẫn:</strong> Chọn đề → nhấn Bắt đầu đếm giờ → làm bài → Nộp bài xem điểm. Phần tự luận có nút xem gợi ý đáp án.</div>
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;" id="exam-list"></div>
+  <div id="exam-content"><div style="text-align:center;padding:3rem;color:var(--text2);">👆 Chọn đề thi để bắt đầu</div></div>
+</div>
+
+<!-- MINDMAP -->
+<div class="page" id="page-mindmap">
+  <h2 style="font-size:1.3rem;margin-bottom:0.75rem;">🗺️ Sơ Đồ Tư Duy</h2>
+  <div class="tip-box">💡 Xem sơ đồ → che lại → tự vẽ lại. Làm 3 lần sẽ nhớ rất lâu!</div>
+  <div class="mm-tabs" id="mm-tabs"></div>
+  <div class="mm-canvas" id="mm-canvas"></div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="page" id="page-calc">
+  <h2 style="font-size:1.3rem;margin-bottom:0.5rem;">🧮 Máy Tính Công Thức</h2>
+  <div class="tip-box">💡 <strong>Cách dùng:</strong> Điền vào ô có số đã biết, bỏ trống ô cần tính → nhấn <strong>Tính ngay</strong> → ra kết quả kèm công thức.</div>
+  <div class="calc-grid" id="calc-grid"></div>
+</div>
+
+<!-- TIPS -->
+<div class="page" id="page-tips">
+  <h2 style="font-size:1.3rem;margin-bottom:1rem;">💡 Bí Kíp Học</h2>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="icon">🧠</div><h3>Ghi nhớ công thức</h3><ul>
+      <li>Vẽ tam giác UIR trên tay</li><li>Đọc to công thức 3 lần</li>
+      <li>Tự đặt bài toán nhỏ rồi tính</li><li>Dùng máy tính CT để luyện</li>
+    </ul></div>
+    <div class="tip-card"><div class="icon">📝</div><h3>Làm bài thi hiệu quả</h3><ul>
+      <li>Đọc kỹ đề, ghi đơn vị ngay</li><li>Đổi đơn vị t → giây trước khi tính Q</li>
+      <li>Câu khó bỏ qua, làm sau</li><li>Kiểm tra lại bằng thứ nguyên</li>
+    </ul></div>
+    <div class="tip-card"><div class="icon">⚡</div><h3>Nhận biết loại bài nhanh</h3><ul>
+      <li>Có R, I, U → Định luật Ohm</li><li>Có P, t → Công suất & điện năng</li>
+      <li>Có I, R, t → Jun-Lenxơ</li><li>Có n₁, n₂ → Máy biến áp</li>
+    </ul></div>
+    <div class="tip-card"><div class="icon">🔍</div><h3>Hay nhầm lẫn</h3><ul>
+      <li>Nối tiếp: I bằng, U cộng, R cộng</li><li>Song song: U bằng, I cộng, R tính nghịch</li>
+      <li>Jun-Lenxơ: t phải là giây!</li><li>Bàn tay: PHẢI=cực từ, TRÁI=lực từ</li>
+    </ul></div>
+  </div>
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:0.75rem;">📐 Bảng công thức tổng hợp</div>
+    <div class="formula-ref-grid" id="formula-ref-grid"></div>
+  </div>
+  <div class="card" style="margin-top:1rem;">
+    <div style="font-weight:700;margin-bottom:0.75rem;">🗓️ Lộ trình ôn tập 30 ngày</div>
+    <div class="roadmap-step"><div class="step-num">1-7</div><div class="step-body"><h4>Tuần 1 — Điện học</h4><p>Định luật Ohm, mạch nối tiếp/song song, công suất. 10 flashcard/ngày. Luyện máy tính CT.</p></div></div>
+    <div class="roadmap-step"><div class="step-num">8-14</div><div class="step-body"><h4>Tuần 2 — Điện từ học</h4><p>Nam châm, quy tắc 2 bàn tay, cảm ứng điện từ, máy biến áp.</p></div></div>
+    <div class="roadmap-step"><div class="step-num">15-21</div><div class="step-body"><h4>Tuần 3 — Quang học</h4><p>Thấu kính, bảng ảnh theo vị trí vật, tật mắt, công thức thấu kính.</p></div></div>
+    <div class="roadmap-step"><div class="step-num">22-30</div><div class="step-body"><h4>Tuần 4 — Ôn tổng hợp</h4><p>Làm đề thi HK1. Xem lại câu sai. Luyện flashcard mỗi ngày 15 phút.</p></div></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA FILE: Sinh Học 9 — sinh9_data.js
+// Đặc điểm riêng của Sinh: SVG minh hoạ inline, bảng so sánh,
+// sơ đồ lai Mendel, không cần calculator số học
+// ============================================================
+window.SUBJECT = {
+  id: 'sinh',
+  title: 'Sinh Học 9',
+  icon: '🌿',
+  color: '#1A7A4A',
+  colorLight: '#E2F5EC',
+  colorDark: '#0B3D24',
+  colorAccent: '#5EC98A',
+  navBg: '#0B3D24',
+  heroGrad: 'linear-gradient(135deg, #0B3D24 0%, #1A7A4A 60%, #27A85F 100%)',
+  accentHex: '#5EC98A',
+  stats: [
+    {num:'8', lbl:'Chủ đề lý thuyết'},
+    {num:'80+', lbl:'Flashcard'},
+    {num:'70+', lbl:'Bài tập TN'},
+    {num:'3', lbl:'Bộ đề thi HK1'},
+    {num:'5', lbl:'Sơ đồ tư duy'},
+    {num:'6', lbl:'Máy tính sinh học'},
+  ],
+  chapters: [
+    {badge:'C1', color:'#1A7A4A', label:'Di truyền & Biến dị — ADN, ARN, Protein, Nhiễm sắc thể'},
+    {badge:'C2', color:'#185FA5', label:'Sinh vật và môi trường — Hệ sinh thái, chuỗi thức ăn'},
+    {badge:'C3', color:'#BA7517', label:'Con người, dân số và môi trường'},
+    {badge:'C4', color:'#7F77DD', label:'Bảo vệ môi trường — Ô nhiễm, biện pháp'},
+    {badge:'C5', color:'#D85A30', label:'Di truyền học người — Bệnh di truyền, tư vấn'},
+  ],
+
+  // ─── LÝ THUYẾT ───────────────────────────────────────────
+  theory: [
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 1A — ADN & ARN
+    // ══════════════════════════════════════════════════════
+    {
+      id:'adn', icon:'🧬', bg:'#E2F5EC', badge:'Trọng tâm', badgeClass:'green',
+      title:'Chương 1 — ADN, ARN và Protein',
+      subtitle:'Cấu trúc ADN, quá trình nhân đôi, phiên mã, dịch mã',
+      content: `
+<h3>📌 ADN là gì?</h3>
+<p>ADN (Axit Đêôxiribônuclêic) là vật chất di truyền chứa thông tin di truyền của sinh vật. ADN nằm trong <strong>nhân tế bào</strong>.</p>
+
+<!-- SVG: Mô hình chuỗi xoắn kép ADN -->
+<div style="background:#f8fff9;border-radius:12px;padding:1rem;margin:0.75rem 0;text-align:center;">
+  <svg width="320" height="180" viewBox="0 0 320 180" style="max-width:100%">
+    <!-- Backbone trái -->
+    <path d="M80,10 C60,30 100,50 80,70 C60,90 100,110 80,130 C60,150 100,170 80,170" stroke="#1A7A4A" stroke-width="4" fill="none"/>
+    <!-- Backbone phải -->
+    <path d="M240,10 C260,30 220,50 240,70 C260,90 220,110 240,130 C260,150 220,170 240,170" stroke="#1A7A4A" stroke-width="4" fill="none"/>
+    <!-- Cầu nối bazơ -->
+    <line x1="80" y1="10" x2="240" y2="10" stroke="#aaa" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <line x1="87" y1="30" x2="233" y2="30" stroke="#E24B4A" stroke-width="2.5"/>
+    <line x1="100" y1="50" x2="220" y2="50" stroke="#185FA5" stroke-width="2.5"/>
+    <line x1="100" y1="70" x2="220" y2="70" stroke="#BA7517" stroke-width="2.5"/>
+    <line x1="87" y1="90" x2="233" y2="90" stroke="#E24B4A" stroke-width="2.5"/>
+    <line x1="80" y1="110" x2="240" y2="110" stroke="#185FA5" stroke-width="2.5"/>
+    <line x1="87" y1="130" x2="233" y2="130" stroke="#1A7A4A" stroke-width="2.5"/>
+    <line x1="100" y1="150" x2="220" y2="150" stroke="#BA7517" stroke-width="2.5"/>
+    <line x1="87" y1="170" x2="233" y2="170" stroke="#E24B4A" stroke-width="2.5"/>
+    <!-- Nhãn bazơ -->
+    <text x="148" y="27" fill="#E24B4A" font-size="10" text-anchor="middle" font-weight="bold">A — T</text>
+    <text x="148" y="47" fill="#185FA5" font-size="10" text-anchor="middle" font-weight="bold">G — X</text>
+    <text x="148" y="67" fill="#BA7517" font-size="10" text-anchor="middle" font-weight="bold">T — A</text>
+    <text x="148" y="87" fill="#E24B4A" font-size="10" text-anchor="middle" font-weight="bold">A — T</text>
+    <text x="148" y="107" fill="#185FA5" font-size="10" text-anchor="middle" font-weight="bold">X — G</text>
+    <text x="148" y="127" fill="#1A7A4A" font-size="10" text-anchor="middle" font-weight="bold">G — X</text>
+    <text x="148" y="147" fill="#BA7517" font-size="10" text-anchor="middle" font-weight="bold">T — A</text>
+    <text x="148" y="167" fill="#E24B4A" font-size="10" text-anchor="middle" font-weight="bold">A — T</text>
+    <!-- Label -->
+    <text x="35" y="90" fill="#1A7A4A" font-size="11" font-weight="bold">Mạch 1</text>
+    <text x="255" y="90" fill="#1A7A4A" font-size="11" font-weight="bold">Mạch 2</text>
+  </svg>
+  <div style="font-size:0.78rem;color:#555;margin-top:0.25rem">Hình: Mô hình chuỗi xoắn kép ADN — 2 mạch liên kết bằng bazơ nitơ</div>
+</div>
+
+<h3>📌 Cấu trúc ADN</h3>
+<ul class="clean">
+  <li>Gồm <strong>2 mạch pôlinuclêôtit</strong> xoắn song song ngược chiều</li>
+  <li>Mỗi nuclêôtit gồm: Đường (C₅H₁₀O₄) + Axit photphoric + Bazơ nitơ</li>
+  <li><strong>4 loại bazơ:</strong> Adenin (A), Timin (T), Guanin (G), Xitôzin (X)</li>
+  <li>Nguyên tắc bổ sung: <strong>A liên kết T</strong> (2 liên kết hydro), <strong>G liên kết X</strong> (3 liên kết hydro)</li>
+</ul>
+
+<div class="formula-box">
+  <div class="label">Nguyên tắc bổ sung (NTBS)</div>
+  A = T &nbsp;&nbsp; G = X &nbsp;&nbsp; (A+G) = (T+X) = 50% tổng số nu
+</div>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ cặp bazơ bổ sung</div>
+  <strong>"AT — GX"</strong> = Anh Trai — Gấu Xinh 🐻<br>
+  A với T, G với X — không bao giờ thay đổi!
+</div>
+
+<h3>📌 Nhân đôi ADN (Tự sao)</h3>
+<div style="background:#f8fff9;border-radius:12px;padding:1rem;margin:0.75rem 0;">
+  <svg width="320" height="130" viewBox="0 0 320 130" style="max-width:100%">
+    <!-- ADN gốc -->
+    <text x="10" y="20" fill="#555" font-size="10">ADN gốc (mẹ):</text>
+    <rect x="10" y="28" width="130" height="18" rx="4" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="1.5"/>
+    <text x="75" y="41" fill="#1A7A4A" font-size="10" text-anchor="middle" font-weight="bold">Mạch 1 (A-T-G-X...)</text>
+    <rect x="10" y="48" width="130" height="18" rx="4" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="1.5"/>
+    <text x="75" y="61" fill="#1A7A4A" font-size="10" text-anchor="middle" font-weight="bold">Mạch 2 (T-A-X-G...)</text>
+    <!-- Mũi tên -->
+    <text x="155" y="55" fill="#BA7517" font-size="18" font-weight="bold">→</text>
+    <text x="148" y="72" fill="#BA7517" font-size="9">Enzyme</text>
+    <!-- 2 ADN con -->
+    <text x="185" y="20" fill="#555" font-size="10">2 ADN con (giống mẹ):</text>
+    <rect x="185" y="28" width="60" height="14" rx="3" fill="#E2F5EC" stroke="#1A7A4A"/>
+    <text x="215" y="39" fill="#1A7A4A" font-size="9" text-anchor="middle">Mạch 1</text>
+    <rect x="185" y="44" width="60" height="14" rx="3" fill="#fff9e6" stroke="#BA7517"/>
+    <text x="215" y="55" fill="#BA7517" font-size="9" text-anchor="middle">Mạch mới</text>
+    <rect x="255" y="28" width="60" height="14" rx="3" fill="#fff9e6" stroke="#BA7517"/>
+    <text x="285" y="39" fill="#BA7517" font-size="9" text-anchor="middle">Mạch mới</text>
+    <rect x="255" y="44" width="60" height="14" rx="3" fill="#E2F5EC" stroke="#1A7A4A"/>
+    <text x="285" y="55" fill="#1A7A4A" font-size="9" text-anchor="middle">Mạch 2</text>
+    <!-- Chú thích -->
+    <rect x="185" y="75" width="12" height="10" fill="#E2F5EC" stroke="#1A7A4A"/>
+    <text x="200" y="84" fill="#555" font-size="9">Mạch gốc</text>
+    <rect x="245" y="75" width="12" height="10" fill="#fff9e6" stroke="#BA7517"/>
+    <text x="260" y="84" fill="#555" font-size="9">Mạch mới tổng hợp</text>
+    <text x="185" y="105" fill="#E24B4A" font-size="9">→ Mỗi ADN con: 1 mạch cũ + 1 mạch mới</text>
+    <text x="185" y="118" fill="#555" font-size="9">(Nguyên tắc bán bảo toàn)</text>
+  </svg>
+</div>
+
+<div class="example-box">
+  <div class="ex-title">📎 Quy tắc nhân đôi ADN</div>
+  <ul class="clean">
+    <li>Hai mạch tách ra làm khuôn mẫu</li>
+    <li>Mỗi mạch tổng hợp mạch mới theo NTBS</li>
+    <li>Kết quả: 2 ADN con <strong>giống hệt ADN mẹ</strong></li>
+    <li>Nguyên tắc: <strong>Bổ sung + Bán bảo toàn</strong></li>
+  </ul>
+</div>
+
+<h3>📌 ARN — Phiên mã</h3>
+<table class="prop-table">
+  <tr><th>Loại ARN</th><th>Ký hiệu</th><th>Chức năng</th></tr>
+  <tr><td><strong>ARN thông tin</strong></td><td>mARN</td><td>Mang thông tin từ nhân ra ribôxôm</td></tr>
+  <tr><td><strong>ARN vận chuyển</strong></td><td>tARN</td><td>Vận chuyển axit amin đến ribôxôm</td></tr>
+  <tr><td><strong>ARN ribôxôm</strong></td><td>rARN</td><td>Cấu tạo ribôxôm</td></tr>
+</table>
+
+<div class="formula-box">
+  <div class="label">Trình tự: ADN → ARN → Protein</div>
+  ADN <span style="color:#BA7517">→ phiên mã</span> → mARN <span style="color:#D85A30">→ dịch mã</span> → Chuỗi polipeptit → Protein
+</div>
+
+<h3>📌 Dịch mã (Tổng hợp Protein)</h3>
+<ul class="clean">
+  <li>mARN gắn vào <strong>Ribôxôm</strong></li>
+  <li>tARN mang axit amin đến, khớp anticôđon với côđon trên mARN</li>
+  <li>Các axit amin nối lại tạo chuỗi <strong>polipeptit</strong></li>
+  <li>Cứ <strong>3 nuclêôtit</strong> (1 côđon) quy định 1 axit amin</li>
+</ul>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ: ADN → ARN → Protein</div>
+  <strong>"Đọc sách (ADN) → Photocopy (ARN) → Làm bánh (Protein)"</strong><br>
+  Đọc sách gốc → photocopy ra bản nháp → dùng bản nháp để làm sản phẩm
+</div>
+      `
+    },
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 1B — NHIỄM SẮC THỂ & PHÂN BÀO
+    // ══════════════════════════════════════════════════════
+    {
+      id:'nst', icon:'🔬', bg:'#E6F1FB', badge:'Trọng tâm', badgeClass:'blue',
+      title:'Chương 1 — Nhiễm sắc thể & Phân bào',
+      subtitle:'Cấu trúc NST, nguyên phân, giảm phân — so sánh chi tiết',
+      content: `
+<h3>📌 Nhiễm sắc thể (NST)</h3>
+<ul class="clean">
+  <li>NST nằm trong nhân tế bào, mang gen (đoạn ADN)</li>
+  <li>Người: <strong>2n = 46 NST</strong> (23 cặp), trong đó 22 cặp thường + 1 cặp giới tính</li>
+  <li>Cặp NST giới tính: Nam = <strong>XY</strong>, Nữ = <strong>XX</strong></li>
+  <li>Tế bào lưỡng bội (2n): có 2 bộ NST — tế bào sinh dưỡng</li>
+  <li>Tế bào đơn bội (n): có 1 bộ NST — giao tử (tinh trùng, trứng)</li>
+</ul>
+
+<!-- SVG: NST hình dạng -->
+<div style="background:#E6F1FB;border-radius:12px;padding:1rem;margin:0.75rem 0;text-align:center;">
+  <svg width="300" height="120" viewBox="0 0 300 120" style="max-width:100%">
+    <!-- NST chữ X -->
+    <text x="75" y="15" fill="#185FA5" font-size="11" text-anchor="middle" font-weight="bold">NST dạng X</text>
+    <path d="M55,20 Q75,35 95,20 Q75,50 95,80 Q75,65 55,80 Q75,50 55,20" fill="#185FA5" opacity="0.8"/>
+    <circle cx="75" cy="50" r="5" fill="#fff" stroke="#185FA5" stroke-width="1.5"/>
+    <text x="75" y="95" fill="#185FA5" font-size="9" text-anchor="middle">Tâm động</text>
+    <!-- NST chữ V -->
+    <text x="165" y="15" fill="#1A7A4A" font-size="11" text-anchor="middle" font-weight="bold">NST dạng V</text>
+    <path d="M155,80 L165,30 L175,80" stroke="#1A7A4A" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cx="165" cy="30" r="5" fill="#fff" stroke="#1A7A4A" stroke-width="1.5"/>
+    <text x="165" y="95" fill="#1A7A4A" font-size="9" text-anchor="middle">Tâm đỉnh</text>
+    <!-- Cặp NST tương đồng -->
+    <text x="255" y="15" fill="#7F77DD" font-size="11" text-anchor="middle" font-weight="bold">Cặp tương đồng</text>
+    <path d="M237,20 Q247,35 257,20 Q247,50 257,80 Q247,65 237,80 Q247,50 237,20" fill="#7F77DD" opacity="0.7"/>
+    <path d="M248,20 Q258,35 268,20 Q258,50 268,80 Q258,65 248,80 Q258,50 248,20" fill="#7F77DD" opacity="0.5"/>
+    <text x="255" y="98" fill="#7F77DD" font-size="9" text-anchor="middle">2 NST cùng loại</text>
+  </svg>
+</div>
+
+<h3>📌 Nguyên phân vs Giảm phân</h3>
+<!-- SVG minh hoạ sơ đồ 2 quá trình -->
+<div style="background:#f8f8ff;border-radius:12px;padding:1rem;margin:0.75rem 0;overflow-x:auto;">
+  <svg width="560" height="160" viewBox="0 0 560 160" style="min-width:420px;max-width:100%">
+    <!-- Nguyên phân -->
+    <text x="130" y="15" fill="#1A7A4A" font-size="12" font-weight="bold" text-anchor="middle">NGUYÊN PHÂN</text>
+    <rect x="80" y="22" width="100" height="28" rx="8" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="2"/>
+    <text x="130" y="41" fill="#1A7A4A" font-size="11" text-anchor="middle" font-weight="bold">TB mẹ (2n)</text>
+    <text x="130" y="65" fill="#1A7A4A" font-size="20">↓</text>
+    <text x="130" y="80" fill="#555" font-size="9" text-anchor="middle">1 lần phân bào</text>
+    <rect x="55" y="88" width="70" height="24" rx="6" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="1.5"/>
+    <text x="90" y="105" fill="#1A7A4A" font-size="10" text-anchor="middle" font-weight="bold">TB con (2n)</text>
+    <rect x="135" y="88" width="70" height="24" rx="6" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="1.5"/>
+    <text x="170" y="105" fill="#1A7A4A" font-size="10" text-anchor="middle" font-weight="bold">TB con (2n)</text>
+    <text x="130" y="130" fill="#555" font-size="9" text-anchor="middle">→ 2 tế bào con GIỐNG mẹ</text>
+    <text x="130" y="143" fill="#1A7A4A" font-size="9" text-anchor="middle" font-weight="bold">Tăng sinh, sinh trưởng</text>
+
+    <!-- Giảm phân -->
+    <text x="420" y="15" fill="#185FA5" font-size="12" font-weight="bold" text-anchor="middle">GIẢM PHÂN</text>
+    <rect x="370" y="22" width="100" height="28" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="2"/>
+    <text x="420" y="41" fill="#185FA5" font-size="11" text-anchor="middle" font-weight="bold">TB mẹ (2n)</text>
+    <text x="420" y="63" fill="#185FA5" font-size="16">↓</text>
+    <text x="420" y="75" fill="#555" font-size="9" text-anchor="middle">Giảm phân I + II</text>
+    <rect x="327" y="82" width="52" height="22" rx="5" fill="#E6F1FB" stroke="#185FA5"/>
+    <text x="353" y="97" fill="#185FA5" font-size="9" text-anchor="middle">(n)</text>
+    <rect x="385" y="82" width="52" height="22" rx="5" fill="#E6F1FB" stroke="#185FA5"/>
+    <text x="411" y="97" fill="#185FA5" font-size="9" text-anchor="middle">(n)</text>
+    <rect x="443" y="82" width="52" height="22" rx="5" fill="#E6F1FB" stroke="#185FA5"/>
+    <text x="469" y="97" fill="#185FA5" font-size="9" text-anchor="middle">(n)</text>
+    <rect x="501" y="82" width="52" height="22" rx="5" fill="#E6F1FB" stroke="#185FA5"/>
+    <text x="527" y="97" fill="#185FA5" font-size="9" text-anchor="middle">(n)</text>
+    <text x="420" y="120" fill="#555" font-size="9" text-anchor="middle">→ 4 tế bào con (n) = giao tử</text>
+    <text x="420" y="133" fill="#185FA5" font-size="9" text-anchor="middle" font-weight="bold">Tạo giao tử (sinh sản hữu tính)</text>
+
+    <!-- Đường phân cách -->
+    <line x1="280" y1="10" x2="280" y2="150" stroke="#ddd" stroke-width="1.5" stroke-dasharray="5,3"/>
+  </svg>
+</div>
+
+<table class="prop-table">
+  <tr><th>Tiêu chí</th><th style="color:#1A7A4A">Nguyên phân</th><th style="color:#185FA5">Giảm phân</th></tr>
+  <tr><td>Số lần phân bào</td><td>1 lần</td><td>2 lần (I + II)</td></tr>
+  <tr><td>Tế bào con</td><td>2 tế bào (2n)</td><td>4 tế bào (n)</td></tr>
+  <tr><td>Bộ NST</td><td>Giữ nguyên 2n</td><td>Giảm còn n</td></tr>
+  <tr><td>Xảy ra ở</td><td>TB sinh dưỡng</td><td>Cơ quan sinh dục</td></tr>
+  <tr><td>Mục đích</td><td>Tăng sinh, sinh trưởng</td><td>Tạo giao tử, sinh sản</td></tr>
+  <tr><td>Trao đổi chéo</td><td>Không có</td><td>Có (tạo biến dị)</td></tr>
+</table>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ phân biệt</div>
+  <strong>Nguyên phân = "Nguyên xi" — giữ nguyên bộ NST (2n → 2n)</strong><br>
+  <strong>Giảm phân = "Giảm đi một nửa" — bộ NST giảm còn n</strong>
+</div>
+      `
+    },
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 1C — DI TRUYỀN MENDEL
+    // ══════════════════════════════════════════════════════
+    {
+      id:'mendel', icon:'🫘', bg:'#FAEEDA', badge:'Trọng tâm', badgeClass:'amber',
+      title:'Chương 1 — Quy luật di truyền Mendel',
+      subtitle:'Lai một cặp tính trạng, lai hai cặp, tỉ lệ phân li 3:1 và 9:3:3:1',
+      content: `
+<h3>📌 Các khái niệm cơ bản</h3>
+<table class="prop-table">
+  <tr><th>Khái niệm</th><th>Ý nghĩa</th><th>Ví dụ</th></tr>
+  <tr><td><strong>Gen</strong></td><td>Đoạn ADN quy định tính trạng</td><td>Gen quy định màu hạt đậu</td></tr>
+  <tr><td><strong>Alen</strong></td><td>Các dạng khác nhau của 1 gen</td><td>A (vàng), a (xanh)</td></tr>
+  <tr><td><strong>Kiểu gen</strong></td><td>Tổ hợp alen của cơ thể</td><td>AA, Aa, aa</td></tr>
+  <tr><td><strong>Kiểu hình</strong></td><td>Tính trạng biểu hiện ra ngoài</td><td>Hạt vàng, hạt xanh</td></tr>
+  <tr><td><strong>Trội</strong></td><td>Alen biểu hiện khi có 1 hay 2 bản</td><td>A (vàng) — trội hoàn toàn</td></tr>
+  <tr><td><strong>Lặn</strong></td><td>Alen chỉ biểu hiện khi có 2 bản</td><td>a (xanh) — chỉ biểu hiện ở aa</td></tr>
+</table>
+
+<h3>📌 Lai 1 cặp tính trạng — Quy luật phân li</h3>
+
+<!-- SVG Sơ đồ lai P: AA x aa -->
+<div style="background:#fffbf0;border-radius:12px;padding:1.25rem;margin:0.75rem 0;overflow-x:auto;">
+  <svg width="480" height="200" viewBox="0 0 480 200" style="min-width:380px;max-width:100%">
+    <!-- P -->
+    <text x="20" y="30" fill="#555" font-size="12" font-weight="bold">P:</text>
+    <rect x="40" y="14" width="120" height="28" rx="8" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="2"/>
+    <text x="100" y="33" fill="#1A7A4A" font-size="13" text-anchor="middle" font-weight="bold">AA (vàng)</text>
+    <text x="195" y="33" fill="#555" font-size="18" font-weight="bold">×</text>
+    <rect x="215" y="14" width="120" height="28" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="2"/>
+    <text x="275" y="33" fill="#185FA5" font-size="13" text-anchor="middle" font-weight="bold">aa (xanh)</text>
+
+    <!-- Giao tử P -->
+    <text x="20" y="75" fill="#555" font-size="11">Giao tử:</text>
+    <circle cx="100" cy="70" r="14" fill="#1A7A4A" opacity="0.8"/>
+    <text x="100" y="75" fill="#fff" font-size="12" text-anchor="middle" font-weight="bold">A</text>
+    <circle cx="275" cy="70" r="14" fill="#185FA5" opacity="0.8"/>
+    <text x="275" y="75" fill="#fff" font-size="12" text-anchor="middle" font-weight="bold">a</text>
+
+    <!-- Mũi tên -->
+    <line x1="230" y1="85" x2="230" y2="100" stroke="#BA7517" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="230" y="97" fill="#BA7517" font-size="11" text-anchor="middle">↓</text>
+
+    <!-- F1 -->
+    <text x="20" y="125" fill="#555" font-size="12" font-weight="bold">F1:</text>
+    <rect x="165" y="110" width="130" height="28" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="2"/>
+    <text x="230" y="129" fill="#BA7517" font-size="13" text-anchor="middle" font-weight="bold">100% Aa (vàng)</text>
+
+    <!-- F1 x F1 -->
+    <text x="20" y="165" fill="#555" font-size="11">F1 × F1:</text>
+    <text x="135" y="165" fill="#BA7517" font-size="11">Aa × Aa</text>
+    <text x="230" y="165" fill="#555" font-size="18">→</text>
+    <!-- Tỉ lệ F2 -->
+    <rect x="255" y="150" width="45" height="22" rx="5" fill="#E2F5EC" stroke="#1A7A4A"/>
+    <text x="277" y="165" fill="#1A7A4A" font-size="10" text-anchor="middle">1 AA</text>
+    <rect x="305" y="150" width="45" height="22" rx="5" fill="#FAEEDA" stroke="#BA7517"/>
+    <text x="327" y="165" fill="#BA7517" font-size="10" text-anchor="middle">2 Aa</text>
+    <rect x="355" y="150" width="45" height="22" rx="5" fill="#E6F1FB" stroke="#185FA5"/>
+    <text x="377" y="165" fill="#185FA5" font-size="10" text-anchor="middle">1 aa</text>
+    <text x="320" y="188" fill="#555" font-size="10" text-anchor="middle">Kiểu hình: 3 vàng : 1 xanh</text>
+  </svg>
+</div>
+
+<div class="formula-box">
+  <div class="label">Tỉ lệ đặc trưng — Lai 1 cặp (Aa × Aa)</div>
+  Kiểu gen: 1AA : 2Aa : 1aa &nbsp;|&nbsp; Kiểu hình: <strong>3 trội : 1 lặn</strong>
+</div>
+
+<h3>📌 Lai 2 cặp tính trạng — Quy luật phân li độc lập</h3>
+<div class="example-box">
+  <div class="ex-title">📎 Ví dụ Mendel</div>
+  P: AABB (vàng trơn) × aabb (xanh nhăn)<br>
+  F1: 100% AaBb (vàng trơn) — trội hoàn toàn<br>
+  F2: <strong>9 vàng trơn : 3 vàng nhăn : 3 xanh trơn : 1 xanh nhăn</strong>
+</div>
+
+<!-- Bảng Punnett 4x4 -->
+<div style="overflow-x:auto;margin:0.75rem 0;">
+  <table style="border-collapse:collapse;font-size:11px;text-align:center;min-width:320px">
+    <tr>
+      <th style="padding:6px;background:#f5f5f5;border:1px solid #ddd">AaBb ×</th>
+      <th style="padding:6px;background:#E2F5EC;border:1px solid #ddd">AB</th>
+      <th style="padding:6px;background:#E2F5EC;border:1px solid #ddd">Ab</th>
+      <th style="padding:6px;background:#E2F5EC;border:1px solid #ddd">aB</th>
+      <th style="padding:6px;background:#E2F5EC;border:1px solid #ddd">ab</th>
+    </tr>
+    <tr>
+      <td style="padding:6px;background:#E2F5EC;border:1px solid #ddd;font-weight:bold">AB</td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AABB<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AABb<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AaBB<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AaBb<br><small style="color:#1A7A4A">vàng trơn</small></td>
+    </tr>
+    <tr>
+      <td style="padding:6px;background:#E2F5EC;border:1px solid #ddd;font-weight:bold">Ab</td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AABb<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#fff3e0;border:1px solid #ddd">AAbb<br><small style="color:#BA7517">vàng nhăn</small></td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AaBb<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#fff3e0;border:1px solid #ddd">Aabb<br><small style="color:#BA7517">vàng nhăn</small></td>
+    </tr>
+    <tr>
+      <td style="padding:6px;background:#E2F5EC;border:1px solid #ddd;font-weight:bold">aB</td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AaBB<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AaBb<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#E6F1FB;border:1px solid #ddd">aaBB<br><small style="color:#185FA5">xanh trơn</small></td>
+      <td style="padding:6px;background:#E6F1FB;border:1px solid #ddd">aaBb<br><small style="color:#185FA5">xanh trơn</small></td>
+    </tr>
+    <tr>
+      <td style="padding:6px;background:#E2F5EC;border:1px solid #ddd;font-weight:bold">ab</td>
+      <td style="padding:6px;background:#fffde0;border:1px solid #ddd">AaBb<br><small style="color:#1A7A4A">vàng trơn</small></td>
+      <td style="padding:6px;background:#fff3e0;border:1px solid #ddd">Aabb<br><small style="color:#BA7517">vàng nhăn</small></td>
+      <td style="padding:6px;background:#E6F1FB;border:1px solid #ddd">aaBb<br><small style="color:#185FA5">xanh trơn</small></td>
+      <td style="padding:6px;background:#EEEDFE;border:1px solid #ddd">aabb<br><small style="color:#7F77DD">xanh nhăn</small></td>
+    </tr>
+  </table>
+</div>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ tỉ lệ</div>
+  <strong>1 cặp: 3 trội : 1 lặn</strong><br>
+  <strong>2 cặp: 9:3:3:1</strong> = (3:1) × (3:1) = "ba nhân ba bằng chín"<br>
+  Lai độc lập = nhân tỉ lệ từng cặp lại
+</div>
+      `
+    },
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 1D — ĐỘT BIẾN
+    // ══════════════════════════════════════════════════════
+    {
+      id:'dotbien', icon:'⚠️', bg:'#FAECE7', badge:'Quan trọng', badgeClass:'coral',
+      title:'Chương 1 — Đột biến & Thường biến',
+      subtitle:'Đột biến gen, đột biến NST, thường biến — phân loại và ý nghĩa',
+      content: `
+<h3>📌 Đột biến gen</h3>
+<p>Là sự thay đổi trong cấu trúc của <strong>gen</strong> (đoạn ADN), xảy ra tại mức phân tử.</p>
+<table class="prop-table">
+  <tr><th>Loại đột biến gen</th><th>Mô tả</th><th>Hậu quả</th></tr>
+  <tr><td><strong>Mất nuclêôtit</strong></td><td>Mất 1 hoặc vài cặp nu</td><td>Thay đổi toàn bộ mã từ vị trí đột biến</td></tr>
+  <tr><td><strong>Thêm nuclêôtit</strong></td><td>Chèn thêm cặp nu</td><td>Dịch khung đọc — ảnh hưởng nghiêm trọng</td></tr>
+  <tr><td><strong>Thay nuclêôtit</strong></td><td>Thay cặp nu này bằng cặp khác</td><td>Thay đổi 1 axit amin — ít nghiêm trọng hơn</td></tr>
+</table>
+
+<h3>📌 Đột biến NST</h3>
+<table class="prop-table">
+  <tr><th>Loại</th><th>Cấu trúc</th><th>Số lượng</th></tr>
+  <tr><td>Đột biến cấu trúc NST</td><td>Mất đoạn, lặp đoạn, đảo đoạn, chuyển đoạn</td><td>—</td></tr>
+  <tr><td>Đột biến số lượng NST</td><td>—</td><td>Dị bội (2n±1), Đa bội (3n, 4n...)</td></tr>
+</table>
+
+<div class="example-box">
+  <div class="ex-title">📎 Ví dụ đột biến NST ở người</div>
+  <ul class="clean">
+    <li>Hội chứng Down: <strong>3 NST số 21</strong> (2n = 47) → đặc điểm ngoại hình đặc trưng, chậm phát triển</li>
+    <li>Hội chứng Turner: <strong>45, X0</strong> → nữ, lùn, vô sinh</li>
+    <li>Hội chứng Klinefelter: <strong>47, XXY</strong> → nam, vô sinh</li>
+  </ul>
+</div>
+
+<h3>📌 Thường biến vs Đột biến</h3>
+<table class="prop-table">
+  <tr><th>Tiêu chí</th><th style="color:#185FA5">Thường biến</th><th style="color:#E24B4A">Đột biến</th></tr>
+  <tr><td>Nguyên nhân</td><td>Môi trường thay đổi</td><td>Tác nhân lý-hóa, tự nhiên</td></tr>
+  <tr><td>Di truyền?</td><td>Không di truyền</td><td>Di truyền được</td></tr>
+  <tr><td>Ảnh hưởng</td><td>Không thay đổi kiểu gen</td><td>Thay đổi vật chất di truyền</td></tr>
+  <tr><td>Ví dụ</td><td>Cây rau muống vươn dài hơn nơi ít sáng</td><td>Bướm Biston đen hơn do ô nhiễm</td></tr>
+  <tr><td>Ý nghĩa</td><td>Thích nghi môi trường tức thời</td><td>Nguyên liệu cho tiến hóa và chọn giống</td></tr>
+</table>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ phân biệt</div>
+  <strong>Thường biến = "Thường thôi, không di truyền"</strong> — thay đổi theo môi trường, trở về bình thường khi môi trường bình thường<br>
+  <strong>Đột biến = "Đột ngột, di truyền được"</strong> — thay đổi vật chất di truyền, truyền cho thế hệ sau
+</div>
+      `
+    },
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 2 — SINH THÁI HỌC
+    // ══════════════════════════════════════════════════════
+    {
+      id:'sinhthai', icon:'🌍', bg:'#E2F5EC', badge:'Cơ bản', badgeClass:'green',
+      title:'Chương 2 — Sinh thái học',
+      subtitle:'Môi trường, hệ sinh thái, chuỗi thức ăn, lưới thức ăn',
+      content: `
+<h3>📌 Môi trường và nhân tố sinh thái</h3>
+<table class="prop-table">
+  <tr><th>Loại môi trường</th><th>Đặc điểm</th><th>Ví dụ sinh vật</th></tr>
+  <tr><td><strong>Môi trường đất</strong></td><td>Độ ẩm, thoáng khí, chất hữu cơ</td><td>Giun đất, vi khuẩn đất</td></tr>
+  <tr><td><strong>Môi trường nước</strong></td><td>Nhiệt độ, độ mặn, ánh sáng</td><td>Cá, tôm, rong rêu</td></tr>
+  <tr><td><strong>Môi trường trên cạn</strong></td><td>Khí hậu, ánh sáng, độ ẩm</td><td>Hổ, cây gỗ, chim</td></tr>
+  <tr><td><strong>Môi trường sinh vật</strong></td><td>Sinh vật này sống trong/trên sinh vật khác</td><td>Giun ký sinh, tầm gửi</td></tr>
+</table>
+
+<h3>📌 Chuỗi thức ăn & Lưới thức ăn</h3>
+
+<!-- SVG chuỗi thức ăn -->
+<div style="background:#f8fff9;border-radius:12px;padding:1rem;margin:0.75rem 0;overflow-x:auto;">
+  <svg width="500" height="100" viewBox="0 0 500 100" style="min-width:380px;max-width:100%">
+    <!-- Chuỗi thức ăn đơn giản -->
+    <rect x="5" y="30" width="85" height="36" rx="8" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="2"/>
+    <text x="47" y="48" fill="#1A7A4A" font-size="11" text-anchor="middle" font-weight="bold">🌱 Cỏ</text>
+    <text x="47" y="62" fill="#555" font-size="9" text-anchor="middle">Sinh vật SX</text>
+
+    <text x="98" y="52" fill="#BA7517" font-size="18" font-weight="bold">→</text>
+
+    <rect x="115" y="30" width="85" height="36" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="2"/>
+    <text x="157" y="48" fill="#BA7517" font-size="11" text-anchor="middle" font-weight="bold">🐛 Sâu</text>
+    <text x="157" y="62" fill="#555" font-size="9" text-anchor="middle">SV tiêu thụ 1</text>
+
+    <text x="208" y="52" fill="#BA7517" font-size="18" font-weight="bold">→</text>
+
+    <rect x="225" y="30" width="85" height="36" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="2"/>
+    <text x="267" y="48" fill="#185FA5" font-size="11" text-anchor="middle" font-weight="bold">🐸 Ếch</text>
+    <text x="267" y="62" fill="#555" font-size="9" text-anchor="middle">SV tiêu thụ 2</text>
+
+    <text x="318" y="52" fill="#BA7517" font-size="18" font-weight="bold">→</text>
+
+    <rect x="335" y="30" width="85" height="36" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="2"/>
+    <text x="377" y="48" fill="#7F77DD" font-size="11" text-anchor="middle" font-weight="bold">🐍 Rắn</text>
+    <text x="377" y="62" fill="#555" font-size="9" text-anchor="middle">SV tiêu thụ 3</text>
+
+    <text x="428" y="52" fill="#BA7517" font-size="18" font-weight="bold">→</text>
+
+    <rect x="443" y="30" width="52" height="36" rx="8" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+    <text x="469" y="48" fill="#D85A30" font-size="11" text-anchor="middle" font-weight="bold">🦅</text>
+    <text x="469" y="62" fill="#555" font-size="9" text-anchor="middle">SV TT 4</text>
+
+    <!-- Nhãn chú thích -->
+    <text x="250" y="92" fill="#555" font-size="9" text-anchor="middle">Năng lượng giảm dần từ trái sang phải (mất ~90% mỗi bậc)</text>
+  </svg>
+</div>
+
+<div class="formula-box">
+  <div class="label">Hiệu suất sinh thái</div>
+  Trung bình chỉ <strong>10%</strong> năng lượng được chuyển từ bậc dinh dưỡng này sang bậc tiếp theo.<br>
+  90% còn lại mất đi dưới dạng nhiệt, hô hấp, chất thải.
+</div>
+
+<h3>📌 Hệ sinh thái</h3>
+<ul class="clean">
+  <li><strong>Quần thể:</strong> Nhiều cá thể cùng loài, cùng không gian, cùng thời gian</li>
+  <li><strong>Quần xã:</strong> Nhiều quần thể khác loài cùng sống trong một môi trường</li>
+  <li><strong>Hệ sinh thái:</strong> Quần xã + Môi trường vô sinh tác động qua lại</li>
+</ul>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ thứ bậc</div>
+  <strong>Cá thể → Quần thể → Quần xã → Hệ sinh thái → Sinh quyển</strong><br>
+  "Cá Quần Xã Hệ Sinh" — từ nhỏ đến lớn dần
+</div>
+      `
+    },
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 3 — CON NGƯỜI, DÂN SỐ VÀ MÔI TRƯỜNG
+    // ══════════════════════════════════════════════════════
+    {
+      id:'danso', icon:'👥', bg:'#FAEEDA', badge:'Quan trọng', badgeClass:'amber',
+      title:'Chương 3 — Con người, dân số và môi trường',
+      subtitle:'Tác động của con người, dân số thế giới, tài nguyên thiên nhiên',
+      content: `
+<h3>📌 Tác động của con người lên môi trường qua các thời kỳ</h3>
+
+<div style="overflow-x:auto;margin:0.75rem 0;">
+  <svg width="560" height="140" viewBox="0 0 560 140" style="min-width:420px;max-width:100%">
+    <!-- Timeline -->
+    <line x1="20" y1="70" x2="540" y2="70" stroke="#ddd" stroke-width="2"/>
+
+    <!-- Thời kỳ 1 -->
+    <circle cx="80" cy="70" r="18" fill="#E2F5EC" stroke="#1A7A4A" stroke-width="2"/>
+    <text x="80" y="65" fill="#1A7A4A" font-size="9" text-anchor="middle" font-weight="bold">Nguyên</text>
+    <text x="80" y="76" fill="#1A7A4A" font-size="9" text-anchor="middle" font-weight="bold">thuỷ</text>
+    <text x="80" y="100" fill="#555" font-size="8" text-anchor="middle">Hái lượm,</text>
+    <text x="80" y="110" fill="#555" font-size="8" text-anchor="middle">săn bắt</text>
+    <text x="80" y="35" fill="#1A7A4A" font-size="8" text-anchor="middle">Tác động ít</text>
+
+    <!-- Thời kỳ 2 -->
+    <circle cx="200" cy="70" r="18" fill="#FAEEDA" stroke="#BA7517" stroke-width="2"/>
+    <text x="200" y="65" fill="#BA7517" font-size="9" text-anchor="middle" font-weight="bold">Nông</text>
+    <text x="200" y="76" fill="#BA7517" font-size="9" text-anchor="middle" font-weight="bold">nghiệp</text>
+    <text x="200" y="100" fill="#555" font-size="8" text-anchor="middle">Phá rừng,</text>
+    <text x="200" y="110" fill="#555" font-size="8" text-anchor="middle">trồng trọt</text>
+    <text x="200" y="35" fill="#BA7517" font-size="8" text-anchor="middle">Tác động vừa</text>
+
+    <!-- Thời kỳ 3 -->
+    <circle cx="350" cy="70" r="18" fill="#E6F1FB" stroke="#185FA5" stroke-width="2"/>
+    <text x="350" y="65" fill="#185FA5" font-size="9" text-anchor="middle" font-weight="bold">Công</text>
+    <text x="350" y="76" fill="#185FA5" font-size="9" text-anchor="middle" font-weight="bold">nghiệp</text>
+    <text x="350" y="100" fill="#555" font-size="8" text-anchor="middle">Khói thải,</text>
+    <text x="350" y="110" fill="#555" font-size="8" text-anchor="middle">khai khoáng</text>
+    <text x="350" y="35" fill="#185FA5" font-size="8" text-anchor="middle">Tác động mạnh</text>
+
+    <!-- Thời kỳ 4 -->
+    <circle cx="490" cy="70" r="18" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+    <text x="490" y="65" fill="#D85A30" font-size="9" text-anchor="middle" font-weight="bold">Hiện</text>
+    <text x="490" y="76" fill="#D85A30" font-size="9" text-anchor="middle" font-weight="bold">đại</text>
+    <text x="490" y="100" fill="#555" font-size="8" text-anchor="middle">Ô nhiễm,</text>
+    <text x="490" y="110" fill="#555" font-size="8" text-anchor="middle">biến đổi KH</text>
+    <text x="490" y="35" fill="#D85A30" font-size="8" text-anchor="middle">Tác động rất mạnh ⚠️</text>
+
+    <!-- Mũi tên -->
+    <polygon points="535,66 545,70 535,74" fill="#BA7517"/>
+  </svg>
+</div>
+
+<h3>📌 Dân số thế giới</h3>
+<ul class="clean">
+  <li>Năm 2023: dân số thế giới đạt <strong>~8 tỉ người</strong></li>
+  <li>Dân số tăng nhanh → áp lực lớn lên tài nguyên và môi trường</li>
+  <li>Tỉ lệ tăng dân số cao nhất ở các nước đang phát triển</li>
+</ul>
+
+<div style="background:#f8fff9;border-radius:12px;padding:1rem;margin:0.75rem 0;overflow-x:auto;">
+  <svg width="440" height="150" viewBox="0 0 440 150" style="min-width:360px;max-width:100%">
+    <text x="220" y="15" fill="#1A7A4A" font-size="11" font-weight="bold" text-anchor="middle">Tăng trưởng dân số thế giới (ước tính)</text>
+    <!-- Trục -->
+    <line x1="50" y1="120" x2="420" y2="120" stroke="#aaa" stroke-width="1.5"/>
+    <line x1="50" y1="20" x2="50" y2="120" stroke="#aaa" stroke-width="1.5"/>
+    <!-- Nhãn năm -->
+    <text x="80"  y="133" fill="#555" font-size="8" text-anchor="middle">1800</text>
+    <text x="160" y="133" fill="#555" font-size="8" text-anchor="middle">1900</text>
+    <text x="240" y="133" fill="#555" font-size="8" text-anchor="middle">1950</text>
+    <text x="320" y="133" fill="#555" font-size="8" text-anchor="middle">2000</text>
+    <text x="400" y="133" fill="#555" font-size="8" text-anchor="middle">2023</text>
+    <!-- Nhãn dân số -->
+    <text x="44" y="118" fill="#555" font-size="8" text-anchor="end">0</text>
+    <text x="44" y="78"  fill="#555" font-size="8" text-anchor="end">4 tỉ</text>
+    <text x="44" y="38"  fill="#555" font-size="8" text-anchor="end">8 tỉ</text>
+    <!-- Đường cong dân số (exponential) -->
+    <polyline points="80,116 160,113 240,107 280,98 320,82 370,55 400,30"
+      stroke="#D85A30" stroke-width="2.5" fill="none"/>
+    <!-- Điểm đánh dấu -->
+    <circle cx="80"  cy="116" r="3" fill="#D85A30"/>
+    <circle cx="160" cy="113" r="3" fill="#D85A30"/>
+    <circle cx="240" cy="107" r="3" fill="#D85A30"/>
+    <circle cx="320" cy="82"  r="3" fill="#D85A30"/>
+    <circle cx="400" cy="30"  r="3" fill="#D85A30"/>
+    <!-- Chú thích giá trị -->
+    <text x="80"  y="112" fill="#185FA5" font-size="7" text-anchor="middle">1 tỉ</text>
+    <text x="240" y="103" fill="#185FA5" font-size="7" text-anchor="middle">2.5 tỉ</text>
+    <text x="320" y="78"  fill="#185FA5" font-size="7" text-anchor="middle">6 tỉ</text>
+    <text x="400" y="26"  fill="#D85A30" font-size="7" text-anchor="middle" font-weight="bold">~8 tỉ</text>
+  </svg>
+</div>
+
+<h3>📌 Tài nguyên thiên nhiên</h3>
+<table class="prop-table">
+  <tr><th>Loại</th><th>Ví dụ</th><th>Đặc điểm</th><th>Tình trạng</th></tr>
+  <tr><td><strong>Tái sinh được</strong></td><td>Rừng, đất, nước</td><td>Có thể phục hồi nếu khai thác hợp lý</td><td>⚠️ Đang suy giảm</td></tr>
+  <tr><td><strong>Không tái sinh</strong></td><td>Than đá, dầu mỏ, khí đốt</td><td>Sau khi dùng hết không thể phục hồi</td><td>🔴 Cạn kiệt dần</td></tr>
+  <tr><td><strong>Năng lượng vô tận</strong></td><td>Mặt trời, gió, thuỷ triều</td><td>Vô hạn, sạch</td><td>✅ Đang phát triển</td></tr>
+</table>
+
+<h3>📌 Hậu quả tăng dân số nhanh</h3>
+<ul class="clean">
+  <li>Thiếu lương thực, nước sạch</li>
+  <li>Ô nhiễm môi trường nghiêm trọng</li>
+  <li>Tàn phá rừng, mất đa dạng sinh học</li>
+  <li>Biến đổi khí hậu toàn cầu</li>
+  <li>Thất nghiệp, bất bình đẳng xã hội</li>
+</ul>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ: Dân số tăng → "TONA" ảnh hưởng</div>
+  <strong>T</strong>ài nguyên cạn kiệt — <strong>O</strong>ô nhiễm tăng — <strong>N</strong>hà ở thiếu — <strong>A</strong>n ninh lương thực kém
+</div>
+      `
+    },
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 4 — BẢO VỆ MÔI TRƯỜNG
+    // ══════════════════════════════════════════════════════
+    {
+      id:'moitruong', icon:'🌎', bg:'#E2F5EC', badge:'Quan trọng', badgeClass:'green',
+      title:'Chương 4 — Ô nhiễm môi trường & Bảo vệ môi trường',
+      subtitle:'Các dạng ô nhiễm, nguyên nhân, hậu quả và biện pháp bảo vệ',
+      content: `
+<h3>📌 Ô nhiễm môi trường là gì?</h3>
+<p>Ô nhiễm môi trường là hiện tượng môi trường tự nhiên bị <strong>bẩn</strong>, các tính chất vật lý, hoá học, sinh học của môi trường bị <strong>thay đổi</strong>, gây tác hại cho con người và sinh vật.</p>
+
+<!-- SVG: Các nguồn ô nhiễm -->
+<div style="background:#f8fff9;border-radius:12px;padding:1rem;margin:0.75rem 0;text-align:center;">
+  <svg width="480" height="160" viewBox="0 0 480 160" style="max-width:100%">
+    <text x="240" y="16" fill="#1A7A4A" font-size="11" font-weight="bold" text-anchor="middle">Các nguồn gây ô nhiễm môi trường</text>
+
+    <!-- Trung tâm -->
+    <circle cx="240" cy="90" r="30" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+    <text x="240" y="86" fill="#D85A30" font-size="10" text-anchor="middle" font-weight="bold">Ô nhiễm</text>
+    <text x="240" y="98" fill="#D85A30" font-size="10" text-anchor="middle" font-weight="bold">MT</text>
+
+    <!-- Nguồn 1: Công nghiệp -->
+    <rect x="10" y="25" width="80" height="34" rx="8" fill="#E6F1FB" stroke="#185FA5"/>
+    <text x="50" y="39" fill="#185FA5" font-size="9" text-anchor="middle" font-weight="bold">🏭 Công</text>
+    <text x="50" y="51" fill="#185FA5" font-size="9" text-anchor="middle" font-weight="bold">nghiệp</text>
+    <line x1="90" y1="42" x2="210" y2="78" stroke="#185FA5" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Nguồn 2: Nông nghiệp -->
+    <rect x="10" y="105" width="80" height="34" rx="8" fill="#E2F5EC" stroke="#1A7A4A"/>
+    <text x="50" y="119" fill="#1A7A4A" font-size="9" text-anchor="middle" font-weight="bold">🌾 Nông</text>
+    <text x="50" y="131" fill="#1A7A4A" font-size="9" text-anchor="middle" font-weight="bold">nghiệp</text>
+    <line x1="90" y1="118" x2="210" y2="100" stroke="#1A7A4A" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Nguồn 3: Giao thông -->
+    <rect x="195" y="20" width="90" height="34" rx="8" fill="#FAEEDA" stroke="#BA7517"/>
+    <text x="240" y="34" fill="#BA7517" font-size="9" text-anchor="middle" font-weight="bold">🚗 Giao</text>
+    <text x="240" y="46" fill="#BA7517" font-size="9" text-anchor="middle" font-weight="bold">thông</text>
+    <line x1="240" y1="54" x2="240" y2="60" stroke="#BA7517" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Nguồn 4: Sinh hoạt -->
+    <rect x="390" y="25" width="80" height="34" rx="8" fill="#EEEDFE" stroke="#7F77DD"/>
+    <text x="430" y="39" fill="#7F77DD" font-size="9" text-anchor="middle" font-weight="bold">🏠 Sinh</text>
+    <text x="430" y="51" fill="#7F77DD" font-size="9" text-anchor="middle" font-weight="bold">hoạt</text>
+    <line x1="390" y1="42" x2="270" y2="78" stroke="#7F77DD" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Nguồn 5: Y tế -->
+    <rect x="390" y="105" width="80" height="34" rx="8" fill="#FAECE7" stroke="#D85A30"/>
+    <text x="430" y="119" fill="#D85A30" font-size="9" text-anchor="middle" font-weight="bold">🏥 Chất</text>
+    <text x="430" y="131" fill="#D85A30" font-size="9" text-anchor="middle" font-weight="bold">thải y tế</text>
+    <line x1="390" y1="118" x2="270" y2="100" stroke="#D85A30" stroke-width="1" stroke-dasharray="3,2"/>
+  </svg>
+</div>
+
+<h3>📌 Phân loại ô nhiễm môi trường</h3>
+<table class="prop-table">
+  <tr><th>Loại ô nhiễm</th><th>Tác nhân chính</th><th>Hậu quả</th></tr>
+  <tr><td><strong>Ô nhiễm không khí</strong></td><td>CO₂, SO₂, NOₓ, bụi mịn, khói</td><td>Mưa axit, hiệu ứng nhà kính, bệnh hô hấp</td></tr>
+  <tr><td><strong>Ô nhiễm nước</strong></td><td>Nước thải CN, NN, sinh hoạt</td><td>Chết sinh vật thủy sinh, thiếu nước sạch</td></tr>
+  <tr><td><strong>Ô nhiễm đất</strong></td><td>Thuốc trừ sâu, phân bón hóa học, rác</td><td>Đất thoái hoá, tích lũy độc tố</td></tr>
+  <tr><td><strong>Ô nhiễm phóng xạ</strong></td><td>Nhà máy điện hạt nhân, vũ khí hạt nhân</td><td>Đột biến, ung thư, tử vong hàng loạt</td></tr>
+  <tr><td><strong>Ô nhiễm tiếng ồn</strong></td><td>Giao thông, máy móc, công trường</td><td>Điếc tai, stress, mất ngủ</td></tr>
+</table>
+
+<h3>📌 Hiệu ứng nhà kính & Biến đổi khí hậu</h3>
+<div class="example-box">
+  <div class="ex-title">📎 Cơ chế hiệu ứng nhà kính</div>
+  <ul class="clean">
+    <li>CO₂, CH₄, hơi nước giữ nhiệt bức xạ từ Trái Đất → nhiệt độ tăng</li>
+    <li>Hậu quả: Băng tan, nước biển dâng, thời tiết cực đoan</li>
+    <li>Giải pháp: giảm đốt nhiên liệu hoá thạch, trồng rừng, năng lượng tái tạo</li>
+  </ul>
+</div>
+
+<h3>📌 Biện pháp bảo vệ môi trường</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin:0.75rem 0;">
+  <div style="background:#E2F5EC;border-radius:8px;padding:0.7rem 0.9rem;">
+    <div style="font-weight:700;color:#1A7A4A;font-size:0.88rem;margin-bottom:0.3rem">🌱 Tự nhiên</div>
+    <ul style="font-size:0.82rem;padding-left:1rem;color:#333;">
+      <li>Trồng rừng, bảo vệ rừng</li>
+      <li>Khu bảo tồn thiên nhiên</li>
+      <li>Phát triển rừng ngập mặn</li>
+    </ul>
+  </div>
+  <div style="background:#E6F1FB;border-radius:8px;padding:0.7rem 0.9rem;">
+    <div style="font-weight:700;color:#185FA5;font-size:0.88rem;margin-bottom:0.3rem">🏭 Công nghiệp</div>
+    <ul style="font-size:0.82rem;padding-left:1rem;color:#333;">
+      <li>Xử lý khí thải, nước thải</li>
+      <li>Công nghệ sạch, năng lượng tái tạo</li>
+      <li>Tái chế, giảm rác thải</li>
+    </ul>
+  </div>
+  <div style="background:#FAEEDA;border-radius:8px;padding:0.7rem 0.9rem;">
+    <div style="font-weight:700;color:#BA7517;font-size:0.88rem;margin-bottom:0.3rem">🌾 Nông nghiệp</div>
+    <ul style="font-size:0.82rem;padding-left:1rem;color:#333;">
+      <li>Nông nghiệp hữu cơ, giảm thuốc BVTV</li>
+      <li>Phân bón sinh học</li>
+      <li>Tưới tiêu hợp lý</li>
+    </ul>
+  </div>
+  <div style="background:#EEEDFE;border-radius:8px;padding:0.7rem 0.9rem;">
+    <div style="font-weight:700;color:#7F77DD;font-size:0.88rem;margin-bottom:0.3rem">📋 Pháp lý</div>
+    <ul style="font-size:0.82rem;padding-left:1rem;color:#333;">
+      <li>Luật bảo vệ môi trường</li>
+      <li>Phạt vi phạm xả thải</li>
+      <li>Giáo dục ý thức cộng đồng</li>
+    </ul>
+  </div>
+</div>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ 4 biện pháp BVMT</div>
+  <strong>"Tự Công Nông Pháp"</strong><br>
+  Tự nhiên — Công nghiệp — Nông nghiệp — Pháp lý
+</div>
+      `
+    },
+
+    // ══════════════════════════════════════════════════════
+    // CHƯƠNG 5 — DI TRUYỀN HỌC NGƯỜI
+    // ══════════════════════════════════════════════════════
+    {
+      id:'dttrnguoi', icon:'🧑‍⚕️', bg:'#EEEDFE', badge:'Trọng tâm', badgeClass:'purple',
+      title:'Chương 5 — Di truyền học người',
+      subtitle:'Bệnh di truyền, tật di truyền, tư vấn di truyền, công nghệ gen',
+      content: `
+<h3>📌 Bệnh và tật di truyền ở người</h3>
+<table class="prop-table">
+  <tr><th>Bệnh/Tật</th><th>Nguyên nhân</th><th>Đặc điểm</th><th>Phòng ngừa</th></tr>
+  <tr><td><strong>Hội chứng Down</strong></td><td>3 NST số 21 (2n=47)</td><td>Mặt bẹt, lưỡi to, chậm phát triển TT</td><td>Kiểm tra NST trước sinh</td></tr>
+  <tr><td><strong>Hội chứng Turner</strong></td><td>45, X0 (thiếu 1 NST X)</td><td>Nữ, lùn, vô sinh</td><td>—</td></tr>
+  <tr><td><strong>Hội chứng Klinefelter</strong></td><td>47, XXY</td><td>Nam, vô sinh, ngực phát triển</td><td>—</td></tr>
+  <tr><td><strong>Bệnh mù màu</strong></td><td>Gen lặn trên X: X^a</td><td>Không phân biệt được xanh-đỏ</td><td>Tư vấn di truyền trước hôn nhân</td></tr>
+  <tr><td><strong>Bệnh máu khó đông</strong></td><td>Gen lặn trên X: X^h</td><td>Máu không đông, dễ tử vong</td><td>Tránh hôn nhân cận huyết</td></tr>
+  <tr><td><strong>Bạch tạng</strong></td><td>Gen lặn aa (NST thường)</td><td>Da, tóc, mắt trắng hồng</td><td>—</td></tr>
+  <tr><td><strong>Câm điếc bẩm sinh</strong></td><td>Gen lặn (NST thường)</td><td>Không nghe, không nói được</td><td>—</td></tr>
+</table>
+
+<!-- SVG: Sơ đồ phả hệ đơn giản -->
+<div style="background:#f8f0ff;border-radius:12px;padding:1rem;margin:0.75rem 0;text-align:center;">
+  <svg width="380" height="160" viewBox="0 0 380 160" style="max-width:100%">
+    <text x="190" y="15" fill="#7F77DD" font-size="11" font-weight="bold" text-anchor="middle">Phả hệ bệnh bạch tạng (aa = bị bệnh)</text>
+
+    <!-- Thế hệ P (ông bà) -->
+    <text x="60" y="38" fill="#555" font-size="9">Thế hệ P:</text>
+    <!-- Ông (vuông = nam, bình thường) -->
+    <rect x="130" y="28" width="26" height="26" rx="3" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="143" y="45" fill="#555" font-size="9" text-anchor="middle">Aa</text>
+    <!-- Đường nối vợ chồng -->
+    <line x1="156" y1="41" x2="200" y2="41" stroke="#333" stroke-width="1.5"/>
+    <!-- Bà (tròn = nữ, bình thường) -->
+    <circle cx="213" cy="41" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="213" y="45" fill="#555" font-size="9" text-anchor="middle">Aa</text>
+
+    <!-- Đường xuống F1 -->
+    <line x1="178" y1="54" x2="178" y2="70" stroke="#333" stroke-width="1.5"/>
+    <line x1="118" y1="70" x2="260" y2="70" stroke="#333" stroke-width="1.5"/>
+
+    <!-- Thế hệ F1 -->
+    <text x="30" y="100" fill="#555" font-size="9">F1 (con):</text>
+    <!-- Con 1: nam bình thường (AA) -->
+    <line x1="118" y1="70" x2="118" y2="86" stroke="#333" stroke-width="1.5"/>
+    <rect x="105" y="86" width="26" height="26" rx="3" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="118" y="103" fill="#555" font-size="9" text-anchor="middle">AA</text>
+
+    <!-- Con 2: nữ bình thường (Aa) -->
+    <line x1="178" y1="70" x2="178" y2="86" stroke="#333" stroke-width="1.5"/>
+    <circle cx="178" cy="99" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="178" y="103" fill="#555" font-size="9" text-anchor="middle">Aa</text>
+
+    <!-- Con 3: nữ bình thường (Aa) -->
+    <line x1="230" y1="70" x2="230" y2="86" stroke="#333" stroke-width="1.5"/>
+    <circle cx="230" cy="99" r="13" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="230" y="103" fill="#555" font-size="9" text-anchor="middle">Aa</text>
+
+    <!-- Con 4: nam bị bệnh (aa) — tô đen -->
+    <line x1="285" y1="70" x2="285" y2="86" stroke="#333" stroke-width="1.5"/>
+    <rect x="272" y="86" width="26" height="26" rx="3" fill="#7F77DD" stroke="#7F77DD" stroke-width="2"/>
+    <text x="285" y="103" fill="#fff" font-size="9" text-anchor="middle">aa</text>
+
+    <!-- Chú thích -->
+    <rect x="60" y="135" width="16" height="14" rx="2" fill="#fff" stroke="#333" stroke-width="1.5"/>
+    <text x="80" y="146" fill="#555" font-size="8">Nam bình thường</text>
+    <circle cx="140" cy="142" r="7" fill="#fff" stroke="#333" stroke-width="1.5"/>
+    <text x="150" y="146" fill="#555" font-size="8">Nữ bình thường</text>
+    <rect x="215" y="135" width="16" height="14" rx="2" fill="#7F77DD" stroke="#7F77DD"/>
+    <text x="235" y="146" fill="#555" font-size="8">Bị bệnh</text>
+  </svg>
+</div>
+
+<h3>📌 Tư vấn di truyền y học</h3>
+<div class="example-box">
+  <div class="ex-title">📎 Ý nghĩa tư vấn di truyền</div>
+  <ul class="clean">
+    <li>Xác định nguy cơ bệnh di truyền trong gia đình</li>
+    <li>Tư vấn trước hôn nhân: <strong>tránh hôn nhân cận huyết</strong> (người thân trong họ hàng)</li>
+    <li>Chẩn đoán trước sinh: siêu âm, xét nghiệm NST thai nhi</li>
+    <li>Liệu pháp gen: thay thế gen bệnh bằng gen lành (đang nghiên cứu)</li>
+  </ul>
+</div>
+
+<div class="tip-box">
+  ⚠️ <strong>Tại sao không nên kết hôn cận huyết?</strong><br>
+  Người thân trong họ thường mang gen lặn giống nhau → khi kết hôn → xác suất con đồng hợp lặn (aa) rất cao → bệnh di truyền xuất hiện nhiều hơn
+</div>
+
+<h3>📌 Công nghệ gen & Ứng dụng</h3>
+<table class="prop-table">
+  <tr><th>Ứng dụng</th><th>Mô tả</th><th>Ví dụ</th></tr>
+  <tr><td><strong>Cây trồng biến đổi gen</strong></td><td>Chèn gen kháng sâu, kháng hạn</td><td>Cây bông kháng sâu, ngô BĐG</td></tr>
+  <tr><td><strong>Vi khuẩn sản xuất insulin</strong></td><td>Cấy gen insulin người vào E.coli</td><td>Insulin điều trị tiểu đường</td></tr>
+  <tr><td><strong>Liệu pháp gen</strong></td><td>Thay gen bệnh bằng gen lành</td><td>Điều trị bệnh SCID, một số ung thư</td></tr>
+  <tr><td><strong>Nhân bản vô tính</strong></td><td>Tạo cá thể mới từ TB soma</td><td>Cừu Dolly (1996), bảo tồn động vật quý</td></tr>
+</table>
+
+<div class="memory-trick">
+  <div class="trick-title">🧠 Mẹo nhớ bệnh liên kết X</div>
+  <strong>Mù màu và Máu khó đông: gen lặn trên NST X</strong><br>
+  Nam (XY) chỉ cần <strong>1 X bệnh</strong> → bị bệnh (vì không có X thứ 2 bù đắp)<br>
+  Nữ (XX) cần <strong>2 X bệnh</strong> → bị bệnh, 1 X bệnh chỉ là người mang gen
+</div>
+      `
+    },
+  ],
+
+  // ─── FLASHCARD ───────────────────────────────────────────
+  flashcards: [
+    // C1: ADN & ARN
+    {chapter:'c1', q:'ADN có cấu trúc như thế nào?', a:'2 mạch pôlinuclêôtit xoắn kép song song ngược chiều.\n4 loại bazơ: A, T, G, X.\nNTBS: A-T (2 liên kết H), G-X (3 liên kết H)\nADN nằm trong nhân tế bào.'},
+    {chapter:'c1', q:'Nguyên tắc bổ sung (NTBS) là gì?', a:'A liên kết với T (2 liên kết hydro)\nG liên kết với X (3 liên kết hydro)\nHệ quả: A = T, G = X\n%A + %G = %T + %X = 50%'},
+    {chapter:'c1', q:'Quá trình nhân đôi ADN theo nguyên tắc gì?', a:'1. Nguyên tắc bổ sung: mạch mới tổng hợp theo NTBS với mạch khuôn\n2. Nguyên tắc bán bảo toàn: mỗi ADN con giữ 1 mạch cũ + 1 mạch mới\nKết quả: 1 ADN mẹ → 2 ADN con giống hệt nhau'},
+    {chapter:'c1', q:'Ba loại ARN và chức năng?', a:'mARN (thông tin): mang thông tin từ nhân ra ribôxôm\ntARN (vận chuyển): vận chuyển axit amin đến ribôxôm\nrARN (ribôxôm): cấu tạo nên ribôxôm'},
+    {chapter:'c1', q:'Trình tự truyền thông tin di truyền?', a:'ADN → (phiên mã) → mARN → (dịch mã) → Protein\nPhiên mã: xảy ra trong nhân\nDịch mã: xảy ra ở ribôxôm trong tế bào chất'},
+    {chapter:'c1', q:'Côđon là gì? Anticôđon là gì?', a:'Côđon: bộ 3 nuclêôtit trên mARN, quy định 1 axit amin\nAnticôđon: bộ 3 nuclêôtit trên tARN, khớp với côđon theo NTBS\nCứ 3 nu = 1 axit amin (mã bộ ba)'},
+    // C1: NST & Phân bào
+    {chapter:'c1', q:'Số lượng NST của người?', a:'2n = 46 NST = 23 cặp\n22 cặp NST thường + 1 cặp NST giới tính\nNam: XY (44 + XY)\nNữ: XX (44 + XX)'},
+    {chapter:'c1', q:'Nguyên phân cho kết quả gì?', a:'1 tế bào mẹ (2n) → 2 tế bào con (2n)\nBộ NST giữ nguyên (2n → 2n)\nXảy ra ở tế bào sinh dưỡng\nMục đích: tăng sinh, sinh trưởng, tái sinh'},
+    {chapter:'c1', q:'Giảm phân cho kết quả gì?', a:'1 tế bào mẹ (2n) → 4 tế bào con (n)\nBộ NST giảm một nửa (2n → n)\nXảy ra ở cơ quan sinh dục\nMục đích: tạo giao tử cho sinh sản hữu tính'},
+    {chapter:'c1', q:'Sự khác biệt chính giữa nguyên phân và giảm phân?', a:'Nguyên phân: 1 lần phân bào → 2 TB (2n) — TB sinh dưỡng\nGiảm phân: 2 lần phân bào → 4 TB (n) — cơ quan sinh dục\nGiảm phân có trao đổi chéo → tạo biến dị tổ hợp'},
+    // C1: Mendel
+    {chapter:'c1', q:'Kiểu gen đồng hợp và dị hợp khác nhau thế nào?', a:'Đồng hợp trội: AA (biểu hiện tính trạng trội)\nĐồng hợp lặn: aa (biểu hiện tính trạng lặn)\nDị hợp: Aa (biểu hiện tính trạng TRỘI — vì A trội hơn a)'},
+    {chapter:'c1', q:'Tỉ lệ Mendel khi lai Aa × Aa?', a:'Kiểu gen: 1AA : 2Aa : 1aa\nKiểu hình: 3 trội : 1 lặn\nXác suất: 75% kiểu hình trội, 25% kiểu hình lặn'},
+    {chapter:'c1', q:'Tỉ lệ khi lai 2 cặp AaBb × AaBb?', a:'Kiểu hình: 9 A_B_ : 3 A_bb : 3 aaB_ : 1 aabb\n= 9 : 3 : 3 : 1\nQuy luật: Phân li độc lập = (3:1) × (3:1)'},
+    {chapter:'c1', q:'Phép lai phân tích là gì? Dùng để làm gì?', a:'Lai cá thể cần xác định kiểu gen với cá thể đồng hợp lặn (aa)\nNếu F1 toàn trội → cá thể gốc là AA\nNếu F1 có 1 trội : 1 lặn → cá thể gốc là Aa'},
+    {chapter:'c1', q:'Di truyền liên kết giới tính là gì?', a:'Gen nằm trên NST giới tính (X hoặc Y)\nBệnh mù màu, hemophilia: gen lặn trên NST X\nNam (XY) chỉ cần 1 alen lặn trên X là bị bệnh\nNữ (XX) cần 2 alen lặn mới bị bệnh → bệnh gặp ở nam nhiều hơn'},
+    // C1: Đột biến
+    {chapter:'c1', q:'Đột biến gen là gì? Cho ví dụ?', a:'Biến đổi cấu trúc gen (ADN) ở mức phân tử\nDạng: mất, thêm, thay cặp nuclêôtit\nVí dụ: bệnh hồng cầu hình liềm do thay 1 cặp nu trong gen hemoglobin'},
+    {chapter:'c1', q:'Hội chứng Down là gì?', a:'Đột biến số lượng NST: có 3 NST số 21 (thay vì 2)\nKí hiệu: 47, +21 (2n = 47)\nBiểu hiện: mặt bẹt, lưỡi to, chậm phát triển trí tuệ\nXảy ra do không phân li NST trong giảm phân'},
+    {chapter:'c1', q:'Thường biến khác đột biến thế nào?', a:'Thường biến: thay đổi kiểu hình do môi trường, KHÔNG di truyền\nĐột biến: thay đổi vật chất di truyền, DI TRUYỀN được\nVD: cây lúa trồng ở đất tốt cao hơn = thường biến (không di truyền)'},
+    // C2: Sinh thái
+    {chapter:'c2', q:'Chuỗi thức ăn là gì? Cho ví dụ?', a:'Dãy các sinh vật có quan hệ dinh dưỡng kế tiếp nhau\nVí dụ: Cỏ → Sâu → Ếch → Rắn → Đại bàng\nSinh vật SX → SV tiêu thụ 1 → SV tiêu thụ 2 → ... → SV phân giải'},
+    {chapter:'c2', q:'Hiệu suất sinh thái là bao nhiêu?', a:'Trung bình 10% năng lượng được chuyển lên bậc dinh dưỡng cao hơn\n90% còn lại mất đi do hô hấp, nhiệt, chất thải\n→ Bậc dinh dưỡng càng cao, năng lượng càng ít'},
+    {chapter:'c2', q:'Quần thể, quần xã, hệ sinh thái khác nhau thế nào?', a:'Quần thể: nhiều cá thể CÙNG LOÀI\nQuần xã: nhiều quần thể KHÁC LOÀI cùng môi trường\nHệ sinh thái: Quần xã + Môi trường vô sinh tác động qua lại\nSinh quyển: toàn bộ hệ sinh thái trên Trái Đất'},
+    {chapter:'c2', q:'4 loại quan hệ sinh thái giữa các sinh vật?', a:'Cộng sinh (+/+): cả 2 cùng có lợi (nấm + tảo = địa y)\nHội sinh (+/0): 1 lợi, 1 không bị gì (cá ép + cá mập)\nKý sinh (+/-): 1 lợi, 1 bị hại (giun đũa trong người)\nCạnh tranh (-/-): cả 2 bị hại (tranh giành thức ăn)'},
+    {chapter:'c2', q:'Ô nhiễm môi trường do nguyên nhân chính nào?', a:'Công nghiệp: khí thải, nước thải nhà máy\nNông nghiệp: thuốc trừ sâu, phân bón hóa học\nGiao thông: khí thải xe cộ (CO, SO₂, NOₓ)\nSinh hoạt: rác thải, nước thải sinh hoạt'},
+    // C3: Dân số & môi trường
+    {chapter:'c3', q:'Dân số thế giới tăng nhanh gây ra hậu quả gì?', a:'Thiếu lương thực, nước sạch, năng lượng\nKhai thác tài nguyên quá mức → cạn kiệt\nÔ nhiễm môi trường tăng cao\nDiện tích rừng, đất nông nghiệp bình quân giảm'},
+    {chapter:'c3', q:'Ô nhiễm không khí gây ra những bệnh gì?', a:'Bệnh hô hấp: viêm phổi, hen suyễn, ung thư phổi\nBệnh tim mạch do thiếu oxy\nMưa axit phá hủy hệ sinh thái\nHiệu ứng nhà kính → biến đổi khí hậu'},
+    {chapter:'c3', q:'Tài nguyên tái sinh và không tái sinh khác nhau thế nào?', a:'Tái sinh: có thể phục hồi nếu khai thác hợp lý\n(rừng, đất, nước, sinh vật)\nKhông tái sinh: dùng hết không phục hồi được\n(than đá, dầu mỏ, quặng kim loại)\n→ Cần tiết kiệm tài nguyên không tái sinh!'},
+    {chapter:'c3', q:'Mưa axit hình thành như thế nào và gây hại gì?', a:'SO₂ + H₂O → H₂SO₃ (axit sulfurơ)\nNOₓ + H₂O → HNO₃ (axit nitric)\n→ Mưa axit: pH < 5,6\nGây hại: phá rừng, diệt cá, ăn mòn công trình, hại sức khỏe'},
+    {chapter:'c3', q:'Các biện pháp hạn chế ô nhiễm môi trường?', a:'Xử lý chất thải trước khi thải ra môi trường\nSử dụng năng lượng sạch (mặt trời, gió, thủy điện)\nTrồng rừng, bảo vệ hệ sinh thái\nGiáo dục ý thức bảo vệ môi trường\nBan hành luật bảo vệ môi trường'},
+    // C4: Bảo vệ môi trường
+    {chapter:'c4', q:'Ô nhiễm môi trường là gì?', a:'Là sự thay đổi thành phần, tính chất của môi trường\ndo hoạt động của con người hoặc thiên nhiên\nvượt quá tiêu chuẩn cho phép, gây hại cho sinh vật và con người'},
+    {chapter:'c4', q:'Các loại ô nhiễm môi trường chính?', a:'1. Ô nhiễm không khí (khói bụi, khí độc)\n2. Ô nhiễm nước (nước thải, hóa chất)\n3. Ô nhiễm đất (thuốc trừ sâu, chất thải rắn)\n4. Ô nhiễm tiếng ồn (giao thông, nhà máy)\n5. Ô nhiễm phóng xạ (nhà máy hạt nhân)'},
+    {chapter:'c4', q:'Thuốc trừ sâu tích lũy sinh học là gì?', a:'Thuốc trừ sâu không bị phân hủy tích lũy dần trong cơ thể sinh vật\nBậc dinh dưỡng cao → nồng độ thuốc càng cao\nVí dụ: DDT tích lũy nhiều nhất trong cơ thể đại bàng (ăn cá, ăn chim nhỏ)\n→ Cấm dùng DDT vì tích lũy sinh học nguy hiểm'},
+    {chapter:'c4', q:'Hiệu ứng nhà kính là gì?', a:'CO₂, CH₄, hơi nước giữ nhiệt Mặt Trời trong khí quyển\n→ Nhiệt độ Trái Đất tăng dần\nHậu quả: băng tan, mực nước biển dâng, thời tiết cực đoan\nNguyên nhân chính: đốt nhiên liệu hóa thạch'},
+    // C5: Di truyền học người
+    {chapter:'c5', q:'Bệnh di truyền do gen lặn trên NST thường: cách nhận biết?', a:'Bố hoặc mẹ bình thường có thể sinh con bị bệnh\nBệnh gặp ở cả nam lẫn nữ với tỉ lệ ngang nhau\nVí dụ: bạch tạng (aa), PKU, bệnh hồng cầu hình liềm\nNhận biết: 2 bố mẹ bình thường có con bệnh → cả 2 là Aa'},
+    {chapter:'c5', q:'Bệnh di truyền liên kết X: tại sao nam dễ bị hơn nữ?', a:'Gen bệnh nằm trên NST X\nNam (XY): chỉ có 1 NST X → chỉ cần 1 alen lặn là bị bệnh\nNữ (XX): có 2 NST X → cần 2 alen lặn mới bị bệnh\nVí dụ: mù màu, hemophilia (máu không đông)'},
+    {chapter:'c5', q:'Tư vấn di truyền là gì? Có ý nghĩa gì?', a:'Chẩn đoán và tư vấn về nguy cơ mắc bệnh di truyền\nDựa trên: phả hệ gia đình, xét nghiệm gen, NST\nÝ nghĩa: giúp các cặp vợ chồng quyết định sinh con\nPhòng ngừa các bệnh di truyền nghiêm trọng cho thế hệ sau'},
+    {chapter:'c5', q:'Phương pháp nghiên cứu di truyền người gồm những gì?', a:'1. Phương pháp phả hệ: theo dõi sự di truyền qua nhiều đời\n2. Nghiên cứu trẻ đồng sinh: phân biệt ảnh hưởng gen và môi trường\n3. Phân tích tế bào học: quan sát NST\n4. Kỹ thuật ADN: phân tích trình tự gen'},
+  ],
+
+  // ─── BÀI TẬP TRẮC NGHIỆM ─────────────────────────────────
+  questions: [
+    // C1: ADN
+    {chapter:'c1', q:'Nguyên tắc bổ sung trong cấu trúc ADN là:', opts:['A-G, T-X','A-T, G-X','A-X, G-T','A-U, G-X'], ans:1, ex:'A liên kết với T (2 liên kết H), G liên kết với X (3 liên kết H). Đây là NTBS đặc trưng của ADN. ARN mới có U thay cho T.'},
+    {chapter:'c1', q:'Một đoạn ADN có 20% Adenin. Tỉ lệ Guanin là:', opts:['20%','30%','40%','10%'], ans:1, ex:'A=T=20%. A+T+G+X=100%. G+X = 100%-40% = 60%. G=X=30%. Quy tắc: A=T, G=X, A+G=50%.'},
+    {chapter:'c1', q:'Quá trình nhân đôi ADN xảy ra theo nguyên tắc nào?', opts:['Bổ sung và bảo toàn nguyên vẹn','Bổ sung và bán bảo toàn','Toàn bảo toàn và bổ sung','Bán bảo toàn và phân ly'], ans:1, ex:'Nhân đôi ADN theo 2 nguyên tắc: (1) NTBS — mạch mới tổng hợp bổ sung với mạch khuôn; (2) Bán bảo toàn — mỗi ADN con giữ 1 mạch cũ.'},
+    {chapter:'c1', q:'Loại ARN nào mang thông tin di truyền từ nhân ra ribôxôm?', opts:['tARN','rARN','mARN','Cả 3 loại'], ans:2, ex:'mARN (ARN thông tin) mang mã di truyền từ gen trong nhân ra ribôxôm ở tế bào chất. tARN vận chuyển axit amin. rARN cấu tạo ribôxôm.'},
+    {chapter:'c1', q:'Một côđon trên mARN gồm bao nhiêu nuclêôtit?', opts:['1','2','3','4'], ans:2, ex:'1 côđon = 3 nuclêôtit liên tiếp trên mARN, quy định 1 axit amin. Gọi là "mã bộ ba" hay "triplet".'},
+    // C1: NST
+    {chapter:'c1', q:'Tế bào sinh dưỡng người bình thường có bao nhiêu NST?', opts:['23','46','44','48'], ans:1, ex:'Người có 2n = 46 NST (23 cặp). Tế bào sinh dưỡng là tế bào lưỡng bội (2n). Giao tử có n = 23 NST.'},
+    {chapter:'c1', q:'Nguyên phân tạo ra mấy tế bào con có bộ NST như thế nào?', opts:['2 tế bào (n)','4 tế bào (2n)','2 tế bào (2n)','4 tế bào (n)'], ans:2, ex:'Nguyên phân: 1 TB mẹ (2n) → 2 TB con (2n). Bộ NST giữ nguyên. Xảy ra ở TB sinh dưỡng để tăng sinh.'},
+    {chapter:'c1', q:'Giảm phân tạo ra mấy tế bào con có bộ NST như thế nào?', opts:['2 tế bào (n)','4 tế bào (2n)','2 tế bào (2n)','4 tế bào (n)'], ans:3, ex:'Giảm phân: 1 TB mẹ (2n) → 4 TB con (n = 23). Bộ NST giảm còn một nửa. Xảy ra ở cơ quan sinh dục, tạo giao tử.'},
+    {chapter:'c1', q:'Hội chứng Down do đột biến gì?', opts:['Mất đoạn NST số 21','Thừa 1 NST số 21 (2n+1=47)','Thiếu 1 NST số 21','Đảo đoạn NST số 21'], ans:1, ex:'Hội chứng Down: thể ba NST 21 (trisomy 21), 2n+1 = 47 NST. Do NST số 21 không phân li trong giảm phân → giao tử có 2 NST 21.'},
+    {chapter:'c1', q:'Cặp NST giới tính của người nữ là:', opts:['XY','XX','XO','YY'], ans:1, ex:'Nữ: XX (44+XX = 46 NST). Nam: XY (44+XY = 46 NST). Giới tính do bố quyết định (X hoặc Y từ tinh trùng).'},
+    // C1: Mendel
+    {chapter:'c1', q:'Cho Aa × Aa. Tỉ lệ kiểu hình ở đời con là:', opts:['1:1','3:1','1:2:1','100% trội'], ans:1, ex:'Aa × Aa → 1AA : 2Aa : 1aa. Kiểu hình: AA và Aa đều biểu hiện trội → 3 trội : 1 lặn.'},
+    {chapter:'c1', q:'Cho AA × aa. Kiểu gen và kiểu hình F1 là:', opts:['50%AA, 50%aa','100% Aa trội','50% Aa, 50% aa','100% AA'], ans:1, ex:'AA cho giao tử A; aa cho giao tử a. F1 = 100% Aa. Aa biểu hiện tính trạng TRỘI (vì A trội hoàn toàn so với a).'},
+    {chapter:'c1', q:'Lai 2 cặp AaBb × AaBb, tỉ lệ kiểu hình F2 là:', opts:['1:1:1:1','3:1','9:3:3:1','1:2:1'], ans:2, ex:'AaBb × AaBb theo quy luật phân li độc lập: (3:1) × (3:1) = 9 A_B_ : 3 A_bb : 3 aaB_ : 1 aabb = 9:3:3:1.'},
+    {chapter:'c1', q:'Phép lai phân tích dùng cá thể kiểu gen nào để lai?', opts:['AA','Aa','aa','Bất kỳ'], ans:2, ex:'Lai phân tích: dùng cá thể đồng hợp lặn (aa) để lai với cá thể chưa biết kiểu gen. Nếu F1 toàn trội → gốc là AA; F1 có 1 trội:1 lặn → gốc là Aa.'},
+    // C1: Đột biến
+    {chapter:'c1', q:'Thường biến khác đột biến ở điểm nào quan trọng nhất?', opts:['Thường biến không di truyền, đột biến di truyền được','Thường biến mạnh hơn đột biến','Thường biến do tia phóng xạ','Đột biến không di truyền'], ans:0, ex:'Thường biến: thay đổi kiểu hình theo môi trường, KHÔNG thay đổi ADN → không di truyền. Đột biến: thay đổi ADN → di truyền được cho thế hệ sau.'},
+    {chapter:'c1', q:'Nguyên nhân chính gây đột biến nhân tạo là:', opts:['Thiếu dinh dưỡng','Tia phóng xạ, tia UV, hóa chất đột biến','Nhiệt độ cao','Côn trùng cắn'], ans:1, ex:'Tác nhân gây đột biến nhân tạo: tia phóng xạ (X, gamma), tia UV, hóa chất (colchicin, nicotine). Đây là cơ sở của việc tạo giống đột biến trong nông nghiệp.'},
+    // C2: Sinh thái
+    {chapter:'c2', q:'Chuỗi thức ăn bắt đầu từ sinh vật nào?', opts:['Sinh vật tiêu thụ bậc 1','Sinh vật phân giải','Sinh vật sản xuất (cây xanh)','Động vật ăn thịt'], ans:2, ex:'Chuỗi thức ăn luôn bắt đầu từ sinh vật sản xuất (cây xanh, tảo) — sinh vật tự dưỡng tổng hợp chất hữu cơ từ ánh sáng qua quang hợp.'},
+    {chapter:'c2', q:'Hiệu suất sinh thái trung bình là bao nhiêu?', opts:['50%','10%','90%','25%'], ans:1, ex:'Trung bình chỉ 10% năng lượng được chuyển từ bậc dinh dưỡng này sang bậc tiếp theo. 90% còn lại mất do hô hấp, nhiệt, chất thải.'},
+    {chapter:'c2', q:'Quan hệ cộng sinh là gì?', opts:['Cả 2 cùng có lợi','1 có lợi, 1 không bị gì','1 có lợi, 1 bị hại','Cả 2 đều bị hại'], ans:0, ex:'Cộng sinh (+/+): cả 2 sinh vật đều có lợi. Ví dụ: Nấm + Tảo = địa y (nấm cho nơi ở, tảo cho chất hữu cơ). Vi khuẩn cố định đạm trong rễ đậu.'},
+    {chapter:'c2', q:'Quần xã sinh vật là gì?', opts:['Nhiều cá thể cùng loài','Nhiều quần thể khác loài cùng không gian và thời gian','Môi trường sống của sinh vật','1 cá thể và môi trường của nó'], ans:1, ex:'Quần xã: tập hợp nhiều quần thể (khác loài) cùng sống trong một không gian xác định, có mối quan hệ dinh dưỡng và tương tác với nhau.'},
+    {chapter:'c2', q:'Biện pháp nào hiệu quả nhất bảo vệ đa dạng sinh học?', opts:['Tăng săn bắt để kiểm soát','Thành lập khu bảo tồn thiên nhiên','Trồng 1 loài cây duy nhất','Dùng nhiều thuốc trừ sâu'], ans:1, ex:'Thành lập khu bảo tồn thiên nhiên, vườn quốc gia bảo vệ nguyên vẹn hệ sinh thái. Kết hợp cấm săn bắt, giảm ô nhiễm, trồng rừng phục hồi.'},
+    // C3: Dân số & môi trường
+    {chapter:'c3', q:'Hậu quả chính của việc dân số tăng quá nhanh?', opts:['Tăng năng suất lao động','Thiếu lương thực, cạn kiệt tài nguyên, ô nhiễm tăng','Tăng diện tích đất nông nghiệp','Giảm hiệu ứng nhà kính'], ans:1, ex:'Dân số tăng nhanh → nhu cầu lương thực, nước, năng lượng tăng → khai thác tài nguyên quá mức → cạn kiệt tài nguyên, ô nhiễm môi trường, mất rừng.'},
+    {chapter:'c3', q:'Tài nguyên nào sau đây là tài nguyên KHÔNG tái sinh?', opts:['Rừng nhiệt đới','Nước ngầm có thể bổ sung','Dầu mỏ và than đá','Năng lượng mặt trời'], ans:2, ex:'Dầu mỏ, than đá, khí đốt tự nhiên là tài nguyên không tái sinh — hình thành hàng triệu năm, khai thác hết không phục hồi được. Rừng, nước là tài nguyên tái sinh nếu khai thác hợp lý.'},
+    {chapter:'c3', q:'Mưa axit có pH như thế nào và gây hại gì?', opts:['pH > 7, làm đất kiềm','pH < 5,6, phá hủy rừng và công trình','pH = 7, không gây hại','pH > 9, gây ô nhiễm nguồn nước'], ans:1, ex:'Mưa axit có pH < 5,6 do SO₂ và NOₓ từ khói nhà máy, xe cộ hòa tan vào nước mưa. Hậu quả: hủy diệt rừng, diệt cá, ăn mòn công trình, gây bệnh hô hấp.'},
+    {chapter:'c3', q:'Biện pháp nào giúp giảm ô nhiễm không khí hiệu quả nhất?', opts:['Tăng sản xuất công nghiệp','Chuyển sang năng lượng tái tạo và xử lý khí thải','Trồng thêm nhiều nhà máy','Tăng dân số đô thị'], ans:1, ex:'Sử dụng năng lượng tái tạo (mặt trời, gió) thay nhiên liệu hóa thạch + xử lý khí thải trước khi thải ra môi trường là biện pháp căn bản nhất giảm ô nhiễm không khí.'},
+    // C4: Bảo vệ môi trường
+    {chapter:'c4', q:'Thuốc trừ sâu DDT bị cấm vì lý do gì?', opts:['Quá đắt tiền','Tích lũy sinh học qua chuỗi thức ăn gây độc ở bậc cao','Không tiêu diệt được sâu bệnh','Làm cây trồng héo úa'], ans:1, ex:'DDT không bị phân hủy, tích lũy trong mô mỡ sinh vật. Bậc dinh dưỡng cao hơn → nồng độ DDT cao hơn (sinh tích lũy). Đại bàng ăn nhiều cá → tích lũy DDT cao nhất → vỡ trứng → suy giảm quần thể.'},
+    {chapter:'c4', q:'Hiệu ứng nhà kính gây ra hậu quả gì?', opts:['Làm Trái Đất lạnh hơn','Tăng nhiệt độ Trái Đất, băng tan, mực nước biển dâng','Làm tăng đa dạng sinh học','Giảm bão lũ toàn cầu'], ans:1, ex:'CO₂, CH₄ tích lũy trong khí quyển giữ nhiệt → nhiệt độ Trái Đất tăng → băng tan → nước biển dâng → ngập đồng bằng ven biển. Nguyên nhân chính: đốt than, dầu, phá rừng.'},
+    {chapter:'c4', q:'Loại ô nhiễm nào gây ra bệnh ung thư da và đục thủy tinh thể?', opts:['Ô nhiễm nước','Tia cực tím (UV) do thủng tầng ozon','Ô nhiễm tiếng ồn','Ô nhiễm đất'], ans:1, ex:'Tầng ozon (O₃) bảo vệ Trái Đất khỏi tia UV. CFC từ bình xịt, tủ lạnh phá hủy ozon → tia UV xuyên qua → ung thư da, đục thủy tinh thể, suy giảm hệ miễn dịch.'},
+    // C5: Di truyền học người
+    {chapter:'c5', q:'Bệnh mù màu đỏ-xanh lá là bệnh di truyền gì?', opts:['Do gen trội trên NST thường','Do gen lặn trên NST X','Do đột biến NST số 21','Do môi trường gây ra'], ans:1, ex:'Mù màu: gen lặn nằm trên NST X. Nam (XY) chỉ cần 1 alen lặn là mù màu. Nữ (XX) cần 2 alen lặn mới mù màu. Vì vậy tỉ lệ nam mù màu cao hơn nữ rất nhiều (~8% nam, ~0,4% nữ).'},
+    {chapter:'c5', q:'Phương pháp phả hệ trong nghiên cứu di truyền người là gì?', opts:['Phân tích ADN bằng máy tính','Theo dõi sự di truyền tính trạng qua nhiều thế hệ trong gia đình','Cấy ghép gen từ người sang người','Nuôi cấy tế bào trong phòng thí nghiệm'], ans:1, ex:'Phả hệ: vẽ sơ đồ phả hệ và theo dõi tính trạng qua các thế hệ. Giúp xác định tính trạng do gen trội/lặn, gen trên NST thường/giới tính. Đây là phương pháp cổ điển nhưng rất hiệu quả.'},
+    {chapter:'c5', q:'Trẻ đồng sinh cùng trứng khác trứng khác nhau điểm gì?', opts:['Cùng trứng: khác ADN; khác trứng: cùng ADN','Cùng trứng: cùng ADN (clone); khác trứng: ADN khác','Đều giống nhau hoàn toàn','Đều khác nhau về ADN'], ans:1, ex:'Cùng trứng (monozygotic): 1 trứng thụ tinh tách đôi → 2 trẻ có ADN giống hệt nhau (clone tự nhiên). Khác trứng (dizygotic): 2 trứng thụ tinh riêng → ADN khác nhau như anh chị em thường.'},
+  ],
+
+  // ─── ĐỀ THI ──────────────────────────────────────────────
+  exams: [
+    {
+      id:'e1', title:'Đề 1 — Di truyền cơ bản', source:'Cơ bản', time:45, type:'mixed',
+      mc:[
+        {q:'Mạch ADN có trình tự: A-T-G-X-A. Mạch bổ sung là:', opts:['T-A-X-G-T','A-T-G-X-A','T-A-G-X-T','U-A-X-G-U'], ans:0, ex:'Theo NTBS: A bổ sung T, T bổ sung A, G bổ sung X, X bổ sung G. Mạch A-T-G-X-A → mạch bổ sung: T-A-X-G-T.'},
+        {q:'Bố XY × Mẹ XX, xác suất con gái là:', opts:['25%','50%','75%','100%'], ans:1, ex:'Bố cho 2 loại giao tử: X (50%) và Y (50%). Mẹ chỉ cho giao tử X. Con gái = XX = 50%. Con trai = XY = 50%.'},
+        {q:'Lai Aa × aa cho tỉ lệ ở F1 là:', opts:['3:1','1:1','100% Aa','1:2:1'], ans:1, ex:'Aa cho giao tử A và a (mỗi loại 50%). aa chỉ cho giao tử a. F1: 1Aa : 1aa = 1 trội : 1 lặn.'},
+        {q:'Đột biến NST có ở đặc điểm nào sau đây?', opts:['Chỉ xảy ra ở gen','Thay đổi cấu trúc hay số lượng NST','Không di truyền','Chỉ do tia UV gây ra'], ans:1, ex:'Đột biến NST: thay đổi cấu trúc (mất, lặp, đảo, chuyển đoạn) hoặc số lượng (dị bội, đa bội) NST. Khác với đột biến gen (thay đổi cặp nu).'},
+        {q:'Quá trình phiên mã tạo ra sản phẩm gì?', opts:['ADN con','Protein','mARN','Giao tử'], ans:2, ex:'Phiên mã: ADN → mARN. Khuôn mẫu là 1 mạch ADN. mARN sau đó ra ribôxôm tham gia dịch mã tổng hợp Protein.'},
+      ],
+      sections:[
+        {title:'Câu 6 (3đ) — Bài tập di truyền Mendel', type:'essay', questions:[
+          {q:'Ở đậu Hà Lan, A: vàng trội hoàn toàn so với a: xanh.\nP: Aa × Aa\na. Lập sơ đồ lai và xác định tỉ lệ kiểu gen F1\nb. Tỉ lệ kiểu hình F1 là bao nhiêu?\nc. Nếu lấy ngẫu nhiên 1 cây kiểu hình trội ở F1, xác suất kiểu gen của nó là AA là bao nhiêu?',
+          ans:'(a) P: Aa × Aa\nGiao tử: A, a × A, a\nF1 kiểu gen: 1AA : 2Aa : 1aa\n\n(b) Kiểu hình F1:\n- AA và Aa: biểu hiện vàng = 3/4\n- aa: biểu hiện xanh = 1/4\n→ Tỉ lệ: 3 vàng : 1 xanh\n\n(c) Trong 3 cây vàng: 1AA và 2Aa\n→ Xác suất AA = 1/3 ≈ 33,3%', pts:3}
+        ]},
+      ]
+    },
+    {
+      id:'e2', title:'Đề 2 — NST & Đột biến', source:'Tổng hợp', time:45, type:'mixed',
+      mc:[
+        {q:'Nguyên phân từ 1 tế bào 2n=46, sau 3 lần phân bào tạo ra:', opts:['6 tế bào (2n)','8 tế bào (2n)','8 tế bào (n)','4 tế bào (2n)'], ans:1, ex:'Nguyên phân: 1 TB → 2 TB → 4 TB → 8 TB sau 3 lần. Bộ NST giữ nguyên 2n=46. Sau n lần = 2ⁿ tế bào.'},
+        {q:'Giảm phân từ 4 tế bào sinh tinh (2n=46) tạo ra bao nhiêu tinh trùng?', opts:['4 tinh trùng (n=23)','8 tinh trùng (n=23)','16 tinh trùng (n=23)','4 tinh trùng (2n=46)'], ans:2, ex:'Giảm phân: 1 TB sinh tinh → 4 tinh trùng. 4 TB × 4 = 16 tinh trùng. Mỗi tinh trùng có n=23 NST.'},
+        {q:'Hội chứng Turner có kiểu NST giới tính:', opts:['XX','XY','XO (45 NST)','XXY'], ans:2, ex:'Turner: 45, X0 — chỉ có 1 NST X, thiếu 1 NST giới tính. Biểu hiện: nữ, lùn, không có kinh nguyệt, vô sinh.'},
+        {q:'Thường biến có đặc điểm nào sau đây?', opts:['Di truyền được','Thay đổi kiểu gen','Không di truyền, thay đổi kiểu hình','Xảy ra do tia phóng xạ'], ans:2, ex:'Thường biến: thay đổi kiểu hình do ảnh hưởng của môi trường, KHÔNG thay đổi kiểu gen, không di truyền. Khi môi trường trở lại bình thường, kiểu hình trở về bình thường.'},
+        {q:'Gen lặn liên kết X gây bệnh mù màu. Mẹ Xᴬx × Bố Xᴬy, xác suất con trai bị bệnh là:', opts:['0%','25%','50%','100%'], ans:2, ex:'Mẹ Xᴬx (mang gen, không bị bệnh) × Bố XᴬY. Con trai: XᴬY (bình thường 50%) và xY (mù màu 50%). Xác suất con trai mù màu = 50%.'},
+      ],
+      sections:[
+        {title:'Câu 6 (2đ) — So sánh nguyên phân và giảm phân', type:'essay', questions:[
+          {q:'Lập bảng so sánh nguyên phân và giảm phân về: số lần phân bào, số tế bào con, bộ NST tế bào con, nơi xảy ra, ý nghĩa.',
+          ans:'| Tiêu chí | Nguyên phân | Giảm phân |\n|---|---|---|\n| Số lần PB | 1 lần | 2 lần (I+II) |\n| Số TB con | 2 | 4 |\n| Bộ NST TB con | 2n (giữ nguyên) | n (giảm còn 1/2) |\n| Nơi xảy ra | TB sinh dưỡng | Cơ quan sinh dục |\n| Ý nghĩa | Tăng sinh, sinh trưởng | Tạo giao tử, sinh sản HT |', pts:2}
+        ]},
+      ]
+    },
+    {
+      id:'e3', title:'Đề 3 — Sinh thái + Tổng hợp', source:'Tổng hợp', time:45, type:'mixed',
+      mc:[
+        {q:'Chuỗi thức ăn nào sau đây đúng?', opts:['Rắn → Ếch → Sâu → Cỏ','Cỏ → Sâu → Ếch → Rắn → Đại bàng','Đại bàng → Rắn → Ếch → Cỏ','Sâu → Cỏ → Ếch → Rắn'], ans:1, ex:'Chuỗi thức ăn đúng chiều: Sinh vật SX → SV tiêu thụ. Cỏ (SX) → Sâu (TT1) → Ếch (TT2) → Rắn (TT3) → Đại bàng (TT4).'},
+        {q:'Quan hệ giữa cây tầm gửi và cây chủ là:', opts:['Cộng sinh','Hội sinh','Ký sinh','Cạnh tranh'], ans:2, ex:'Tầm gửi (tầm gửi hút chất hữu cơ từ cây chủ = có lợi) × cây chủ (bị mất chất dinh dưỡng = bị hại) → Ký sinh (+/-).'},
+        {q:'Sinh vật nào là mắt xích cuối của hầu hết chuỗi thức ăn?', opts:['Cây xanh','Sinh vật phân giải','Động vật ăn thịt đỉnh','Sinh vật tiêu thụ bậc 1'], ans:1, ex:'Sinh vật phân giải (vi khuẩn, nấm) phân hủy chất hữu cơ của tất cả sinh vật đã chết, khép kín vòng tuần hoàn vật chất trong hệ sinh thái.'},
+        {q:'Ô nhiễm không khí chủ yếu do nguyên nhân nào?', opts:['Hô hấp của cây','Khí thải công nghiệp và giao thông','Quang hợp','Vòng tuần hoàn nước'], ans:1, ex:'Ô nhiễm không khí chủ yếu từ: đốt than, dầu (CO₂, SO₂, NOₓ), khí thải xe cộ, khói nhà máy. Gây mưa axit, hiệu ứng nhà kính, bệnh hô hấp.'},
+        {q:'Biện pháp nào KHÔNG phải bảo vệ môi trường?', opts:['Trồng rừng','Xử lý rác thải','Tăng lượng thuốc trừ sâu','Phát triển năng lượng tái tạo'], ans:2, ex:'Tăng thuốc trừ sâu gây ô nhiễm đất, nước, tích lũy sinh học trong chuỗi thức ăn. Các biện pháp BV môi trường: trồng rừng, xử lý chất thải, năng lượng sạch.'},
+      ],
+      sections:[
+        {title:'Câu 6 (3đ) — Bài tập tổng hợp', type:'essay', questions:[
+          {q:'Ở người, bệnh bạch tạng do gen lặn a quy định (A: da bình thường, a: bạch tạng).\nBố và Mẹ đều có da bình thường nhưng sinh con bị bạch tạng.\na. Xác định kiểu gen của bố và mẹ\nb. Lập sơ đồ lai và tính tỉ lệ con bị bạch tạng\nc. Nếu họ sinh thêm 3 con, xác suất cả 3 đều bình thường là bao nhiêu?',
+          ans:'(a) Bố và mẹ có da bình thường nhưng có con bạch tạng (aa)\n→ Cả bố lẫn mẹ đều phải có gen a và có da bình thường\n→ Kiểu gen bố: Aa; Mẹ: Aa\n\n(b) P: Aa × Aa\nF1: 1AA : 2Aa : 1aa\nKiểu hình: 3/4 bình thường : 1/4 bạch tạng\n\n(c) P(1 con bình thường) = 3/4\nP(3 con đều bình thường) = (3/4)³ = 27/64 ≈ 42,2%', pts:3}
+        ]},
+      ]
+    },
+  ],
+
+  // ─── SƠ ĐỒ TƯ DUY ───────────────────────────────────────
+  mindmaps: {
+    mm1: {
+      title:'ADN & ARN', color:'#1A7A4A',
+      center:'ADN & ARN\nVật chất di truyền',
+      branches:[
+        {label:'Cấu trúc ADN', color:'#1A7A4A', leaves:[
+          {text:'2 mạch xoắn kép\nngược chiều', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'4 loại bazơ:\nA, T, G, X', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'NTBS: A=T, G=X\n(A+G = T+X = 50%)', bg:'#E2F5EC', border:'#1A7A4A'},
+        ]},
+        {label:'Nhân đôi ADN', color:'#185FA5', leaves:[
+          {text:'Nguyên tắc bổ sung', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Bán bảo toàn\n1 mạch cũ + 1 mới', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'1 ADN → 2 ADN con\ngiống hệt nhau', bg:'#E6F1FB', border:'#185FA5'},
+        ]},
+        {label:'3 loại ARN', color:'#BA7517', leaves:[
+          {text:'mARN: mang thông tin\nADN → ribôxôm', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'tARN: vận chuyển\naxit amin', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'rARN: cấu tạo\nribôxôm', bg:'#FAEEDA', border:'#BA7517'},
+        ]},
+        {label:'Tổng hợp Protein', color:'#7F77DD', leaves:[
+          {text:'ADN→mARN (phiên mã)\ntrong nhân tế bào', bg:'#EEEDFE', border:'#7F77DD'},
+          {text:'mARN→Protein (dịch mã)\ntại ribôxôm', bg:'#EEEDFE', border:'#7F77DD'},
+          {text:'3 nu = 1 côđon\n= 1 axit amin', bg:'#EEEDFE', border:'#7F77DD'},
+        ]},
+      ]
+    },
+    mm2: {
+      title:'Phân bào', color:'#185FA5',
+      center:'PHÂN BÀO\nNguyên phân & Giảm phân',
+      branches:[
+        {label:'Nguyên phân', color:'#1A7A4A', leaves:[
+          {text:'TB mẹ (2n) → 2 TB con (2n)', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'1 lần phân bào', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'TB sinh dưỡng', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'Tăng sinh, sinh trưởng', bg:'#E2F5EC', border:'#1A7A4A'},
+        ]},
+        {label:'Giảm phân', color:'#185FA5', leaves:[
+          {text:'TB mẹ (2n) → 4 TB con (n)', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'2 lần phân bào (I+II)', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Cơ quan sinh dục', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Tạo giao tử (tinh/trứng)', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Trao đổi chéo\n→ biến dị tổ hợp', bg:'#E6F1FB', border:'#185FA5'},
+        ]},
+        {label:'NST người', color:'#D85A30', leaves:[
+          {text:'2n = 46 (23 cặp)', bg:'#FAECE7', border:'#D85A30'},
+          {text:'22 cặp thường\n+ 1 cặp giới tính', bg:'#FAECE7', border:'#D85A30'},
+          {text:'Nữ: XX\nNam: XY', bg:'#FAECE7', border:'#D85A30'},
+        ]},
+        {label:'Đột biến NST', color:'#7F77DD', leaves:[
+          {text:'Down: +NST21 (2n=47)', bg:'#EEEDFE', border:'#7F77DD'},
+          {text:'Turner: X0 (2n=45)', bg:'#EEEDFE', border:'#7F77DD'},
+          {text:'Klinefelter: XXY (2n=47)', bg:'#EEEDFE', border:'#7F77DD'},
+        ]},
+      ]
+    },
+    mm3: {
+      title:'Di truyền Mendel', color:'#BA7517',
+      center:'QUY LUẬT\nMENDEL',
+      branches:[
+        {label:'Khái niệm cơ bản', color:'#BA7517', leaves:[
+          {text:'Gen: đoạn ADN quy định TT', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Alen: các dạng khác nhau của gen', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Trội (A): biểu hiện khi 1 hoặc 2 bản', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Lặn (a): chỉ biểu hiện khi aa', bg:'#FAEEDA', border:'#BA7517'},
+        ]},
+        {label:'Lai 1 cặp\nAa × Aa', color:'#1A7A4A', leaves:[
+          {text:'KG: 1AA : 2Aa : 1aa', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'KH: 3 trội : 1 lặn', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'Quy luật phân li', bg:'#E2F5EC', border:'#1A7A4A'},
+        ]},
+        {label:'Lai 2 cặp\nAaBb × AaBb', color:'#185FA5', leaves:[
+          {text:'KH: 9:3:3:1', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'= (3:1) × (3:1)', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Quy luật phân li độc lập', bg:'#E6F1FB', border:'#185FA5'},
+        ]},
+        {label:'Lai phân tích\n(? × aa)', color:'#7F77DD', leaves:[
+          {text:'F1 toàn trội → KG gốc là AA', bg:'#EEEDFE', border:'#7F77DD'},
+          {text:'F1: 1 trội : 1 lặn → KG gốc là Aa', bg:'#EEEDFE', border:'#7F77DD'},
+        ]},
+      ]
+    },
+    mm4: {
+      title:'Đột biến & Thường biến', color:'#D85A30',
+      center:'BIẾN DỊ\nĐột biến & Thường biến',
+      branches:[
+        {label:'Đột biến gen', color:'#D85A30', leaves:[
+          {text:'Mất cặp nuclêôtit', bg:'#FAECE7', border:'#D85A30'},
+          {text:'Thêm cặp nuclêôtit', bg:'#FAECE7', border:'#D85A30'},
+          {text:'Thay cặp nuclêôtit', bg:'#FAECE7', border:'#D85A30'},
+          {text:'Di truyền được\nNguyên liệu tiến hóa', bg:'#FAECE7', border:'#D85A30'},
+        ]},
+        {label:'Đột biến NST', color:'#7F77DD', leaves:[
+          {text:'Cấu trúc: mất/lặp/\nđảo/chuyển đoạn', bg:'#EEEDFE', border:'#7F77DD'},
+          {text:'Số lượng: dị bội\nđa bội', bg:'#EEEDFE', border:'#7F77DD'},
+          {text:'VD: Down(+21)\nTurner(X0)', bg:'#EEEDFE', border:'#7F77DD'},
+        ]},
+        {label:'Thường biến', color:'#1A7A4A', leaves:[
+          {text:'Do môi trường', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'KHÔNG di truyền', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'Không đổi kiểu gen', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'Thích nghi tức thời', bg:'#E2F5EC', border:'#1A7A4A'},
+        ]},
+        {label:'Tác nhân gây ĐB', color:'#BA7517', leaves:[
+          {text:'Vật lý: tia X, UV', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Hóa học: colchicin\nchất phóng xạ', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Sinh học: virus', bg:'#FAEEDA', border:'#BA7517'},
+        ]},
+      ]
+    },
+    mm5: {
+      title:'Sinh thái học', color:'#085041',
+      center:'SINH THÁI HỌC\nMôi trường & Hệ sinh thái',
+      branches:[
+        {label:'Chuỗi thức ăn', color:'#085041', leaves:[
+          {text:'SV sản xuất (cây xanh)\n→ SV tiêu thụ → SV phân giải', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'Hiệu suất sinh thái: 10%\n90% mất dưới dạng nhiệt', bg:'#E2F5EC', border:'#1A7A4A'},
+          {text:'Bậc dinh dưỡng cao\n→ năng lượng ít hơn', bg:'#E2F5EC', border:'#1A7A4A'},
+        ]},
+        {label:'Quan hệ sinh vật', color:'#185FA5', leaves:[
+          {text:'Cộng sinh: +/+ (địa y)', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Hội sinh: +/0 (cá ép)', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Ký sinh: +/- (giun)', bg:'#E6F1FB', border:'#185FA5'},
+          {text:'Cạnh tranh: -/- (tranh thức ăn)', bg:'#E6F1FB', border:'#185FA5'},
+        ]},
+        {label:'Cấp độ tổ chức', color:'#BA7517', leaves:[
+          {text:'Cá thể', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Quần thể (cùng loài)', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Quần xã (khác loài)', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Hệ sinh thái\n(QX + môi trường)', bg:'#FAEEDA', border:'#BA7517'},
+          {text:'Sinh quyển', bg:'#FAEEDA', border:'#BA7517'},
+        ]},
+        {label:'Bảo vệ môi trường', color:'#D85A30', leaves:[
+          {text:'Khu bảo tồn thiên nhiên', bg:'#FAECE7', border:'#D85A30'},
+          {text:'Xử lý chất thải', bg:'#FAECE7', border:'#D85A30'},
+          {text:'Năng lượng tái tạo', bg:'#FAECE7', border:'#D85A30'},
+          {text:'Giáo dục môi trường', bg:'#FAECE7', border:'#D85A30'},
+        ]},
+      ]
+    },
+  },
+  mmKeys: ['mm1','mm2','mm3','mm4','mm5'],
+  mmTabLabels: ['ADN & ARN','Phân bào','Di truyền Mendel','Đột biến','Sinh thái học'],
+
+  // ─── MÁY TÍNH CÔNG THỨC (Sinh học) ──────────────────────
+  // Sinh học không có nhiều công thức số học như Lý, nhưng có
+  // công thức ADN, tỉ lệ lai, số tế bào sau phân bào
+  calculators: [
+    {
+      id:'adn_ntbs', title:'Tính số nuclêôtit (NTBS)', icon:'🧬', color:'#1A7A4A',
+      desc:'A=T, G=X — Biết %A hoặc %G, tính phần còn lại',
+      fields:[
+        {id:'adn_A', label:'%A (Adenin)', placeholder:'Nhập %'},
+        {id:'adn_T', label:'%T (Timin) = %A', placeholder:'Tự động'},
+        {id:'adn_G', label:'%G (Guanin)', placeholder:'Nhập %'},
+        {id:'adn_X', label:'%X (Xitôzin) = %G', placeholder:'Tự động'},
+      ],
+      calc: `
+        const A = parseFloat(document.getElementById('adn_A').value);
+        const G = parseFloat(document.getElementById('adn_G').value);
+        if (!isNaN(A) && isNaN(G)) {
+          const calcG = 50 - A;
+          document.getElementById('adn_T').value = A.toFixed(1);
+          document.getElementById('adn_X').value = calcG.toFixed(1);
+          return {field:'adn_G', val:calcG.toFixed(1), unit:'%  (G=X=' + calcG.toFixed(1) + '%)', formula:'G = X = 50% - A = 50% - ' + A + '%'};
+        }
+        if (!isNaN(G) && isNaN(A)) {
+          const calcA = 50 - G;
+          document.getElementById('adn_T').value = calcA.toFixed(1);
+          document.getElementById('adn_X').value = G.toFixed(1);
+          return {field:'adn_A', val:calcA.toFixed(1), unit:'%  (A=T=' + calcA.toFixed(1) + '%)', formula:'A = T = 50% - G = 50% - ' + G + '%'};
+        }
+        return null;
+      `
+    },
+    {
+      id:'adn_sonu', title:'Số nuclêôtit & chiều dài ADN', icon:'📏', color:'#185FA5',
+      desc:'N = 2 × số cặp nu | L = N/2 × 3,4 Å',
+      fields:[
+        {id:'sonu_cap', label:'Số cặp nuclêôtit (cặp bazơ)', placeholder:'Nhập số cặp'},
+        {id:'sonu_N', label:'Tổng số nuclêôtit N', placeholder:'Kết quả'},
+        {id:'sonu_L', label:'Chiều dài L (Angstrom Å)', placeholder:'Kết quả'},
+      ],
+      calc: `
+        const cap = parseFloat(document.getElementById('sonu_cap').value);
+        if (!isNaN(cap) && cap > 0) {
+          const N = cap * 2;
+          const L = cap * 3.4;
+          document.getElementById('sonu_N').value = N;
+          return {field:'sonu_L', val:L.toFixed(1), unit:'Å = ' + (L/10).toFixed(1) + ' nm', formula:'L = số cặp × 3,4Å = ' + cap + ' × 3,4'};
+        }
+        return null;
+      `
+    },
+    {
+      id:'phanbaong', title:'Số tế bào sau nguyên phân', icon:'🔬', color:'#1A7A4A',
+      desc:'Nguyên phân n lần → 2ⁿ tế bào con (2n)',
+      fields:[
+        {id:'np_n', label:'Số lần nguyên phân', placeholder:'Nhập số lần'},
+        {id:'np_tb', label:'Số tế bào con (2n)', placeholder:'Kết quả'},
+        {id:'np_nst', label:'Bộ NST mỗi tế bào con', placeholder:'Nhập 2n của sinh vật'},
+      ],
+      calc: `
+        const n = parseFloat(document.getElementById('np_n').value);
+        const nst2n = parseFloat(document.getElementById('np_nst').value);
+        if (!isNaN(n) && n >= 0) {
+          const tb = Math.pow(2, n);
+          const nstInfo = !isNaN(nst2n) ? ', mỗi TB có ' + nst2n + ' NST' : '';
+          return {field:'np_tb', val:tb, unit:'tế bào (2n' + nstInfo + ')', formula:'Số TB = 2ⁿ = 2^' + n};
+        }
+        return null;
+      `
+    },
+    {
+      id:'phanbaoGP', title:'Số tế bào sau giảm phân', icon:'🧫', color:'#BA7517',
+      desc:'n TB sinh dục → 4n giao tử (đơn bội)',
+      fields:[
+        {id:'gp_tbme', label:'Số tế bào mẹ tham gia giảm phân', placeholder:'Nhập số TB'},
+        {id:'gp_gtu', label:'Số giao tử tạo ra', placeholder:'Kết quả'},
+        {id:'gp_nst', label:'Bộ NST của giao tử (n)', placeholder:'Nhập n'},
+      ],
+      calc: `
+        const tbme = parseFloat(document.getElementById('gp_tbme').value);
+        const n = parseFloat(document.getElementById('gp_nst').value);
+        if (!isNaN(tbme) && tbme > 0) {
+          const gtu = tbme * 4;
+          const nstInfo = !isNaN(n) ? ', mỗi giao tử có ' + n + ' NST' : '';
+          return {field:'gp_gtu', val:gtu, unit:'giao tử (n' + nstInfo + ')', formula:'Số giao tử = 4 × TB mẹ = 4 × ' + tbme};
+        }
+        return null;
+      `
+    },
+    {
+      id:'tyleLai', title:'Tỉ lệ kiểu gen lai Aa × Aa', icon:'🫘', color:'#7F77DD',
+      desc:'Tính xác suất con có kiểu gen/kiểu hình cụ thể',
+      fields:[
+        {id:'lai_AA', label:'Xác suất kiểu gen AA (%)', placeholder:'Kết quả'},
+        {id:'lai_Aa', label:'Xác suất kiểu gen Aa (%)', placeholder:'Kết quả'},
+        {id:'lai_aa', label:'Xác suất kiểu gen aa (%)', placeholder:'Kết quả'},
+        {id:'lai_troi', label:'Xác suất kiểu hình trội (%)', placeholder:'Kết quả'},
+      ],
+      calc: `
+        // Aa × Aa cố định tỉ lệ 1:2:1
+        document.getElementById('lai_AA').value = 25;
+        document.getElementById('lai_Aa').value = 50;
+        document.getElementById('lai_aa').value = 25;
+        return {field:'lai_troi', val:75, unit:'% (AA + Aa = 25%+50%)', formula:'Aa×Aa: 1AA:2Aa:1aa → 3 trội : 1 lặn'};
+      `
+    },
+    {
+      id:'nhietluongProb', title:'Bài toán xác suất di truyền', icon:'🎲', color:'#D85A30',
+      desc:'P(n con cùng kiểu hình) = P(1 con) ^ n',
+      fields:[
+        {id:'xs_p', label:'Xác suất 1 con có kiểu hình X (%)', placeholder:'VD: 75'},
+        {id:'xs_n', label:'Số con sinh ra', placeholder:'VD: 3'},
+        {id:'xs_all', label:'P(tất cả n con đều có KH X) (%)', placeholder:'Kết quả'},
+      ],
+      calc: `
+        const p = parseFloat(document.getElementById('xs_p').value);
+        const n = parseFloat(document.getElementById('xs_n').value);
+        if (!isNaN(p) && !isNaN(n) && p >= 0 && p <= 100 && n > 0) {
+          const result = Math.pow(p/100, n) * 100;
+          return {field:'xs_all', val:result.toFixed(2), unit:'% = ' + (result/100).toFixed(4) + ' (dạng phân số: (' + p + '/100)^' + n + ')', formula:'P = (' + p + '%)^' + n + ' = ' + result.toFixed(2) + '%'};
+        }
+        return null;
+      `
+    },
+  ],
+};
+
+</script>
+<script>
+// ================================================================
+// SHELL ENGINE — Tự động render từ window.SUBJECT
+// ================================================================
+let S; // subject data shortcut
+let fcCards=[], fcIdx=0, fcKnow=new Set(), fcLearn=new Set();
+let quizChapter='all', quizQs=[], quizAnswers={}, timerInterval, timerSec=0;
+let currentExam=null, examAnswers={}, examMCDone=false, examTimer, examSec=0;
+let currentMM='';
+
+function init() {
+  S = window.SUBJECT;
+  // Apply theme
+  document.documentElement.style.setProperty('--primary', S.color);
+  document.documentElement.style.setProperty('--primary-light', S.colorLight);
+  document.documentElement.style.setProperty('--primary-dark', S.colorDark);
+  document.documentElement.style.setProperty('--primary-accent', S.accentHex);
+  document.documentElement.style.setProperty('--nav-bg', S.navBg);
+  document.documentElement.style.setProperty('--hero-grad', S.heroGrad);
+  document.title = S.title + ' — Học Thông Minh';
+  document.getElementById('nav-logo').innerHTML = S.icon + ' <span>' + S.title + '</span>';
+  document.getElementById('hero-title').textContent = S.icon + ' ' + S.title;
+  // Stats
+  document.getElementById('stats-row').innerHTML = S.stats.map(s=>`<div class="stat-card"><div class="num">${s.num}</div><div class="lbl">${s.lbl}</div></div>`).join('');
+  // Chapter map
+  document.getElementById('chapter-map').innerHTML = '<div style="font-weight:700;margin-bottom:0.75rem;font-size:1rem;">🗺️ Nội dung chương trình</div>' +
+    S.chapters.map(c=>`<div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+      <span style="background:${c.color};color:#fff;border-radius:6px;padding:2px 10px;font-size:0.8rem;font-weight:700;">${c.badge}</span>
+      <span style="font-size:0.9rem;">${c.label}</span></div>`).join('');
+  buildTheory();
+  buildFlashcardSelect();
+  buildQuizChapters();
+  buildExamList();
+  buildMindmapTabs();
+  buildCalc();
+  buildFormulaTips();
+  loadFlashcards();
+  currentMM = S.mmKeys[0];
+  renderMindmap(currentMM);
+}
+
+// ── THEORY ──────────────────────────────────────────────────────
+function buildTheory() {
+  document.getElementById('theory-list').innerHTML = S.theory.map(t=>`
+    <div class="card">
+      <div class="card-header" onclick="toggleTheory('${t.id}')">
+        <div class="card-icon" style="background:${t.bg}">${t.icon}</div>
+        <div style="flex:1">
+          <div class="card-title">${t.title} <span class="badge badge-${t.badgeClass}">${t.badge}</span></div>
+          <div class="card-subtitle">${t.subtitle}</div>
+        </div>
+        <span id="chev-${t.id}">▼</span>
+      </div>
+      <div class="theory-body" id="tbody-${t.id}">${t.content}</div>
+    </div>`).join('');
+}
+function toggleTheory(id) {
+  document.getElementById('tbody-'+id).classList.toggle('open');
+  document.getElementById('chev-'+id).textContent = document.getElementById('tbody-'+id).classList.contains('open') ? '▲' : '▼';
+}
+
+// ── FLASHCARD ────────────────────────────────────────────────────
+function buildFlashcardSelect() {
+  const sel = document.getElementById('fc-chapter');
+  const chapters = [...new Set(S.flashcards.map(f=>f.chapter))];
+  const labels = {c1:'Chương 1',c2:'Chương 2',c3:'Chương 3',c4:'Chương 4'};
+  sel.innerHTML = '<option value="all">📚 Tất cả</option>' +
+    chapters.map(c=>`<option value="${c}">${labels[c]||c}</option>`).join('');
+}
+function loadFlashcards() {
+  const ch = document.getElementById('fc-chapter').value;
+  fcCards = ch==='all' ? [...S.flashcards] : S.flashcards.filter(f=>f.chapter===ch);
+  fcIdx=0; fcKnow.clear(); fcLearn.clear(); updateFC();
+}
+function updateFC() {
+  if (!fcCards.length) return;
+  const card = fcCards[fcIdx];
+  document.getElementById('fc-q').textContent = card.q;
+  document.getElementById('fc-a').textContent = card.a;
+  document.getElementById('fc-counter').textContent = `${fcIdx+1} / ${fcCards.length}`;
+  document.getElementById('fc-bar').style.width = `${(fcIdx+1)/fcCards.length*100}%`;
+  document.getElementById('fc-know').textContent = fcKnow.size;
+  document.getElementById('fc-learn').textContent = fcLearn.size;
+  document.getElementById('fc-unseen').textContent = fcCards.length - fcKnow.size - fcLearn.size;
+  document.getElementById('fc-inner').classList.remove('flipped');
+}
+function flipCard() { document.getElementById('fc-inner').classList.toggle('flipped'); }
+function nextCard() { if (fcIdx<fcCards.length-1){fcIdx++;updateFC();} }
+function prevCard() { if (fcIdx>0){fcIdx--;updateFC();} }
+function shuffleCards() { fcCards.sort(()=>Math.random()-.5); fcIdx=0; updateFC(); }
+function resetCards() { fcIdx=0; fcKnow.clear(); fcLearn.clear(); updateFC(); }
+function markCard(type) {
+  if(type==='know'){fcKnow.add(fcIdx);fcLearn.delete(fcIdx);}
+  else{fcLearn.add(fcIdx);fcKnow.delete(fcIdx);}
+  updateFC();
+  if(fcIdx<fcCards.length-1) setTimeout(nextCard,300);
+}
+
+// ── QUIZ ─────────────────────────────────────────────────────────
+function buildQuizChapters() {
+  const chapters = [...new Set(S.questions.map(q=>q.chapter))];
+  const chapterNames = S.chapters ? S.chapters.reduce((acc,c,i)=>{ acc['c'+(i+1)]=c.badge+' — '+c.label.split('—')[0].trim(); return acc; }, {}) : {};
+  const labels = Object.assign({c1:'Chương 1',c2:'Chương 2',c3:'Chương 3',c4:'Chương 4',c5:'Chương 5'}, chapterNames);
+  document.getElementById('quiz-chapter-btns').innerHTML =
+    `<div class="chapter-btn active" onclick="selChapter(this,'all')">📚 Tất cả</div>` +
+    chapters.map(c=>`<div class="chapter-btn" onclick="selChapter(this,'${c}')">${labels[c]||c}</div>`).join('');
+}
+function selChapter(el,ch) {
+  document.querySelectorAll('.chapter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); quizChapter=ch;
+}
+function startQuiz() {
+  const pool = quizChapter==='all' ? S.questions : S.questions.filter(q=>q.chapter===quizChapter);
+  const count = parseInt(document.getElementById('q-count').value);
+  quizQs = pool.sort(()=>Math.random()-.5).slice(0, Math.min(count,pool.length));
+  quizAnswers={}; timerSec=0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{ timerSec++; const m=String(Math.floor(timerSec/60)).padStart(2,'0'),s=String(timerSec%60).padStart(2,'0'); const el=document.getElementById('q-timer'); if(el)el.textContent=`⏱ ${m}:${s}`; },1000);
+  document.getElementById('quiz-setup').style.display='block';
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('quiz-result').style.display='none';
+  document.getElementById('q-progress').textContent=`${quizQs.length} câu hỏi`;
+  const colors = {c1:'blue',c2:'green',c3:'amber',c4:'purple'};
+  document.getElementById('q-list').innerHTML = quizQs.map((q,i)=>`
+    <div class="q-card">
+      <div class="q-num">Câu ${i+1}/${quizQs.length} <span class="badge badge-${colors[q.chapter]||'blue'}">${q.chapter.toUpperCase()}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${q.opts.map((o,j)=>`<button class="opt" id="opt-${i}-${j}" onclick="selOpt(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}</div>
+      <div class="explain-box" id="ex-${i}">${q.ex}</div>
+    </div>`).join('');
+}
+function selOpt(qi,oi) {
+  if(quizAnswers[qi]!==undefined) return;
+  quizAnswers[qi]=oi;
+  for(let j=0;j<quizQs[qi].opts.length;j++){
+    const btn=document.getElementById(`opt-${qi}-${j}`);
+    btn.classList.remove('selected','correct','wrong');
+    if(j===quizQs[qi].ans) btn.classList.add('correct');
+    else if(j===oi) btn.classList.add('wrong');
+  }
+  document.getElementById(`ex-${qi}`).classList.add('show');
+}
+function submitQuiz() {
+  clearInterval(timerInterval);
+  let correct=0;
+  quizQs.forEach((_,i)=>{ if(quizAnswers[i]===undefined) selOpt(i,-1); if(quizAnswers[i]===quizQs[i].ans) correct++; });
+  const total=quizQs.length, pct=Math.round(correct/total*100);
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('quiz-result').style.display='block';
+  document.getElementById('r-score').textContent=`${correct}/${total}`;
+  document.getElementById('r-pct').textContent=pct>=80?`🏆 Xuất sắc! ${pct}%`:pct>=60?`👍 Khá tốt! ${pct}%`:`💪 Cố lên! ${pct}%`;
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=total-correct;
+  const m=String(Math.floor(timerSec/60)).padStart(2,'0'),s=String(timerSec%60).padStart(2,'0');
+  document.getElementById('r-time').textContent=`${m}:${s}`;
+  document.getElementById('q-review').innerHTML='';
+}
+function showReview() {
+  document.getElementById('q-review').innerHTML='<h3 style="margin:1rem 0 0.75rem;font-size:1rem;">📋 Xem lại đáp án:</h3>' +
+    quizQs.map((q,i)=>{
+      const ok=quizAnswers[i]===q.ans;
+      return `<div class="q-card" style="border-left:4px solid ${ok?'var(--green)':'var(--red)'}">
+        <div class="q-num">${ok?'✅':'❌'} Câu ${i+1}</div>
+        <div class="q-text">${q.q}</div>
+        <div style="font-size:0.88rem;margin-top:0.5rem;">
+          <span style="color:var(--green-dark);font-weight:600;">Đáp án đúng: ${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}</span>
+          ${quizAnswers[i]!==q.ans?`<br><span style="color:var(--red);">Bạn chọn: ${String.fromCharCode(65+quizAnswers[i])}. ${q.opts[quizAnswers[i]]||'?'}</span>`:''}
+        </div>
+        <div class="explain-box show" style="margin-top:0.5rem;">${q.ex}</div>
+      </div>`;
+    }).join('');
+}
+
+// ── EXAM ─────────────────────────────────────────────────────────
+function buildExamList() {
+  document.getElementById('exam-list').innerHTML = S.exams.map(e=>
+    `<button class="exam-card-btn" id="ebtn-${e.id}" onclick="selectExam('${e.id}')">${e.title}</button>`).join('');
+}
+function selectExam(id) {
+  currentExam = S.exams.find(e=>e.id===id);
+  examAnswers={}; examMCDone=false;
+  clearInterval(examTimer); examSec=0;
+  document.querySelectorAll('.exam-card-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('ebtn-'+id).classList.add('active');
+  renderExam();
+}
+function renderExam() {
+  if(!currentExam) return;
+  const e = currentExam;
+  let html = `<div style="display:flex;gap:1.5rem;font-size:0.85rem;color:var(--text2);margin-bottom:1rem;flex-wrap:wrap;">
+    <span>📋 ${e.title} — ${e.source}</span><span>⏱ ${e.time} phút</span></div>`;
+  if(e.mc&&e.mc.length) {
+    html += `<div class="exam-section-title">A. TRẮC NGHIỆM (${e.mc.length} câu)</div>`;
+    html += e.mc.map((q,i)=>`
+      <div class="q-card">
+        <div class="q-num">Câu ${i+1}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="options">${q.opts.map((o,j)=>`<button class="opt" id="eopt-${i}-${j}" onclick="examSel(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}</div>
+        <div class="explain-box" id="eex-${i}">${q.ex}</div>
+      </div>`).join('');
+  }
+  if(e.sections&&e.sections.length) {
+    html += `<div class="exam-section-title">B. TỰ LUẬN</div>`;
+    html += e.sections.map((s,si)=>`
+      <div class="card" style="border-left:4px solid var(--primary);">
+        <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary-dark);">${s.title}</div>
+        ${s.questions.map((q,qi)=>`
+          <div style="margin-bottom:0.75rem;">
+            <div style="font-size:0.88rem;margin-bottom:0.5rem;white-space:pre-wrap;">${q.q}</div>
+            <div style="font-size:0.8rem;color:var(--text2);margin-bottom:0.4rem;">Điểm: ${q.pts}đ</div>
+            <div class="explain-box" id="tl-${si}-${qi}" style="white-space:pre-wrap;"><strong>Gợi ý đáp án:</strong>\n${q.ans}</div>
+            <button class="btn btn-outline btn-sm" onclick="toggleTL(${si},${qi})">👁 Xem gợi ý</button>
+          </div>`).join('')}
+      </div>`).join('');
+  }
+  html += `<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+    ${e.mc&&e.mc.length?`<button class="btn btn-primary" onclick="submitExam()">✅ Nộp bài</button>`:''}
+    <button class="btn btn-outline" id="exam-timer-btn" onclick="startExamTimer()">⏱ Bắt đầu đếm giờ</button>
+  </div>
+  <div id="exam-result-area" style="margin-top:1rem;"></div>`;
+  document.getElementById('exam-content').innerHTML = html;
+}
+function toggleTL(si,qi){ const el=document.getElementById(`tl-${si}-${qi}`); el.classList.toggle('show'); }
+function examSel(qi,oi) {
+  if(examMCDone) return;
+  examAnswers[qi]=oi;
+  for(let j=0;j<currentExam.mc[qi].opts.length;j++){
+    const btn=document.getElementById(`eopt-${qi}-${j}`);
+    btn.classList.remove('selected','correct','wrong');
+    if(j===oi) btn.classList.add('selected');
+  }
+}
+function submitExam() {
+  if(!currentExam||!currentExam.mc) return;
+  examMCDone=true; clearInterval(examTimer);
+  let correct=0;
+  currentExam.mc.forEach((q,i)=>{
+    const ans=examAnswers[i];
+    for(let j=0;j<q.opts.length;j++){
+      const btn=document.getElementById(`eopt-${i}-${j}`);
+      btn.classList.remove('selected','correct','wrong');
+      if(j===q.ans) btn.classList.add('correct');
+      else if(ans===j) btn.classList.add('wrong');
+    }
+    document.getElementById(`eex-${i}`).classList.add('show');
+    if(ans===q.ans) correct++;
+  });
+  const total=currentExam.mc.length, pct=Math.round(correct/total*100);
+  const grade=pct>=80?'Giỏi 🏆':pct>=65?'Khá 👍':pct>=50?'Trung bình 📚':'Cần cố gắng 💪';
+  const m=String(Math.floor(examSec/60)).padStart(2,'0'),s=String(examSec%60).padStart(2,'0');
+  document.getElementById('exam-result-area').innerHTML=`
+    <div class="result-summary"><div class="big">${correct}/${total}</div><div style="font-size:1rem;opacity:0.85">${grade} — ${pct}%</div><div style="font-size:0.85rem;opacity:0.7;margin-top:0.25rem">Thời gian: ${m}:${s}</div></div>
+    <div class="exam-score-bar"><div class="exam-score-bar-fill" style="width:${pct}%"></div></div>`;
+}
+function startExamTimer() {
+  clearInterval(examTimer); examSec=0;
+  const maxSec=(currentExam?currentExam.time:45)*60;
+  const btn=document.getElementById('exam-timer-btn');
+  if(btn) btn.style.background='var(--amber-light)';
+  examTimer=setInterval(()=>{
+    examSec++;
+    const rem=maxSec-examSec, m=String(Math.floor(rem/60)).padStart(2,'0'), s=String(rem%60).padStart(2,'0');
+    const b=document.getElementById('exam-timer-btn'); if(b) b.textContent=`⏱ ${m}:${s}`;
+    if(rem<=0){clearInterval(examTimer);submitExam();}
+  },1000);
+}
+
+// ── MINDMAP ──────────────────────────────────────────────────────
+function buildMindmapTabs() {
+  document.getElementById('mm-tabs').innerHTML = S.mmKeys.map((k,i)=>
+    `<div class="mm-tab${i===0?' active':''}" id="mmtab-${k}" onclick="renderMindmap('${k}')">${S.mmTabLabels[i]}</div>`).join('');
+}
+function renderMindmap(key) {
+  currentMM=key;
+  const mm=S.mindmaps[key];
+  document.querySelectorAll('.mm-tab').forEach(t=>{t.classList.remove('active');t.style.background='';t.style.color='';t.style.borderColor='';});
+  const tab=document.getElementById('mmtab-'+key);
+  tab.classList.add('active'); tab.style.background=mm.color; tab.style.color='#fff'; tab.style.borderColor=mm.color;
+  let html=`<div class="mm-root"><div class="mm-center" style="background:${mm.color}">${mm.center}</div><div class="mm-branches">`;
+  mm.branches.forEach(b=>{
+    html+=`<div class="mm-branch"><div class="mm-node" style="background:${b.color}">${b.label}</div><div class="mm-connector"></div><div class="mm-leaves">`;
+    b.leaves.forEach(l=>{ html+=`<div class="mm-leaf" style="background:${l.bg};border-color:${l.border};color:#1a1a1a;">${l.text}</div>`; });
+    html+=`</div></div>`;
+  });
+  html+=`</div></div><div class="tip-box" style="margin-top:1rem;">💡 <strong>Mẹo:</strong> Nhìn sơ đồ → che lại → tự vẽ lại. Lặp 3 lần sẽ nhớ rất lâu!</div>`;
+  document.getElementById('mm-canvas').innerHTML=html;
+}
+
+// ── CALCULATOR ───────────────────────────────────────────────────
+function buildCalc() {
+  document.getElementById('calc-grid').innerHTML = S.calculators.map(c=>`
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <span class="calc-icon">${c.icon}</span>
+        <span class="calc-title" style="color:${c.color}">${c.title}</span>
+      </div>
+      <div class="calc-desc">${c.desc}</div>
+      ${c.fields.map(f=>`<div class="calc-field"><label>${f.label}</label><input type="number" id="${f.id}" placeholder="${f.placeholder}" step="any" oninput="clearResult('${c.id}')"></div>`).join('')}
+      <button class="calc-btn" style="background:${c.color}" onclick="runCalc('${c.id}')">= Tính ngay</button>
+      <div class="calc-result-box" id="res-${c.id}"></div>
+    </div>`).join('');
+}
+function clearResult(id) { const el=document.getElementById('res-'+id); if(el){el.classList.remove('show');el.textContent='';} }
+function runCalc(id) {
+  const c = S.calculators.find(x=>x.id===id);
+  if(!c) return;
+  try {
+    const fn = new Function(c.calc + '; return null;');
+    const result = (new Function(c.calc.trim().replace(/^/,'return (function(){') + '})()')).call(null);
+    // safer eval:
+    const res = evalCalc(c.calc);
+    if(res) {
+      const inp = document.getElementById(res.field);
+      if(inp){ inp.value = res.val; inp.classList.add('result'); }
+      const box = document.getElementById('res-'+id);
+      box.innerHTML = `📐 ${res.formula}<br>→ <strong>${res.val} ${res.unit}</strong>`;
+      box.classList.add('show');
+    } else {
+      const box=document.getElementById('res-'+id);
+      box.innerHTML='⚠️ Nhập đúng 2 ô đã biết, bỏ trống 1 ô cần tính.';
+      box.classList.add('show');
+    }
+  } catch(e) { console.error(e); }
+}
+function evalCalc(code) {
+  try { return (new Function(code + '\nreturn null;'))(); } catch(e) { return null; }
+}
+
+// ── TIPS/FORMULA REF ─────────────────────────────────────────────
+function buildFormulaTips() {
+  const formulas = [
+    {name:'Định luật Ohm', f:'I = U / R'},
+    {name:'Công suất điện', f:'P = U × I = I²R = U²/R'},
+    {name:'Điện năng', f:'A = P × t (J hoặc kWh)'},
+    {name:'Jun-Lenxơ', f:'Q = I² × R × t'},
+    {name:'Điện trở dây', f:'R = ρ × l / S'},
+    {name:'Nối tiếp', f:'R = R₁+R₂, I=I₁=I₂'},
+    {name:'Song song', f:'1/R = 1/R₁+1/R₂, U=U₁=U₂'},
+    {name:'Máy biến áp', f:'U₁/U₂ = n₁/n₂'},
+    {name:'Thấu kính', f:'1/f = 1/d + 1/d\''},
+    {name:'Độ phóng đại', f:'k = d\'/d = h\'/h'},
+    {name:'Hiệu suất', f:'H = Aci/Atp × 100%'},
+    {name:'Nhiệt lượng', f:'Q = m × c × Δt'},
+  ];
+  document.getElementById('formula-ref-grid').innerHTML = formulas.map(f=>
+    `<div class="formula-ref"><strong>${f.name}</strong><span>${f.f}</span></div>`).join('');
+}
+
+// ── PAGE NAV ─────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const map={home:0,theory:1,flashcard:2,quiz:3,exam:4,mindmap:5,calc:6,tips:7};
+  document.querySelectorAll('.nav-tab')[map[id]].classList.add('active');
+  if(id==='flashcard'&&!fcCards.length) loadFlashcards();
+  if(id==='mindmap') renderMindmap(currentMM);
+  if(id==='exam') buildExamList();
+}
+
+// ── BOOTSTRAP ────────────────────────────────────────────────────
+// Chờ data file load xong rồi mới init
+function tryInit() {
+  if(window.SUBJECT) { init(); }
+  else { setTimeout(tryInit, 50); }
+}
+tryInit();
+</script>
+</body>
+</html>
