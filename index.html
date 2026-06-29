@@ -383,10 +383,10 @@ body.dark .iframe-header{background:#1E293B}
 // CONFIG — Thay đổi tên file nếu khác
 // ════════════════════════════════════════
 const MON_FILES = {
-  hoa:  'hoa9_hoc_tap.html',
+  hoa:  'hoa9.html',
   ly:   'ly9.html',
   sinh: 'sinh9.html',
-  anh:  'tieng_anh_9.html',
+  anh:  'anh9.html',
   toan: 'toan9.html',
 };
 const MON_NAMES = {
@@ -429,7 +429,7 @@ function init(){
     document.getElementById('topbar-sub').textContent=`Xin chào ${state.studentName}! Hôm nay học gì nào?`;
   }
   // Demo: random stats để trông có dữ liệu
-  ['hoa','ly','sinh','anh','toan'].forEach(m=>{
+  ['','ly','sinh','anh','toan'].forEach(m=>{
     const s=state.stats[m];
     if(s.q===0&&s.f===0){
       // Stats trống — không fake, để thật
@@ -525,7 +525,7 @@ function updateStreak(){
 // ════════════════════════════════════════
 function renderStats(){
   let totQ=0,totF=0,totC=0,totCh=0,cntCh=0;
-  ['hoa','ly','sinh','anh','toan'].forEach(m=>{
+  ['','ly','sinh','anh','toan'].forEach(m=>{
     const s=state.stats[m]||{q:0,f:0,c:0};
     totQ+=s.q; totF+=s.f;
     if(s.c>0){totCh+=s.c;cntCh++;}
@@ -535,7 +535,7 @@ function renderStats(){
     // Progress bar
     const pct=s.c||0;
     setStyle('pb-'+m,'width',pct+'%');
-    setEl('pl-'+m,pct===0?'Chưa bắt đầu':pct<30?'Mới bắt đầu':pct<60?'Đang học':pct<90?'Gần xong':'Hoàn thành!');
+    setEl('pl-'+m,pct===0?'Chưa bắt đầu':pct<30?'Mới bắt đầu':pct<60?'Đang học':pct<90?'Gần xong':'n thành!');
     setEl('pp-'+m,pct+'%');
   });
   setEl('s-quiz',totQ);
